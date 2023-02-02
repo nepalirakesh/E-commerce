@@ -15,16 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/dashboard', function () {
-    return view('layouts.dashboard.dashboard');
+    return view('dashboard.dashboard');
 });
 Route::get('/general-form', function () {
-    return view('layouts.dashboard.generalform');
+    return view('dashboard.generalform');
 });
 Route::get('/data-table', function () {
-    return view('layouts.dashboard.data');
+    return view('dashboard.data');
 });
 Route::get('/advance-form', function () {
-    return view('layouts.dashboard.advanceform');
+    return view('dashboard.advanceform');
 });
 Route::get('/', function () {
     return view('home.store');
@@ -32,4 +32,3 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);

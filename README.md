@@ -47,7 +47,7 @@
         DB_USERNAME= "Your username" or by default it is **root**
         DB_PASSWORD= "Your password"
 
-- Run the migrations to make required tables(authors,posts,categories,tags,post_tag) on database :
+- Run the migrations to make required tables on database :
 
        php artisan migrate
        

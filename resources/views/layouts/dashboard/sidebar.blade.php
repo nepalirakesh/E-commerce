@@ -85,6 +85,16 @@
                       </ul>
                   </li>
               </ul>
+              <ul class="nav navbar">
+                  <li class="nav-item">
+                      <form action="{{ route('admin.logout') }}" method="POST">
+                          @csrf
+                          <button type="submit" class="btn btn-sm btn-danger">
+                              Logout
+                          </button>
+                      </form>
+                  </li>
+              </ul>
           </nav>
           <!-- /.sidebar-menu -->
       </div>
@@ -95,4 +105,3 @@
       <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
- 

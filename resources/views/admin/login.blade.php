@@ -1,14 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
+            @if (Session::get('error'))
+                <div class="col-md-8">
+                    <div class="alert alert-danger">{{ Session::get('error') }}</div>
+                </div>
+            @endif
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Login') }}</div>
+                    <div class="card-header"> Admin {{ __('Login') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('admin.auth') }}">
                             @csrf
 
                             <div class="row mb-3">

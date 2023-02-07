@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-});
+// Route::get('/dashboard', function () {
+//     return view('dashboard.dashboard');
+// });
 Route::get('/general-form', function () {
     return view('dashboard.generalform');
 });
@@ -27,11 +31,33 @@ Route::get('/data-table', function () {
 Route::get('/advance-form', function () {
     return view('dashboard.advanceform');
 });
-Route::get('/', function () {
-    return view('home.store');
-});
+// Route::get('/', function () {
+//     return view('home.store');
+// });
 
 Auth::routes();
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(
+        ['middleware' => 'admin.guest'],
+        function () {
+            Route::view('/login', 'admin.login')->name('admin.login');
+            Route::post('login', [AdminController::class, 'authenticate'])->name('admin.auth');
+        }
+    );
+
+    Route::group(
+        ['middleware' => 'admin.auth'],
+        function () {
+            Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+            Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+        }
+    );
+});
 
 // ----------------------------routes for Category------------------------------
 
@@ -44,5 +70,6 @@ Route::group(['prefix'=>'category'],function(){
     Route::put('/update/{category}',[CategoryController::class,'update'])->name('category.update');
     Route::delete('/delete/{category}',[CategoryController::class,'destroy'])->name('category.delete');
 });
+
 
 

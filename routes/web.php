@@ -61,15 +61,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 // ----------------------------routes for Category------------------------------
 
-Route::group(['prefix'=>'category'],function(){
-    Route::get('/',[CategoryController::class,'index'])->name('category.index');
-    Route::get('/create',[CategoryController::class,'create'])->name('category.create');
-    Route::post('/store',[CategoryController::class,'store'])->name('category.store');
-    Route::get('/show/{category}',[CategoryController::class,'show'])->name('category.show');
-    Route::get('/edit/{category}',[CategoryController::class,'edit'])->name('category.edit');
-    Route::put('/update/{category}',[CategoryController::class,'update'])->name('category.update');
-    Route::delete('/delete/{category}',[CategoryController::class,'destroy'])->name('category.delete');
+Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('category.index');
+    Route::get('/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/store', [CategoryController::class, 'store'])->name('category.store');
+    Route::get('/show/{category}', [CategoryController::class, 'show'])->name('category.show');
+    Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/update/{category}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('category.delete');
 });
-
-
-

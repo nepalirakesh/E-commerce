@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+// --------------------------Route for product Crud
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+route::get('/show/{post}', [Productcontroller::class, 'show'])->name('product.show');
+route::get('/edit/{post}', [Productcontroller::class, 'edit'])->name('product.edit');
+route::put('/update/{post}', [Productcontroller::class, 'update'])->name('product.update');
+route::delete('/delete/{post}', [Productcontroller::class, 'delete'])->name('product.delete');

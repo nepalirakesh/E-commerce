@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title> @yield('title')</title>
+    @include('layouts.dashboard.header')
     @yield('style')
 
 </head>
@@ -20,7 +21,8 @@
         @yield('content')
         <!-- ./wrapper -->
     </div>
-        @yield('script')
+    @yield('script')
+    @include('layouts.dashboard.footer')
 </body>
 
 </html>

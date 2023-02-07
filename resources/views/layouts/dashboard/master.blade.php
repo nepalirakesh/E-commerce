@@ -4,8 +4,6 @@
 
     <title> @yield('title')</title>
     @include('layouts.dashboard.header')
-    @yield('style')
-
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -21,7 +19,6 @@
         @yield('content')
         <!-- ./wrapper -->
     </div>
-    @yield('script')
     @include('layouts.dashboard.footer')
 </body>
 

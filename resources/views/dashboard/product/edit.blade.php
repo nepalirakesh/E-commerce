@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.master')
 @section('content')
 <div class="container w-50 mt-5">
-    <h3 class="text-center">Add Products</h3>
+    <h3 class="text-center">Edit Products</h3>
     <form class="p-3 border border-dark" action="" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">

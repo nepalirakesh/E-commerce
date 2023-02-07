@@ -3,8 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title> @yield('title')</title>
-    @yield('style')
-
+    @include('layouts.dashboard.header')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -20,7 +19,7 @@
         @yield('content')
         <!-- ./wrapper -->
     </div>
-        @yield('script')
+    @include('layouts.dashboard.footer')
 </body>
 
 </html>

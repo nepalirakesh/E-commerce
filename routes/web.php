@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -36,6 +37,7 @@ Route::get('/advance-form', function () {
 
 Auth::routes();
 
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 
@@ -56,3 +58,18 @@ Route::group(['prefix' => 'admin'], function () {
         }
     );
 });
+
+// ----------------------------routes for Category------------------------------
+
+Route::group(['prefix'=>'category'],function(){
+    Route::get('/',[CategoryController::class,'index'])->name('category.index');
+    Route::get('/create',[CategoryController::class,'create'])->name('category.create');
+    Route::post('/store',[CategoryController::class,'store'])->name('category.store');
+    Route::get('/show/{category}',[CategoryController::class,'show'])->name('category.show');
+    Route::get('/edit/{category}',[CategoryController::class,'edit'])->name('category.edit');
+    Route::put('/update/{category}',[CategoryController::class,'update'])->name('category.update');
+    Route::delete('/delete/{category}',[CategoryController::class,'destroy'])->name('category.delete');
+});
+
+
+

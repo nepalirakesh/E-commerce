@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,7 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
             Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
+            Route::get('users', [UserController::class, 'index']);
         }
     );
 });

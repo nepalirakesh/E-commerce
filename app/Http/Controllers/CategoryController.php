@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(5);
-        return view('dashboard.category.index',compact('categories'));
+        return view('dashboard.category.index', compact('categories'));
     }
 
     /**
@@ -25,7 +25,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        $rootCategories = Category::whereNull('parent_id')->get();
+        return view('dashboard.category.create',compact('categories','rootCategories'));
     }
 
     /**
@@ -36,7 +38,19 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       $validated =  $request->validate([
+            'name' => 'required',
+            'description' => 'required|min:10,max:100,'
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'parent_id' => $request->parent_id =='null'?'null':$request->parent_id,
+            'status' => 1
+        ]);
+
+        return redirect()->route('category.index')->with('success','category created successfully');
     }
 
     /**

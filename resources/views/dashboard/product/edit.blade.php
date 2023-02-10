@@ -1,67 +1,89 @@
 @extends('layouts.dashboard.master')
+@section('title', 'Edit Product')
 @section('content')
-<div class="container w-50 mt-5">
+<div class="container w-50  mt-5">
     <h3 class="text-center">Edit Products</h3>
-    <form class="p-3 border border-dark" action="" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div class="form-group">
-            <label for="title">Name</label>
-            <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Enter title"
-                name="name" value="{{$product->name}}">
-            <span style="color:red">
-                @error('title')
-                {{ $message }}
-                @enderror
-            </span>
-        </div>
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" name="description" id="description" cols="" rows="3"
-                placeholder="Enter Description">{{ old('description') }}</textarea>
-            <span style="color:red">
-                @error('description')
-                {{ $message }}
-                @enderror
-            </span>
-        </div>
+    <div class="card">
+        <form class="p-3 border" action="{{route('product.update',$product)}}" method="POST"
+            enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="title">Product Name</label>
 
-        <div class="form-group">
-            <label for="image">Image</label>
-            <input type="file" class="form-control" id="image" name="image" onchange="loadFile(event)">
-            <span style="color:red">
-                @error('image')
-                {{ $message }}
-                @enderror
-            </span>
-        </div>
-        <div id="show" style="display:none;">
-            <label for="preview">Image Preview</label><br>
-            <img id="preview" width="100px" height="100px"><br><br>
-        </div>
-        <div class="form-group">
-            <label for="category">Category</label>
-            <select class="form-control" id="category" name="category_id">
-                <option disabled selected>Select Category</option>
-                <option value="1">1</option>
-            </select>
-            <span style="color:red">
-                @error('category')
-                {{ $message }}
-                @enderror
-            </span>
-        </div>
-        <div class="form-group">
-            <label for="price">Price(In Rs)</label>
-            <input type="number" class="form-control" id="price" name="price" min="1" placeholder="Enter price">
-        </div>
-        <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" class="form-control" id="quantity" name="quantity" min="1"
-                placeholder="Enter Quantity">
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+                <input type="text" class="form-control" id="name" placeholder="Enter product name" name="name" value="{{
+                    $product->name }}">
+                <span style="color:red">
+                    @error('name')
+                    {{ $message }}
+                    @enderror
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" name="description" id="description" cols="" rows="3"
+                    placeholder="Enter Description">{{ $product->description }}</textarea>
+                <span style="color:red">
+                    @error('description')
+                    {{ $message }}
+                    @enderror
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="image">Image</label>
+                <br>
+                <img src={{ asset("storage/images/$product->image") }} width="100px" height="100px" alt="">
+                <input type="file" class="form-control" id="image" name="image" onchange="loadFile(event)"
+                    value={{$product->image}}>
+                <span style="color:red">
+                    @error('image')
+                    {{ $message }}
+                    @enderror
+                </span>
+            </div>
+            <div id="show" style="display:none;">
+                <label for="preview">Image Preview</label><br>
+                <img id="preview" width="100px" height="100px"><br><br>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category_id">
+                    <option disabled selected>Select Category</option>
+                    @foreach($products as $prod)
+                    <option value={{$prod->category_id}}>{{$prod->category_id}}</option>
+                    @endforeach
+                </select>
+                <span style="color:red">
+                    @error('category_id')
+                    {{ $message }}
+                    @enderror
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="price">Price(In Rs)</label>
+                <input type="number" class="form-control" id="price" name="price" min="1" placeholder="Enter price"
+                    value={{$inventories->price}}>
+                <span style="color:red">
+                    @error('price')
+                    {{ $message }}
+                    @enderror
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" min="1"
+                    placeholder="Enter Quantity" value={{$inventories->quantity}}>
+                <span style="color:red">
+                    @error('quantity')
+                    {{ $message }}
+                    @enderror
+                </span>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+        </form>
+    </div>
+
 </div>
 @endsection

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
 use App\Models\Inventory;
+
 
 class ProductController extends Controller
 {
@@ -37,11 +39,12 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
 
         $product = new Product();
         $product->name = $request->name;
+        $product->slug = Str::slug($request->name, '-');
         $product->category_id = $request->category_id;
         $product->description = $request->description;
         $product->status = 1;
@@ -57,7 +60,7 @@ class ProductController extends Controller
         $inventory->save();
 
 
-        return redirect('product');
+        return redirect('product')->with('success', 'Product Added Successfully');
     }
 
     /**
@@ -68,7 +71,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('dashboard.product.show', compact('product'));
     }
 
     /**
@@ -79,8 +82,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $inventories = Inventory::all();
-        return view('dashboard.product.edit', compact('product', 'inventories'));
+        $id = $product->id;
+        $inventories = Inventory::where('product_id', $id)->first();
+        $products = Product::all();
+        return view('dashboard.product.edit', compact('product', 'inventories', 'products'));
     }
 
     /**
@@ -90,9 +95,24 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+
+        $product->name = $request->name;
+        $product->slug = Str::slug($request->name, '-');
+        $product->description = $request->description;
+        if ($request->hasFile('image')) {
+            $this->deleteImage($product->image);
+            $product->image = $this->uploadImage($request->file('image'));
+        }
+
+        $product->save();
+
+        $inventories = Inventory::where('product_id', $product->id)->first();
+        $inventories->quantity = $request->quantity;
+        $inventories->price = $request->price;
+        $inventories->save();
+        return redirect('product')->with('update', 'Updated Successfully');
     }
 
     /**
@@ -103,6 +123,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $this->deleteImage($product->image);
+        $product->delete();
+        return redirect('product')->with('delete', 'Deleted Successfully');
     }
 }

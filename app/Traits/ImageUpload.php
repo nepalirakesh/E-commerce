@@ -13,4 +13,12 @@ trait ImageUpload
         $file->storeAs('public/images/', $filename);
         return $filename;
     }
+
+    public function deleteImage($file)
+    {
+        $path = 'public/images/' . $file;
+        if (Storage::exists($path)) {
+            Storage::delete($path);
+        }
+    }
 }

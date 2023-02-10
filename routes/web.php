@@ -52,7 +52,7 @@ Route::group(['prefix' => 'category'], function () {
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/create', [ProductController::class, 'create'])->name('product.create');
 Route::post('/store', [ProductController::class, 'store'])->name('product.store');
-route::get('/show/{post}', [Productcontroller::class, 'show'])->name('product.show');
-route::get('/edit/{post}', [Productcontroller::class, 'edit'])->name('product.edit');
-route::put('/update/{post}', [Productcontroller::class, 'update'])->name('product.update');
-route::delete('/delete/{post}', [Productcontroller::class, 'delete'])->name('product.delete');
+Route::get('/show/{product}', [Productcontroller::class, 'show'])->name('product.show');
+Route::get('/edit/{product}', [Productcontroller::class, 'edit'])->name('product.edit');
+Route::put('/update/{product}', [Productcontroller::class, 'update'])->name('product.update');
+Route::delete('/delete/{product}', [Productcontroller::class, 'destroy'])->name('product.delete');

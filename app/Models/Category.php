@@ -10,7 +10,7 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'parent_id', 'status',
+        'name', 'description', 'parent_id', 'status', 'slug'
     ];
 
     public function children()
@@ -21,5 +21,15 @@ class Category extends Model
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * Display slug instead of id in URL
+     * 
+     * @return slug
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -13,9 +14,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
         $categories = Category::paginate(5);
-        return view('dashboard.category.index',compact('categories'));
+        return view('dashboard.category.index', compact('categories'));
     }
 
     /**
@@ -25,7 +26,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $rootCategories = Category::whereNull('parent_id')->get();
+        return view('dashboard.category.create', compact('rootCategories'));
     }
 
     /**
@@ -34,9 +36,17 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        Category::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'parent_id' => $request->parent_id == 'null' ? 'null' : $request->parent_id,
+            'status' => 1,
+            'slug' => Str::slug($request->name, '-'),
+        ]);
+
+        return redirect()->route('category.index')->with('success', 'category created successfully');
     }
 
     /**
@@ -47,7 +57,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return view('dashboard.category.show', compact('category'));
     }
 
     /**
@@ -58,7 +68,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $allCategories = Category::all();
+        $rootCategories = Category::whereNull('parent_id')->get();
+
+        return view('dashboard.category.edit', compact('category', 'rootCategories', 'allCategories'));
     }
 
     /**
@@ -68,9 +81,12 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $category->slug = Str::slug($request->name, '-');
+        $category->update($request->all());
+
+        return redirect()->route('category.index')->with('update', 'Category updated successfully');
     }
 
     /**
@@ -81,6 +97,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return redirect()->route('category.index')->with('delete', 'Category deleted successfully.');
     }
 }

@@ -6,24 +6,13 @@
         <form class="p-3 border border-dark" action="{{ route('category.store') }}" method="POST">
             @csrf
             <div class="form-group">
-                <label for="title">Name</label>
-                <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter Name"
-                    name="name" value="{{ old('name') }}">
-                <span style="color:red">
-                    @error('name')
-                        {{ $message }}
-                    @enderror
-                </span>
-
-            </div>
-            <div class="form-group">
-                <label for="parent">Parent Category</label>
+                <label for="parent">Main Category</label>
                 <select class="form-control" name="parent_id" id="parent">
-                    <option disabled selected>Select Parent Category</option>
-                    @foreach ($rootCategories as $category)
-                        @include('dashboard.category.subcategories',['category'=>$category])
-                    
-                    @endforeach
+                    <option disabled selected>Select Main Category</option>
+                    <option value="">None</option>
+
+                    @foreach ($rootCategories as $root)
+                        <option value="{{$root->id}}"{{old('parent_id')==$root->id?'selected':''}}>{{$root->name}}</option>                     @endforeach
                 </select>
 
                 <span style="color:red">
@@ -32,6 +21,17 @@
                     @enderror
                 </span>
             </div>
+            <div class="form-group">
+                <label for="title">Name</label>
+                <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter Name"
+                    name="name" value="{{ old('name') }}">
+                <span style="color:red">
+                    @error('name')
+                        {{ $message }}
+                    @enderror
+                </span>
+            </div>
+       
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea class="form-control" name="description" id="my-editor" cols="" rows="3"

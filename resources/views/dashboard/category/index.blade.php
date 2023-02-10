@@ -1,6 +1,7 @@
 @extends('layouts.dashboard.master')
 @section('title', 'All Categories')
 @section('content')
+    @include('layouts.dashboard.crudmessage')
     <div class="container text-center mt-5">
         <h3>Categories</h3>
         <table class="table container text-center w-75">
@@ -12,18 +13,16 @@
                     <th scope="col">Parent</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
-
                 </tr>
             </thead>
             <tbody>
                 @foreach ($categories as $category)
                     <tr>
-                        <td>{{ $categories->firstItem() + $loop->index }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ ucfirst($category->name) }}</td>
-                        <td>{!! ucfirst(Str::limit($category->description,15)) !!}</td>
-                        <td>{{$category->parent_id?$category->parent->name:'No parent'}}</td>
+                        <td>{!! ucfirst(Str::limit($category->description, 15)) !!}</td>
+                        <td>{{ $category->parent ? $category->parent->name : 'No Parent' }} </td>
                         <td>{{ $category->status ? 'In Stock' : 'Out Of Stock' }}</td>
-
                         <td>
                             <form action="{{ route('category.delete', $category) }}" method="POST">
                                 <a href="{{ route('category.show', $category) }}" class="btn btn-primary btn-xs">Show</a>

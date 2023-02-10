@@ -18,15 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 });
-Route::get('/general-form', function () {
-    return view('dashboard.generalform');
-});
-Route::get('/data-table', function () {
-    return view('dashboard.data');
-});
-Route::get('/advance-form', function () {
-    return view('dashboard.advanceform');
-});
+
 Route::get('/', function () {
     return view('home.store');
 });

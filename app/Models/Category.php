@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Category extends Model
 {
@@ -36,5 +37,23 @@ class Category extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+   /**
+    * Return parent and all parent till root node
+    * 
+    * @return parents
+    */
+    public function getParentsAttribute()
+    {
+        $parents = collect([]);
+
+        $currentParent = $this->parent;
+
+        while (!is_null($currentParent)) {
+            $parents->prepend($currentParent);
+            $currentParent = $currentParent->parent;
+        }
+        return $parents;
     }
 }

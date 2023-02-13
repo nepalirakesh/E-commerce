@@ -21,7 +21,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ ucfirst($category->name) }}</td>
                         <td>{!! ucfirst(Str::limit($category->description, 15)) !!}</td>
-                        <td>{{ $category->parent ? $category->parent->name : 'No Parent' }} </td>
+                        <td>{{ count ($category->parents) ? $category->parents->implode('name','/') : 'No Parent' }} </td>
                         <td>{{ $category->status ? 'In Stock' : 'Out Of Stock' }}</td>
                         <td>
                             <form action="{{ route('category.delete', $category) }}" method="POST">

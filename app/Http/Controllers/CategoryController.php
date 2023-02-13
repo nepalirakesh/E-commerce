@@ -14,8 +14,8 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
-        $categories = Category::paginate(5);
+    {
+        $categories = Category::all();
         return view('dashboard.category.index', compact('categories'));
     }
 

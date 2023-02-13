@@ -42,4 +42,20 @@
 <!-- AdminLTE App -->
 <script src="
 {{ asset('dist/js/adminlte.js') }}"></script>
+{{-- Data Table --}}
+<script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#myDataTable').DataTable();
+    });
+</script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    var loadFile = function(event) {
+        var show = document.getElementById('show')
+        show.style.display ="block";
+        var preview = document.getElementById('preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
 
+    };  
+</script>

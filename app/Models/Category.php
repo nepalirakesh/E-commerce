@@ -24,6 +24,11 @@ class Category extends Model
         return $this->belongsTo(self::class, 'parent_id');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
     /**
      * Display slug instead of id in URL
      * 

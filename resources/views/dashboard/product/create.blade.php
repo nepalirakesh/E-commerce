@@ -26,7 +26,6 @@
                     @enderror
                 </span>
             </div>
-
             <div class="form-group">
                 <label for="image">Image</label>
                 <br>
@@ -46,12 +45,7 @@
                 <select class="form-control" id="category" name="category_id">
                     <option disabled selected>Select Category</option>
                     @foreach($rootCategories as $cat)
-                    <option value={{$cat->id}}>{{$cat->name}}</option>
-                    @if(count($cat->children)>0)
-                    @foreach($cat->children as $child)
-                    <option value={{$cat->id}}>--{{$child->name}}</option>
-                    @endforeach
-                    @endif
+                    @include('dashboard.category.subcategories',['category'=>$cat])
                     @endforeach
                 </select>
                 <span style="color:red">

@@ -48,21 +48,11 @@
             <div class="form-group">
                 <label for="category">Category</label>
                 <select class="form-control" id="category" name="category_id">
-                    <option disabled selected>{{$product->category->name}}</option>
+                    <option value="{{$product->category->id}}" selected>{{$product->category->name}}</option>
                     @foreach($rootCategories as $cat)
-                    @if($product->category->name == $cat->name)
-                    @continue
-                    @endif
-                    <option value={{$cat->id}}>{{$cat->name}}</option>
 
-                    @if(count($cat->children)>0)
-                    @foreach($cat->children as $child)
-                    @if($product->category->name == $child->name)
-                    @continue
-                    @endif
-                    <option value={{$cat->id}}>--{{$child->name}}</option>
-                    @endforeach
-                    @endif
+                    @include('dashboard.product.editsubcategories',['subcategory'=>$cat])
+
                     @endforeach
                 </select>
                 <span style="color:red">

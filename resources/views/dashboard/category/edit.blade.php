@@ -1,9 +1,10 @@
 @extends('layouts.dashboard.master')
 @section('title', 'Edit' . ' ' . $category->name)
 @section('content')
-    <div class="container w-50 mt-5">
-        <h3 class="text-center">Edit Category</h3>
-        <form class="p-3 border border-dark" action="{{ route('category.update', $category) }}" method="POST">
+<div class="container w-50 mt-5">
+    <h3 class="text-center">Edit Category</h3>
+    <div class="card">
+        <form class="p-3 border" action="{{ route('category.update', $category) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -12,7 +13,7 @@
                     name="name" value="{{ $category->name }}">
                 <span style="color:red">
                     @error('name')
-                        {{ $message }}
+                    {{ $message }}
                     @enderror
                 </span>
             </div>
@@ -20,17 +21,17 @@
                 <label for="parent">Main Category</label>
                 <select class="form-control" name="parent_id" id="parent">
                     @foreach ($rootCategories as $root)
-                      @if($root->id==$category->id)
-                        <option value=""selected>None</option>
-                        @continue
-                       @endif 
-                       @include('dashboard.category.editsubcategories',['subcategory'=>$root,'category'=>$category])
+                    @if($root->id==$category->id)
+                    <option value="" selected>None</option>
+                    @continue
+                    @endif
+                    @include('dashboard.category.editsubcategories',['subcategory'=>$root,'category'=>$category])
                     @endforeach
                 </select>
 
                 <span style="color:red">
                     @error('parent_id')
-                        {{ $message }}
+                    {{ $message }}
                     @enderror
                 </span>
             </div>
@@ -40,7 +41,7 @@
                     placeholder="Enter Description">{{ $category->description }}</textarea>
                 <span style="color:red">
                     @error('description')
-                        {{ $message }}
+                    {{ $message }}
                     @enderror
                 </span>
             </div>
@@ -49,4 +50,5 @@
             </div>
         </form>
     </div>
+</div>
 @endsection

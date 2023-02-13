@@ -19,15 +19,12 @@
             <div class="form-group">
                 <label for="parent">Main Category</label>
                 <select class="form-control" name="parent_id" id="parent">
-                    @if ($category->parent_id == '')
-                        <option value="" selected>None</option>
-                    @endif
                     @foreach ($rootCategories as $root)
-                        @if ($root -> id == $category->id)
-                            @continue
-                        @endif
-                        <option value="{{ $root->id }}"{{ $root->id == $category->parent_id ? 'selected' : '' }}>
-                            {{ $root->name }}</option>
+                      @if($root->id==$category->id)
+                        <option value=""selected>None</option>
+                        @continue
+                       @endif 
+                       @include('dashboard.category.editsubcategories',['subcategory'=>$root,'category'=>$category])
                     @endforeach
                 </select>
 

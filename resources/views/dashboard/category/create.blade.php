@@ -12,7 +12,8 @@
                     <option value="">None</option>
 
                     @foreach ($rootCategories as $root)
-                        <option value="{{$root->id}}"{{old('parent_id')==$root->id?'selected':''}}>{{$root->name}}</option>                     @endforeach
+                       @include('dashboard.category.subcategories',['category'=>$root])
+                    @endforeach
                 </select>
 
                 <span style="color:red">
@@ -23,15 +24,15 @@
             </div>
             <div class="form-group">
                 <label for="title">Name</label>
-                <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter Name"
-                    name="name" value="{{ old('name') }}">
+                <input type="text" class="form-control" id="title" aria-describedby="emailHelp"
+                    placeholder="Enter Name" name="name" value="{{ old('name') }}">
                 <span style="color:red">
                     @error('name')
                         {{ $message }}
                     @enderror
                 </span>
             </div>
-       
+
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea class="form-control" name="description" id="my-editor" cols="" rows="3"

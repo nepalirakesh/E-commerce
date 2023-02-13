@@ -12,16 +12,19 @@
             <div>
                 <span>Parent Category :</span>
                 @if ($category->parent)
-                     <span class="p-1"><a href="{{ route('category.show', $category->parent) }}">{{ $category->parent->name }}</a></span>
-                     @else
+                    @foreach ($category->parents as $parent)
+                        <span class="p-1"><a href="{{ route('category.show', $parent) }}">{{ $parent->name }}</a></span>
+                    @endforeach
+                @else
                     <span>None</span>
                 @endif
             </div>
             <div>
                 <span>Sub Categories :</span>
-                @if (count($category->children)>0)
+                @if (count($category->children) > 0)
                     @foreach ($category->children as $children)
-                        <span class="p-1"><a href="{{ route('category.show', $children) }}">{{ $children->name }}</a></span>
+                        <span class="p-1"><a
+                                href="{{ route('category.show', $children) }}">{{ $children->name }}</a></span>
                     @endforeach
                 @else
                     <span>None</span>

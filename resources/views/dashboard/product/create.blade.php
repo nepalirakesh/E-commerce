@@ -45,11 +45,14 @@
                 <label for="category">Category</label>
                 <select class="form-control" id="category" name="category_id">
                     <option disabled selected>Select Category</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    @foreach($rootCategories as $cat)
+                    <option value={{$cat->id}}>{{$cat->name}}</option>
+                    @if(count($cat->children)>0)
+                    @foreach($cat->children as $child)
+                    <option value={{$cat->id}}>--{{$child->name}}</option>
+                    @endforeach
+                    @endif
+                    @endforeach
                 </select>
                 <span style="color:red">
                     @error('category_id')

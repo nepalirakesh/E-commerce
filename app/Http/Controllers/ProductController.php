@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
 use App\Models\Inventory;
+use App\Models\Category;
 
 
 class ProductController extends Controller
@@ -30,7 +31,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('dashboard.product.create');
+        $rootCategories = Category::whereNull('parent_id')->get();
+        return view('dashboard.product.create', compact('rootCategories'));
     }
 
     /**
@@ -85,7 +87,9 @@ class ProductController extends Controller
         $id = $product->id;
         $inventories = Inventory::where('product_id', $id)->first();
         $products = Product::all();
-        return view('dashboard.product.edit', compact('product', 'inventories', 'products'));
+
+        $rootCategories = Category::whereNull('parent_id')->get();
+        return view('dashboard.product.edit', compact('product', 'inventories', 'products', 'rootCategories'));
     }
 
     /**

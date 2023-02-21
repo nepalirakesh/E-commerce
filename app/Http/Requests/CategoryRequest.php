@@ -27,7 +27,7 @@ class CategoryRequest extends FormRequest
             'name' => ($this->method() === "PUT") ? 'required|unique:categories,name,' . $this->category->id : 
             'required|unique:categories,name,',
             'description'=> 'required|min:20|max:300',
-            'category' => 'nullable|integer',
+            'parent_id' => 'nullable|integer',
             ];
     }
 }

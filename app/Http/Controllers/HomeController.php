@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 use App\Services\CartService;
 use App\Models\Category;
 
-
-
-
-
 class HomeController extends Controller
 {
 
@@ -19,7 +15,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function welcome()
     {
         $categories = Category::all();
         $products = Product::latest()->paginate(12);
@@ -31,7 +27,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function welcome()
+    public function index()
     {
         $products = Product::all();
 

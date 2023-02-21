@@ -3,44 +3,68 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 use App\Models\Product;
-use App\Models\Inventory;
+
+
+
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-    //  */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        $price_min = Product::min('price');
-        $price_max = Product::max('price');
-        $products = Product::all();
-        return view('home.store', compact('products', 'price_min', 'price_max'));
+  /**
+   * Show the application dashboard.
+   *
+   * @return \Illuminate\Contracts\Support\Renderable
+   */
+  public function index()
+  {
+    $categories = Category::all();
+    $products = Product::latest()->paginate(12);
+    return view('home.store', compact('categories', 'products'));
+  }
+
+  public function price_filter(Request $request)
+  {
+    $min_price = $request->price_min;
+    $max_price = $request->price_max;
+    $price_min = Product::min('price');
+    $price_max = Product::max('price');
+
+    if ($min_price > 0 && $max_price > 0) {
+      $products = Product::select('id', 'name', 'image', 'price', 'description')->whereBetween('price', [$min_price, $max_price])->get();
+    }
+    return view('home.store', compact('products', 'price_min', 'price_max'));
+  }
+
+  /**
+   * Show Products of a Category and its child category
+   * 
+   * @param string $slug
+   * 
+   * @return collection
+   */
+  public function productByCategory($slug)
+  {
+    $categories = Category::all();
+    $selectedCategory = Category::where('slug', $slug)->first();
+    $products = collect([]);
+
+    //Get all Descandants(child category) if category has a child and retrieve all products of descendants and self
+    if ($selectedCategory->children->isNotEmpty()) {
+      $descendants = $selectedCategory->getDescendants($selectedCategory);
+      foreach ($descendants as $descendant) {
+        $product = Product::where('category_id', $descendant)->get();
+        $products = $products->concat($product);
+      }
+    } else {
+      $products = $selectedCategory->products()->get();
+    }
+    if ($products->isNotEmpty()) {
+      $products = $products->paginate(6);
+      return view('home.store', compact('products', 'categories', 'selectedCategory'));
     }
 
-    public function price_filter(Request $request)
-    {
-        $min_price = $request->price_min;
-        $max_price = $request->price_max;
-        $price_min = Product::min('price');
-        $price_max = Product::max('price');
-
-        if ($min_price > 0 && $max_price > 0) {
-            $products = Product::select('id', 'name', 'image', 'price', 'description')->whereBetween('price', [$min_price, $max_price])->get();
-        }
-        return view('home.store', compact('products', 'price_min', 'price_max'));
-    }
+    return redirect()->route('home')->with('notAvailable', 'No Products Available for ' . $selectedCategory->name . ' category');
+  }
 }

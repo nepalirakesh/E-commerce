@@ -105,6 +105,8 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->slug = Str::slug($request->name, '-');
         $product->description = $request->description;
+        $product->category_id = $request->category_id;
+
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
             $product->image = $this->uploadImage($request->file('image'));

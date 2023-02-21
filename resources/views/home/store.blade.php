@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
     <!-- Bootstrap -->
+<<<<<<< HEAD
     <link type="text/css" rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}" />
 
     <!-- Slick -->
@@ -21,15 +22,32 @@
 
     <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="{{asset('css/nouislider.min.css')}}" />
+=======
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/slick.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/slick-theme.css') }}" />
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/nouislider.min.css') }}" />
+>>>>>>> fd2b0dc8a0fa484ce943f72fd144c3bd209b68dd
 
     {{--
     <!-- Font Awesome Icon -->
     <link rel="stylesheet" href="css/font-awesome.min.css"> --}}
     <!-- Font Awesome -->
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{asset('plugins/fontawesome-free/css/all.min.css')}}">
 
     <!-- Custom stylesheet -->
     <link type="text/css" rel="stylesheet" href="{{asset('css/style.css')}}" />
+=======
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+
+    <!-- Custom stylesheet -->
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/style.css') }}" />
+>>>>>>> fd2b0dc8a0fa484ce943f72fd144c3bd209b68dd
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -109,12 +127,7 @@
                     <div class="col-md-6">
                         <div class="header-search">
                             <form>
-                                <select class="input-select">
-                                    <option value="0">All Categories</option>
-                                    <option value="1">Category 01</option>
-                                    <option value="1">Category 02</option>
-                                </select>
-                                <input class="input" placeholder="Search here">
+                                <input class="input" type="text" placeholder="Search here" name="">
                                 <button class="search-btn">Search</button>
                             </form>
                         </div>
@@ -224,27 +237,6 @@
     </nav>
     <!-- /NAVIGATION -->
 
-    <!-- BREADCRUMB -->
-    <div id="breadcrumb" class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="breadcrumb-tree">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">All Categories</a></li>
-                        <li><a href="#">Accessories</a></li>
-                        <li class="active">Headphones (227,490 Results)</li>
-                    </ul>
-                </div>
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /BREADCRUMB -->
-
     <!-- SECTION -->
     <div class="section">
         <!-- container -->
@@ -257,67 +249,30 @@
                     <div class="aside">
                         <h3 class="aside-title">Categories</h3>
                         <div class="checkbox-filter">
+                            @foreach ($categories as $category)
+                                <div class="input-checkbox">
+                                    <input type="checkbox" id={{ 'category-' . $category->id }}
+                                        value={{ $category->slug }} onchange="handleSelect(event)"
+                                        {{ Request::is('home/categories/' . $category->slug) ? 'checked' : '' }}>
+                                    <label for={{ 'category-' . $category->id }}>
+                                        <span></span>
+                                        {{ $category->slug }}
+                                        <small>(120)</small>
+                                    </label>
+                                </div>
+                            @endforeach
 
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-1">
-                                <label for="category-1">
-                                    <span></span>
-                                    Laptops
-                                    <small>(120)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-2">
-                                <label for="category-2">
-                                    <span></span>
-                                    Smartphones
-                                    <small>(740)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-3">
-                                <label for="category-3">
-                                    <span></span>
-                                    Cameras
-                                    <small>(1450)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-4">
-                                <label for="category-4">
-                                    <span></span>
-                                    Accessories
-                                    <small>(578)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-5">
-                                <label for="category-5">
-                                    <span></span>
-                                    Laptops
-                                    <small>(120)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-6">
-                                <label for="category-6">
-                                    <span></span>
-                                    Smartphones
-                                    <small>(740)</small>
-                                </label>
-                            </div>
                         </div>
                     </div>
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                    </ul>
                     <!-- /aside Widget -->
 
                     <!-- aside Widget -->
                     <div class="aside">
                         <h3 class="aside-title">Price</h3>
+<<<<<<< HEAD
 
                         <form action="{{route('product.price')}}" method="POST">
                             @csrf
@@ -337,6 +292,14 @@
                                     <span class="qty-up">+</span>
                                     <span class="qty-down">-</span>
                                 </div>
+=======
+                        <div class="price-filter">
+                            <div id="price-slider"></div>
+                            <div class="input-number price-min">
+                                <input id="price-min" min="5" type="number">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+>>>>>>> fd2b0dc8a0fa484ce943f72fd144c3bd209b68dd
                             </div>
                             <button type="submit" class="btn btn-sm">Filter</button>
                         </form>
@@ -467,7 +430,13 @@
                         </ul>
                     </div>
                     <!-- /store top filter -->
+                    @if (Session::has('notAvailable'))
+                        <p class="text-center">{{ Session::get('notAvailable') }}</p>
+                    @else
+                        <!-- store products -->
+                        <div class="row">
 
+<<<<<<< HEAD
                     <!-- store products -->
                     <div class="row">
 
@@ -527,12 +496,68 @@
                         </ul>
                     </div>
                     <!-- /store bottom filter -->
+=======
+                            <!-- product -->
+
+                            <h1 class="text-center">
+                                {{ isset($selectedCategory) ? $selectedCategory->name : 'All Products' }}</h1>
+                            @foreach ($products as $product)
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="product">
+                                        <div class="product-img">
+                                            <img src="{{ asset('/storage/images/'.$product->image) }}" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                            <p class="product-category">{{ $product->category->name}}</p>
+                                            <h3 class="product-name"><a href="#">{{Str::limit($product->name,20)}}</a>
+                                            </h3>
+                                            <h3 class="product-name"><a
+                                                    href="#">{{ $product->inventory->quantity }}</a></h3>
+                                            <h4 class="product-price">{{ 'Rs.' . $product->inventory->price }}
+                                            </h4>
+                                            <div class="product-rating">
+                                            </div>
+                                            <div class="product-btns">
+                                                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
+                                                        class="tooltipp">add to wishlist</span></button>
+                                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span
+                                                        class="tooltipp">add to compare</span></button>
+                                                <button class="quick-view"><i class="fa fa-eye"></i><span
+                                                        class="tooltipp">quick view</span></button>
+                                            </div>
+                                        </div>
+                                        <div class="add-to-cart">
+                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
+                                                cart</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                    @endif
+
+
+
+
+                    <!-- /product -->
+>>>>>>> fd2b0dc8a0fa484ce943f72fd144c3bd209b68dd
                 </div>
-                <!-- /STORE -->
+                <!-- /store products -->
+
+                <!-- store bottom filter -->
+                <div class="store-filter clearfix">
+                    <span class="store-qty">Showing {{$products->count()}}-{{$products->total()}} products</span>
+                    <ul class="pagination justify-content-center">
+                        {!! $products->links('pagination::bootstrap-4') !!}
+                    </ul>
+                </div>
+                <!-- /store bottom filter -->
             </div>
-            <!-- /row -->
+            <!-- /STORE -->
         </div>
-        <!-- /container -->
+        <!-- /row -->
+    </div>
+    <!-- /container -->
     </div>
     <!-- /SECTION -->
 
@@ -674,6 +699,7 @@
     <!-- /FOOTER -->
 
     <!-- jQuery Plugins -->
+<<<<<<< HEAD
     <script src="{{asset('js/jquery.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/slick.min.js')}}"></script>
@@ -685,6 +711,24 @@
 
 
 
+=======
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/slick.min.js') }}"></script>
+    <script src="{{ asset('js/nouislider.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.zoom.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="https://use.fontawesome.com/ea9cd286ec.js"></script>
+
+    <script>
+        function handleSelect(event) {
+            var slug = event.target.value;
+            var base_url = window.location.origin;
+            window.location = `${base_url}/home/categories/${slug}`;
+
+        }
+    </script>
+>>>>>>> fd2b0dc8a0fa484ce943f72fd144c3bd209b68dd
 </body>
 
 </html>

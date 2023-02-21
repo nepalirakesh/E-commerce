@@ -32,7 +32,7 @@
                                     <td>{{Str::limit($product->description,25)}}</td>
                                     <td>{{ ucfirst($product->category_id) }}</td>
                                     <td>
-                                        <img src=" {{asset( " storage/images/$product->image" )}}" alt="" width="50px"
+                                        <img src=" {{asset("storage/images/$product->image" )}}" alt="" width="50px"
                                         height="50px">
                                     </td>
                                     <td>{{$product->inventory->quantity}}</td>

@@ -27,15 +27,13 @@ Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 });
 
-Route::get('/', function () {
-    return view('home.store');
-});
 
 Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
+Route::get('/home/categories/{category}',[HomeController::class,'productByCategory'])->name('productByCategory');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(

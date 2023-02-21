@@ -29,17 +29,20 @@ class ProductComponent extends Component
      */
     public function render(): View
     {
-        $products = Product::all();
-        return view('livewire.product-component', (['products' => $products]));
+        return view('livewire.product-component');
     }
 
     public function addToCart()
     {
-        // if ($this->product) {
+        if (auth()->check()) {
+            Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('unit_price'), $this->quantity);
+            session()->flash('success', 'Product added to cart.');
+            $this->emit('productAddedToCart');
 
-        Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('unit_price'), $this->quantity);
-        $this->emit('productAddedToCart');
-        // }
-        // dd($this->product);
+
+        } else {
+            return redirect()->route('login');
+        }
+
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Services\CartService;
 
 class HomeController extends Controller
 {
@@ -25,7 +26,15 @@ class HomeController extends Controller
     public function index()
     {
         $products = Product::all();
+        // $cartService = new CartService(session());
+        // dd($cartService);
+
         // dd($products);
-        return view('welcome', compact('products'));
+        return view('welcome', compact(['products']));
+    }
+
+    public function cartComponent()
+    {
+        return view('cart');
     }
 }

@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Livewire\CartComponent;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,9 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'carts'])->name('home');
+Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
+
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 
 Route::group(['prefix' => 'admin'], function () {

@@ -138,7 +138,7 @@ class CartService
      *
      * @return Illuminate\Support\Collection
      */
-    protected function getContent(): Collection
+    public function getContent(): Collection
     {
         return $this->session->has(self::DEFAULT_INSTANCE) ? $this->session->get(self::DEFAULT_INSTANCE) : collect([]);
     }
@@ -167,5 +167,10 @@ class CartService
             'quantity' => $quantity,
             'options' => $options,
         ]);
+    }
+    public function count()
+    {
+
+        return count($this->getContent());
     }
 }

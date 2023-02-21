@@ -13,6 +13,9 @@ class CartComponent extends Component
     protected $listeners = [
         'productAddedToCart' => 'updateCart',
     ];
+
+    public $layout = null; // Add this line to remove the layout for the component
+
     /**
      * Mounts the component on the template.
      *
@@ -22,6 +25,7 @@ class CartComponent extends Component
     {
         $this->updateCart();
     }
+
     /**
      * Renders the component on the browser.
      *
@@ -34,6 +38,7 @@ class CartComponent extends Component
             'content' => $this->content,
         ]);
     }
+
     /**
      * Removes a cart item by id.
      *
@@ -45,6 +50,7 @@ class CartComponent extends Component
         Cart::remove($id);
         $this->updateCart();
     }
+
     /**
      * Clears the cart content.
      *
@@ -55,6 +61,7 @@ class CartComponent extends Component
         Cart::clear();
         $this->updateCart();
     }
+
     /**
      * Updates a cart item.
      *
@@ -67,6 +74,7 @@ class CartComponent extends Component
         Cart::update($id, $action);
         $this->updateCart();
     }
+
     /**
      * Rerenders the cart items and total price on the browser.
      *

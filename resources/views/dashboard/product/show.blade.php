@@ -11,7 +11,7 @@
                         <h5> {{ ucfirst($product->name) }}</h5>
                     </div>
                     <div class="card-body text-center">
-                        <img src="{{ asset(" storage/images/$product->image") }}" alt="" width="500px" height="300px">
+                        <img src="{{ asset("storage/images/$product->image") }}" alt="" width="500px" height="300px">
                         <p class="card-text">{{ ucfirst($product->description) }}</p>
                         <hr>
                         <p><b>Price(In Rs):</b>{!! ucfirst($product->inventory->price ) !!}</p>

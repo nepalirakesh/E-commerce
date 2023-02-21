@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 class Category extends Model
 {
     use HasFactory;
-
+    private $descandants = [];
     protected $fillable = [
         'name', 'description', 'parent_id', 'status', 'slug'
     ];
@@ -18,7 +18,7 @@ class Category extends Model
     {
         return $this->hasMany(self::class, 'parent_id');
     }
-
+   
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
@@ -39,11 +39,11 @@ class Category extends Model
         return 'slug';
     }
 
-   /**
-    * Return parent and all parent till root node
-    * 
-    * @return parents
-    */
+    /**
+     * Return parent and all parent till root node
+     * 
+     * @return parents
+     */
     public function getParentsAttribute()
     {
         $parents = collect([]);
@@ -55,5 +55,23 @@ class Category extends Model
             $currentParent = $currentParent->parent;
         }
         return $parents;
+    }
+
+
+    public function findDescendants(Category $category)
+    {
+        $this->descandants[] = $category->id;
+
+        if ($category->children->isNotEmpty()) {
+            foreach ($category->children as $child) {
+                $this->findDescendants($child);
+            }
+        }
+    }
+
+    public function getDescendants(Category $category)
+    {
+        $this->findDescendants($category);
+        return $this->descandants;
     }
 }

@@ -7,7 +7,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserController;
+use GrahamCampbell\ResultType\Success;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,3 +77,15 @@ Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function ()
     Route::put('/update/{category}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('category.delete');
 });
+
+// -------------------------Route for price filter------------------------
+Route::post('/product/price', [HomeController::class, 'price_filter'])->name('product.price');
+
+
+
+Route::get('stripe', [StripePaymentController::class, 'stripe']);
+Route::post('stripe', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
+
+Route::get('checkout', [StripePaymentController::class, 'checkout'])->name('checkout');
+Route::get('/success', [StripePaymentController::class, 'success'])->name('checkout.success');
+Route::get('/cancel', [StripePaymentController::class, 'cancel'])->name('checkout.cancel');

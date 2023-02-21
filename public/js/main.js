@@ -150,14 +150,16 @@
 	var priceSlider = document.getElementById('price-slider');
 	if (priceSlider) {
 		noUiSlider.create(priceSlider, {
-			start: [1, 999],
+			start: [1, 1000000],
 			connect: true,
 			step: 1,
 			range: {
 				'min': 1,
-				'max': 999
+				'max': 1000000
 			}
+			
 		});
+		
 
 		priceSlider.noUiSlider.on('update', function( values, handle ) {
 			var value = values[handle];

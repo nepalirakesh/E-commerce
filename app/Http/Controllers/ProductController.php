@@ -110,11 +110,11 @@ class ProductController extends Controller
             $product->image = $this->uploadImage($request->file('image'));
         }
 
+        $product->price = $request->price;
         $product->save();
 
         $inventories = Inventory::where('product_id', $product->id)->first();
         $inventories->quantity = $request->quantity;
-        $inventories->price = $request->price;
         $inventories->save();
         return redirect('product')->with('update', 'Updated Successfully');
     }

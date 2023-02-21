@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\Inventory;
 
 class HomeController extends Controller
 {
     /**
-    * Create a new controller instance.
-    *
-    * @return void
+     * Create a new controller instance.
+     *
+     * @return void
     //  */
     // public function __construct()
     // {
@@ -23,6 +25,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.store');
+        $price_min = Product::min('price');
+        $price_max = Product::max('price');
+        $products = Product::all();
+        return view('home.store', compact('products', 'price_min', 'price_max'));
+    }
+
+    public function price_filter(Request $request)
+    {
+        $min_price = $request->price_min;
+        $max_price = $request->price_max;
+        $price_min = Product::min('price');
+        $price_max = Product::max('price');
+
+        if ($min_price > 0 && $max_price > 0) {
+            $products = Product::select('id', 'name', 'image', 'price', 'description')->whereBetween('price', [$min_price, $max_price])->get();
+        }
+        return view('home.store', compact('products', 'price_min', 'price_max'));
     }
 }

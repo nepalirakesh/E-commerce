@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
@@ -22,30 +23,20 @@ use Illuminate\Support\Facades\Auth;
 */
 
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard.dashboard');
-// });
-Route::get('/general-form', function () {
-    return view('dashboard.generalform');
+Route::get('/dashboard', function () {
+    return view('dashboard.dashboard');
 });
-Route::get('/data-table', function () {
-    return view('dashboard.data');
-});
-Route::get('/advance-form', function () {
-    return view('dashboard.advanceform');
-});
-// Route::get('/', function () {
-//     return view('home.store');
-// });
+
 
 Auth::routes();
 
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'welcome'])->name('home');
 // Route::get('/', [HomeController::class, 'carts'])->name('home');
 Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
+Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(
@@ -67,6 +58,16 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 // ----------------------------routes for Category------------------------------
+
+
+// --------------------------Route for product Crud
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+Route::get('/show/{product}', [Productcontroller::class, 'show'])->name('product.show');
+Route::get('/edit/{product}', [Productcontroller::class, 'edit'])->name('product.edit');
+Route::put('/update/{product}', [Productcontroller::class, 'update'])->name('product.update');
+Route::delete('/delete/{product}', [Productcontroller::class, 'destroy'])->name('product.delete');
 
 Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function () {
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');

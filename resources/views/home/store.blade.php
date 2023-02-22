@@ -46,10 +46,10 @@
     <header>
         <!-- TOP HEADER -->
         @if (Session::has('success'))
-            <div class="alert alert-success text-center">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                <p>{{ Session::get('success') }}</p>
-            </div>
+        <div class="alert alert-success text-center">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+            <p>{{ Session::get('success') }}</p>
+        </div>
         @endif
         <div id="top-header">
             <div class="container">
@@ -62,28 +62,27 @@
                     <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
                     {{-- <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li> --}}
                     @guest
-                        <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                        <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                    <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                    <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                     @else
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
                             </a>
 
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('user.logout') }}"
-                                    onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('user.logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
+                            <form id="logout-form" action="{{ route('user.logout') }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
                     @endguest
                 </ul>
             </div>
@@ -206,16 +205,16 @@
                         <h3 class="aside-title">Categories</h3>
                         <div class="checkbox-filter">
                             @foreach ($categories as $category)
-                                <div class="input-checkbox">
-                                    <input type="checkbox" id={{ 'category-' . $category->id }}
-                                        value={{ $category->slug }} onchange="handleSelect(event)"
-                                        {{ Request::is('home/categories/' . $category->slug) ? 'checked' : '' }}>
-                                    <label for={{ 'category-' . $category->id }}>
-                                        <span></span>
-                                        {{ $category->slug }}
-                                        <small>(120)</small>
-                                    </label>
-                                </div>
+                            <div class="input-checkbox">
+                                <input type="checkbox" id={{ 'category-' . $category->id }}
+                                value={{ $category->slug }} onchange="handleSelect(event)"
+                                {{ Request::is('home/categories/' . $category->slug) ? 'checked' : '' }}>
+                                <label for={{ 'category-' . $category->id }}>
+                                    <span></span>
+                                    {{ $category->slug }}
+                                    <small>(120)</small>
+                                </label>
+                            </div>
                             @endforeach
 
                         </div>
@@ -236,8 +235,7 @@
 
                                 </div>
                                 <div class="input-number">
-                                    <input id="price-min" name="price_min" type="number"
-                                        value="{{ old('price-min') }}">
+                                    <input id="price-min" name="price_min" type="number" value="{{ old('price-min') }}">
 
                                     <span class="qty-up">+</span>
                                     <span class="qty-down">-</span>
@@ -379,42 +377,43 @@
                     </div>
                     <!-- /store top filter -->
                     @if (Session::has('notAvailable'))
-                        <p class="text-center">{{ Session::get('notAvailable') }}</p>
+                    <p class="text-center">{{ Session::get('notAvailable') }}</p>
                     @else
-                        <!-- store products -->
-                        <div class="row">
+                    <!-- store products -->
+                    <div class="row">
 
-                            <!-- product -->
+                        <!-- product -->
 
-                            <h1 class="text-center">
-                                {{ isset($selectedCategory) ? $selectedCategory->name : 'All Products' }}</h1>
-                            @foreach ($products as $product)
-                                <livewire:product-component :product='$product' />
-                            @endforeach
+                        <h1 class="text-center">
+                            {{ isset($selectedCategory) ? $selectedCategory->name : 'All Products' }}</h1>
+                        @foreach ($products as $product)
+                        <livewire:product-component :product='$product' />
+                        @endforeach
 
-                    @endif
-
-
+                        @endif
 
 
-                    <!-- /product -->
+
+
+                        <!-- /product -->
+                    </div>
+                    <!-- /store products -->
+
+                    <!-- store bottom filter -->
+                    <div class="store-filter clearfix">
+                        <span class="store-qty">Showing {{ $products->count() }}-{{ $products->total() }}
+                            products</span>
+                        <ul class="pagination justify-content-center">
+                            {!! $products->links('pagination::bootstrap-4') !!}
+                        </ul>
+                    </div>
+                    <!-- /store bottom filter -->
                 </div>
-                <!-- /store products -->
-
-                <!-- store bottom filter -->
-                <div class="store-filter clearfix">
-                    <span class="store-qty">Showing {{ $products->count() }}-{{ $products->total() }} products</span>
-                    <ul class="pagination justify-content-center">
-                        {!! $products->links('pagination::bootstrap-4') !!}
-                    </ul>
-                </div>
-                <!-- /store bottom filter -->
+                <!-- /STORE -->
             </div>
-            <!-- /STORE -->
+            <!-- /row -->
         </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
+        <!-- /container -->
     </div>
     <!-- /SECTION -->
 
@@ -541,9 +540,8 @@
                             Copyright &copy;
                             <script>
                                 document.write(new Date().getFullYear());
-                            </script> All rights reserved | This template is made with <i
-                                class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
-                                target="_blank">Colorlib</a>
+                            </script> All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </span>
                     </div>

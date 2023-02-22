@@ -22,8 +22,9 @@
     <!-- nouislider -->
     <link type="text/css" rel="stylesheet" href="{{ asset('css/nouislider.min.css') }}" />
 
-    {{-- <!-- Font Awesome Icon -->
- 		<link rel="stylesheet" href="css/font-awesome.min.css"> --}}
+    {{--
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="css/font-awesome.min.css"> --}}
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 
@@ -37,12 +38,19 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 
+    @livewireStyles
 </head>
 
 <body>
     <!-- HEADER -->
     <header>
         <!-- TOP HEADER -->
+        @if (Session::has('success'))
+            <div class="alert alert-success text-center">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                <p>{{ Session::get('success') }}</p>
+            </div>
+        @endif
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
@@ -113,56 +121,30 @@
                     <!-- ACCOUNT -->
                     <div class="col-md-3 clearfix">
                         <div class="header-ctn">
-                            <!-- Wishlist -->
-                            <div>
-                                <a href="#">
-                                    <i class="fa fa-heart-o"></i>
-                                    <span>Your Wishlist</span>
-                                    <div class="qty">2</div>
-                                </a>
-                            </div>
-                            <!-- /Wishlist -->
+
 
                             <!-- Cart -->
                             <div class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span>Your Cart</span>
-                                    <div class="qty">3</div>
+                                    <div class="qty">
+                                        <livewire:cart-count>
+                                    </div>
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">
                                         <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="/img/product01.png" alt="">
-                                            </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name"><a href="#">product name goes here</a>
-                                                </h3>
-                                                <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                            </div>
+                                            <livewire:cart-component />
                                         </div>
 
-                                        <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="/img/product02.png" alt="">
-                                            </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name"><a href="#">product name goes here</a>
-                                                </h3>
-                                                <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                            </div>
-                                            <button class="delete"><i class="fa fa-close"></i></button>
-                                        </div>
                                     </div>
-                                    <div class="cart-summary">
-                                        <small>3 Item(s) selected</small>
-                                        <h5>SUBTOTAL: $2940.00</h5>
-                                    </div>
-                                    <div class="cart-btns">
+
+                                    {{-- <div class="cart-btns">
                                         <a href="#">View Cart</a>
-                                        <a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
-                                    </div>
+                                        <a href="{{ route('checkout') }}">Checkout <i
+                                                class="fa fa-arrow-circle-right"></i></a>
+                                    </div> --}}
                                 </div>
                             </div>
                             <!-- /Cart -->
@@ -246,20 +228,30 @@
                     <!-- aside Widget -->
                     <div class="aside">
                         <h3 class="aside-title">Price</h3>
-                        <div class="price-filter">
-                            <div id="price-slider"></div>
-                            <div class="input-number price-min">
-                                <input id="price-min" min="5" type="number">
-                                <span class="qty-up">+</span>
-                                <span class="qty-down">-</span>
+
+                        <form action="{{ route('product.price') }}" method="POST">
+                            @csrf
+                            <div class="price-filter">
+                                <div id="price-slider">
+
+                                </div>
+                                <div class="input-number">
+                                    <input id="price-min" name="price_min" type="number"
+                                        value="{{ old('price-min') }}">
+
+                                    <span class="qty-up">+</span>
+                                    <span class="qty-down">-</span>
+                                </div>
+                                <span>-</span>
+                                <div class="input-number">
+                                    <input id="price-max" name="price_max" type="number">
+                                    <span class="qty-up">+</span>
+                                    <span class="qty-down">-</span>
+                                </div>
                             </div>
-                            <span>-</span>
-                            <div class="input-number price-max">
-                                <input id="price-max" type="number">
-                                <span class="qty-up">+</span>
-                                <span class="qty-down">-</span>
-                            </div>
-                        </div>
+                            <button type="submit" class="btn btn-sm">Filter</button>
+                        </form>
+
                     </div>
                     <!-- /aside Widget -->
 
@@ -324,7 +316,7 @@
                         <h3 class="aside-title">Top selling</h3>
                         <div class="product-widget">
                             <div class="product-img">
-                                <img src="./img/product01.png" alt="">
+                                <img src="{{ asset('storage/images/product01.png') }}" alt="">
                             </div>
                             <div class="product-body">
                                 <p class="product-category">Category</p>
@@ -335,7 +327,7 @@
 
                         <div class="product-widget">
                             <div class="product-img">
-                                <img src="./img/product02.png" alt="">
+                                <img src="{{ asset('storage/images/product01.png') }}" alt="">
                             </div>
                             <div class="product-body">
                                 <p class="product-category">Category</p>
@@ -346,7 +338,7 @@
 
                         <div class="product-widget">
                             <div class="product-img">
-                                <img src="./img/product03.png" alt="">
+                                <img src="{{ asset('storage/images/product01.png') }}" alt="">
                             </div>
                             <div class="product-body">
                                 <p class="product-category">Category</p>
@@ -397,38 +389,7 @@
                             <h1 class="text-center">
                                 {{ isset($selectedCategory) ? $selectedCategory->name : 'All Products' }}</h1>
                             @foreach ($products as $product)
-                                <div class="col-md-4 col-xs-6">
-                                    <div class="product">
-                                        <div class="product-img">
-                                            <img src="{{ asset('/storage/images/' . $product->image) }}"
-                                                alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <p class="product-category">{{ $product->category->name }}</p>
-                                            <h3 class="product-name"><a
-                                                    href="#">{{ Str::limit($product->name, 20) }}</a>
-                                            </h3>
-                                            <h3 class="product-name"><a
-                                                    href="#">{{ $product->inventory->quantity }}</a></h3>
-                                            <h4 class="product-price">{{ 'Rs.' . $product->inventory->price }}
-                                            </h4>
-                                            <div class="product-rating">
-                                            </div>
-                                            <div class="product-btns">
-                                                <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-                                                        class="tooltipp">add to wishlist</span></button>
-                                                <button class="add-to-compare"><i class="fa fa-exchange"></i><span
-                                                        class="tooltipp">add to compare</span></button>
-                                                <button class="quick-view"><i class="fa fa-eye"></i><span
-                                                        class="tooltipp">quick view</span></button>
-                                            </div>
-                                        </div>
-                                        <div class="add-to-cart">
-                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to
-                                                cart</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <livewire:product-component :product='$product' />
                             @endforeach
 
                     @endif
@@ -612,6 +573,7 @@
 
         }
     </script>
+    @livewireScripts
 </body>
 
 </html>

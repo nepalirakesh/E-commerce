@@ -6,13 +6,9 @@
     <div class="product">
         <div class="product-img">
             <img src="./img/product01.png" alt="">
-            <div class="product-label">
-                <span class="sale">-30%</span>
-                <span class="new">NEW</span>
-            </div>
+
         </div>
-        <div class="product-body">
-            <p class="product-category">Category</p>
+        <div class="product-body">{{ $product->category->name }}</p>
             <h3 class="product-name"><a href="#">{{ $product->name }}</a></h3>
             <h4 class="product-price">Rs {{ $product->unit_price }} </h4>
             <input class="mb-2 border-2 rounded" type="number" min="1" wire:model="quantity">

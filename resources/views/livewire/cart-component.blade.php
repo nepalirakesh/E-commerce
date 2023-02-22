@@ -65,7 +65,7 @@
         </div>
         <div class="cart-btns">
             <a href="{{ route('cart') }}">View Cart</a>
-            <a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{{ route('checkout') }}">Checkout <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     @else
         <p class="text-3xl text-center mb-2">cart is empty!</p>

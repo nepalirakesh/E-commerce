@@ -10,6 +10,36 @@ use App\Models\Category;
 class HomeController extends Controller
 {
 
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        $categories = Category::all();
+        $products = Product::latest()->paginate(12);
+        return view('home.store', compact('categories', 'products'));
+    }
+
+    public function price_filter(Request $request)
+    {
+        $min_price = $request->price_min;
+        $max_price = $request->price_max;
+        $price_min = Product::min('price');
+        $price_max = Product::max('price');
+
+        if ($min_price > 0 && $max_price > 0) {
+            $products = Product::select('id', 'name', 'image', 'price', 'description')->whereBetween('price', [$min_price, $max_price])->get();
+        }
+        return view('home.store', compact('products', 'price_min', 'price_max'));
+    }
+
+
+
+
     /**
      * Show the application dashboard.
      *
@@ -19,31 +49,20 @@ class HomeController extends Controller
     {
         $categories = Category::all();
         $products = Product::latest()->paginate(12);
-        return view('home.store', compact('categories', 'products'));
-    }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
-        $products = Product::all();
 
-        return view('welcome', compact(['products']));
+        return view('welcome', compact(['products', 'categories']));
     }
 
     public function cartComponent()
     {
         return view('cart');
     }
+
     /**
      * Show Products of a Category and its child category
      *
      * @param string $slug
-     *
-     * @return collection
      */
     public function productByCategory($slug)
     {

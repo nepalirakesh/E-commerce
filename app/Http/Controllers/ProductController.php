@@ -46,6 +46,8 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->name = $request->name;
+        $product->unit_price = $request->price;
+        $product->quantity = $request->quantity;
         $product->slug = Str::slug($request->name, '-');
         $product->category_id = $request->category_id;
         $product->description = $request->description;
@@ -54,14 +56,6 @@ class ProductController extends Controller
             $product->image = $this->uploadImage($request->file('image'));
         }
         $product->save();
-
-        $inventory = new Inventory;
-        $inventory->product_id = $product->id;
-        $inventory->quantity = $request->quantity;
-        $inventory->price = $request->price;
-        $inventory->save();
-
-
         return redirect('product')->with('success', 'Product Added Successfully');
     }
 
@@ -84,12 +78,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $id = $product->id;
-        $inventories = Inventory::where('product_id', $id)->first();
+
         $products = Product::all();
 
         $rootCategories = Category::whereNull('parent_id')->get();
-        return view('dashboard.product.edit', compact('product', 'inventories', 'products', 'rootCategories'));
+        return view('dashboard.product.edit', compact('products', 'rootCategories', 'product'));
     }
 
     /**
@@ -112,12 +105,11 @@ class ProductController extends Controller
             $product->image = $this->uploadImage($request->file('image'));
         }
 
+        $product->unit_price = $request->price;
+        $product->quantity = $request->quantity;
         $product->save();
 
-        $inventories = Inventory::where('product_id', $product->id)->first();
-        $inventories->quantity = $request->quantity;
-        $inventories->price = $request->price;
-        $inventories->save();
+
         return redirect('product')->with('update', 'Updated Successfully');
     }
 

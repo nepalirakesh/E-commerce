@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('mobile_number');
             $table->string('address');
-            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered']);
+            $table->enum('status', ['pending', 'processing', 'delivered']);
             $table->decimal('total_amount', 8, 2);
             $table->timestamps();
         });

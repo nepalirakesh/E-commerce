@@ -11,14 +11,18 @@ class Category extends Model
     use HasFactory;
     private $descandants = [];
     protected $fillable = [
-        'name', 'description', 'parent_id', 'status', 'slug'
+        'name',
+        'description',
+        'parent_id',
+        'status',
+        'slug'
     ];
 
     public function children()
     {
         return $this->hasMany(self::class, 'parent_id');
     }
-   
+
     public function parent()
     {
         return $this->belongsTo(self::class, 'parent_id');
@@ -31,7 +35,7 @@ class Category extends Model
 
     /**
      * Display slug instead of id in URL
-     * 
+     *
      * @return slug
      */
     public function getRouteKeyName()
@@ -41,8 +45,8 @@ class Category extends Model
 
     /**
      * Return parent and all parent till root node
-     * 
-     * @return parents
+     *
+     * @return $parents
      */
     public function getParentsAttribute()
     {

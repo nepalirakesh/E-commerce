@@ -4,14 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Contracts\Cartable;
+
 
 class Product extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
-    public function inventory()
+    public function getUnitPriceAttribute($value)
     {
-        return $this->hasOne(Inventory::class);
+        return number_format($value, 2);
+    }
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class)->withPivot('price', 'quantity');
     }
 
     public function category()

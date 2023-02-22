@@ -7,7 +7,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserController;
+use App\Http\Livewire\CartComponent;
+use Illuminate\Support\Facades\Auth;
+use GrahamCampbell\ResultType\Success;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +34,11 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', [HomeController::class, 'carts'])->name('home');
+Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
+
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
-Route::get('/home/categories/{category}',[HomeController::class,'productByCategory'])->name('productByCategory');
+Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(
@@ -73,3 +80,16 @@ Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function ()
     Route::put('/update/{category}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('category.delete');
 });
+
+
+// -------------------------Route for price filter------------------------
+Route::post('/product/price', [HomeController::class, 'price_filter'])->name('product.price');
+
+
+
+Route::get('stripe', [StripePaymentController::class, 'stripe']);
+Route::post('stripe', [StripePaymentController::class, 'stripePost'])->name('stripe.post');
+
+Route::get('checkout', [StripePaymentController::class, 'checkout'])->name('checkout');
+Route::get('/success', [StripePaymentController::class, 'success'])->name('checkout.success');
+Route::get('/cancel', [StripePaymentController::class, 'cancel'])->name('checkout.cancel');

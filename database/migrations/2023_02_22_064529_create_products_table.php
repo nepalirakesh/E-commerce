@@ -17,9 +17,12 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->integer('category_id');
             $table->string('name');
+            $table->string('slug')->unique();
+            $table->float('unit_price', 8, 2, true);
+            $table->integer('quantity');
             $table->string('image');
-            $table->text('description');
-            $table->integer('status');
+            $table->mediumText('description');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -49,4 +49,9 @@ class User extends Authenticatable
             'email' => $this->email,
         ];
     }
+    public function order()
+    {
+        return $this->hasOne(Order::class);
+
+    }
 }

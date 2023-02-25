@@ -14,7 +14,7 @@ class OrderMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public  $products;
+    public $myOrders;
 
 
 
@@ -23,9 +23,9 @@ class OrderMail extends Mailable
      *
      * @return void
      */
-    public function __construct($products)
+    public function __construct($myOrders)
     {
-        $this->products = $products;
+        $this->myOrders = $myOrders;
     }
 
     /**
@@ -35,6 +35,6 @@ class OrderMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Order Confiramtation')->view('mail');
+        return $this->subject('Order Confirmation')->view('mail');
     }
 }

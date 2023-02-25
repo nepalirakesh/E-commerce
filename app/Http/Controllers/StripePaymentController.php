@@ -9,13 +9,16 @@ use Illuminate\Support\Facades\Session;
 use Stripe;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+use App\Facades\Cart;
 
 
 
 class StripePaymentController extends Controller
 {
+    public $userOrders;
     //API integration
     public function stripe()
     {
@@ -36,7 +39,7 @@ class StripePaymentController extends Controller
         ]);
 
         // Session::flash('success', 'Payment successful!');
-        $products = Product::all();
+        $orders = Order::all();
 
         return view('home.store', compact('products'))->with('success', 'Payment successful!');
     }
@@ -45,11 +48,12 @@ class StripePaymentController extends Controller
     {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
 
-        $products = Product::all();
-        $totalPrice = 100;
+        $contents = Cart::getContent();
+
+
 
         $lineItems = [];
-        foreach ($products as $product) {
+        foreach ($contents as $item) {
 
 
             $lineItems[] = [
@@ -57,22 +61,22 @@ class StripePaymentController extends Controller
                 'price_data' => [
                     'currency' => 'npr',
                     'product_data' => [
-                        'name' => $product->name,
+                        'name' => $item->get('name'),
                     ],
-                    'unit_amount' => $product->price * 100,
+                    'unit_amount' => $item->get('price') * 100,
                 ],
-                'quantity' => 1,
+                'quantity' => $item->get('quantity'),
 
 
             ];
         }
 
-        $checkout_session = $stripe->checkout->sessions->create([
-            'line_items' => $lineItems,
-            'mode' => 'payment',
-            'success_url' => route('checkout.success'),
-            'cancel_url' => route('checkout.cancel'),
-        ]);
+        // $checkout_session = $stripe->checkout->sessions->create([
+        //     'line_items' => $lineItems,
+        //     'mode' => 'payment',
+        //     'success_url' => route('checkout.success'),
+        //     'cancel_url' => route('checkout.cancel'),
+        // ]);
 
         // $orders = new Order;
         // $orders->total_price = $totalPrice;
@@ -80,29 +84,53 @@ class StripePaymentController extends Controller
         // $orders->session_id = $checkout_session;
         // $orders->save();
 
-        $this->sendEmail($products);
 
 
-        return redirect($checkout_session->url);
+        return redirect(route('checkout.success'));
     }
 
     public function success()
     {
-        // $email = "ecommercesince1998@gmail.com";
+        $contents = Cart::getContent();
 
-        // $data = ['name' => "Dipen"];
-        // $user['to'] = 'ecommercesince1998@gmail.com';
+        $orders = Order::create([
+            'user_id' => auth()->user()->id,
+            // 'mobile' => "3343324",
+            // 'address' =>"Kathmandu",
+            'total_amount' => floatVal(Cart::total()),
 
-        // Mail::send('mail', $data, function ($messages) use ($user) {
-        //     $messages->to($user['to']);
-        //     $messages->subject('testing mailer');
-        // });
-        echo "Success";
+
+
+
+
+        ]);
+        // $orderId = $orders->id;
+
+
+        foreach ($contents as $id => $item) {
+            $orderProduct = OrderProduct::create([
+                'order_id' => $orders->id,
+                'product_id' => $id,
+                'price' => $item['price'],
+                'quantity' => $item['quantity'],
+            ]);
+
+        }
+
+        // $user = auth()->user(); // get the authenticated user
+        $myOrders = Order::where('id', $orders->id)
+            ->orderBy('created_at')
+            ->get();
+
+
+        $this->sendEmail($myOrders);
     }
 
-    public function sendEmail($products)
+    public function sendEmail($myOrders)
     {
-        Mail::to('dipenshakya19@gmail.com')->send(new OrderMail($products));
+        echo "success";
+        Mail::to(auth()->user()->email)->send(new OrderMail($myOrders));
+
     }
 
     public function cancel()

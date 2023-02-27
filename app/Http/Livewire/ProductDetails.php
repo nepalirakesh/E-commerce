@@ -8,33 +8,18 @@ use Livewire\Component;
 use Illuminate\Contracts\View\View;
 
 
-class ProductComponent extends Component
+class ProductDetails extends Component
 {
+
     public $product;
     public $quantity;
-    /**
-     * Mounts the component on the template.
-     *
-     * @return void
-     */
-    public function mount(): void
+
+    public function render()
     {
-        $this->quantity = 1;
+        return view('livewire.product-details');
     }
-
-    /**
-     * Renders the component on the browser.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function render(): View
+    public function addToCartinsingle()
     {
-        return view('livewire.product-component');
-    }
-
-    public function addToCart()
-    {
-
         if (auth()->check()) {
             Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('unit_price'), $this->quantity);
             session()->flash('success', 'Product added to cart.');

@@ -8,6 +8,13 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\UserVerify;
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 
 class RegisterController extends Controller
 {
@@ -69,5 +76,39 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    /**
+     * Register new user.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $user = $this->create($request->all());
+        $token = Str::random(64);
+
+        UserVerify::create([
+            'user_id' => $user->id,
+            'token' => $token
+        ]);
+
+        auth()->login($user);
+           
+        try{
+
+            Mail::send('verify_email', ['token' => $token], function ($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('Email Verification Mail');
+    
+             });
+             return redirect()->route('home')->with('success', 'Your account has been created successfully. Please check your email to verify your email address');
+        }catch(Exception $e){
+            return redirect()->route('home')->with('success','Oopps! Failed to send email verification link. Please try to register with valid email address');
+        }
+
     }
 }

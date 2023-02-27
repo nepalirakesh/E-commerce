@@ -11,7 +11,9 @@ use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Livewire\CartComponent;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\RegisterController;
 use GrahamCampbell\ResultType\Success;
+use App\Http\Controllers\Auth\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +37,7 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/', [HomeController::class, 'carts'])->name('home');
-Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
+Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
@@ -93,3 +95,8 @@ Route::post('stripe', [StripePaymentController::class, 'stripePost'])->name('str
 Route::get('checkout', [StripePaymentController::class, 'checkout'])->name('checkout');
 Route::get('/success', [StripePaymentController::class, 'success'])->name('checkout.success');
 Route::get('/cancel', [StripePaymentController::class, 'cancel'])->name('checkout.cancel');
+
+
+//--------------Route for User Email Verification-------------------
+
+Route::get('email/verify/{token}', [VerificationController::class, 'verifyEmail'])->name('email.verify');

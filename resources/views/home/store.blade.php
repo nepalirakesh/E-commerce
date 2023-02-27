@@ -45,12 +45,6 @@
     <!-- HEADER -->
     <header>
         <!-- TOP HEADER -->
-        @if (Session::has('success'))
-        <div class="alert alert-success text-center">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-            <p>{{ Session::get('success') }}</p>
-        </div>
-        @endif
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
@@ -139,11 +133,6 @@
 
                                     </div>
 
-                                    {{-- <div class="cart-btns">
-                                        <a href="#">View Cart</a>
-                                        <a href="{{ route('checkout') }}">Checkout <i
-                                                class="fa fa-arrow-circle-right"></i></a>
-                                    </div> --}}
                                 </div>
                             </div>
                             <!-- /Cart -->
@@ -191,7 +180,12 @@
         <!-- /container -->
     </nav>
     <!-- /NAVIGATION -->
-
+    @if (Session::has('success'))
+    <div class="alert alert-success text-center mt-5">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <p>{{ Session::get('success') }}</p>
+    </div>
+    @endif
     <!-- SECTION -->
     <div class="section">
         <!-- container -->

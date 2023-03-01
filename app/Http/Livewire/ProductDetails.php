@@ -8,8 +8,9 @@ use Livewire\Component;
 use Illuminate\Contracts\View\View;
 
 
-class ProductComponent extends Component
+class ProductDetails extends Component
 {
+
     public $product;
     public $quantity;
     /**
@@ -22,19 +23,12 @@ class ProductComponent extends Component
         $this->quantity = 1;
     }
 
-    /**
-     * Renders the component on the browser.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function render(): View
+    public function render()
     {
-        return view('livewire.product-component');
+        return view('livewire.product-details');
     }
-
-    public function addToCart()
+    public function addToCartinsingle()
     {
-
         if (auth()->check()) {
             Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('unit_price'), $this->quantity);
             session()->flash('success', 'Product added to cart.');

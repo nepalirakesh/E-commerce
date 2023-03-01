@@ -36,7 +36,9 @@
     <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
   <![endif]-->
+
 
     @livewireStyles
 </head>
@@ -103,8 +105,10 @@
                     <!-- SEARCH BAR -->
                     <div class="col-md-6">
                         <div class="header-search">
-                            <form>
-                                <input class="input" type="text" placeholder="Search here" name="">
+                            <form action="{{route('search')}}" method="GET">
+
+                                @csrf
+                                <input class="input" type="text" placeholder="Search here" name="search" id="search">
                                 <button class="search-btn">Search</button>
                             </form>
                         </div>
@@ -395,7 +399,7 @@
 
                     <!-- store bottom filter -->
                     <div class="store-filter clearfix">
-                        <span class="store-qty">Showing {{ $products->count() }}-{{ $products->total() }}
+                        <span class="store-qty">Showing {{ $products->count()}}-{{$products->total() }}
                             products</span>
                         <ul class="pagination justify-content-center">
                             {!! $products->links('pagination::bootstrap-4') !!}
@@ -565,6 +569,7 @@
 
         }
     </script>
+
     @livewireScripts
 </body>
 

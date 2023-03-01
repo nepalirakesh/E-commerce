@@ -31,6 +31,19 @@ class HomeController extends Controller
   }
 
 
+  public function search(Request $request)
+  {
+
+    $categories = Category::all();
+
+
+
+    $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(1);
+    $products->appends(['search' => $request->search]);
+    return view('home.store', compact('products', 'categories'));
+  }
+
+
   public function price_filter(Request $request)
   {
     $min_price = $request->price_min;

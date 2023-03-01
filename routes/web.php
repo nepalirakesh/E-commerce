@@ -41,6 +41,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 //Route for single page product
 Route::get('home/product/{product}', [HomeController::class, 'product_page'])->name('product.page');
 
+Route::get('home/store', [HomeController::class, 'search'])->name('search');
+
 Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');

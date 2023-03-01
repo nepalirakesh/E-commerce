@@ -13,6 +13,15 @@ class ProductDetails extends Component
 
     public $product;
     public $quantity;
+    /**
+     * Mounts the component on the template.
+     *
+     * @return void
+     */
+    public function mount(): void
+    {
+        $this->quantity = 1;
+    }
 
     public function render()
     {

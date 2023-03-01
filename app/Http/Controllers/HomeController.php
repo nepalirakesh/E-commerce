@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\CartService;
 use App\Models\Category;
+use App\Models\Order;
 
 class HomeController extends Controller
 {
@@ -57,6 +58,14 @@ class HomeController extends Controller
     public function cartComponent()
     {
         return view('cart');
+    }
+    public function order()
+    {
+
+        $user = Auth()->user();
+        // dd($user);
+        return view('order', compact('user'));
+
     }
 
     /**

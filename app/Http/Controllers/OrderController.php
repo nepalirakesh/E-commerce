@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -14,7 +15,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::orderBy('created_at')->paginate(12);
+
+        return view('admin.order.order', compact('orders'));
+
+
     }
 
     /**
@@ -22,9 +27,15 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function order_detail($id)
     {
-        //
+        $orders = Order::where('id', $id)
+            ->orderBy('created_at')
+            ->get();
+        // dd($orders);
+
+        return view('admin.order.order-detail', compact('orders'));
+
     }
 
     /**
@@ -67,9 +78,14 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update_order(Request $request, $id)
     {
-        //
+        $orders = Order::find($id);
+        $orders->status = $request->input('order_status');
+        // dd($orders->status);
+        $orders->update();
+        return redirect('admin/orders')->with('success', 'Order status successfully updated.');
+
     }
 
     /**

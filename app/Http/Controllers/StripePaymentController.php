@@ -13,8 +13,7 @@ use App\Models\OrderProduct;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Facades\Cart;
-
-
+use App\Models\Category;
 
 class StripePaymentController extends Controller
 {
@@ -71,12 +70,12 @@ class StripePaymentController extends Controller
             ];
         }
 
-        // $checkout_session = $stripe->checkout->sessions->create([
-        //     'line_items' => $lineItems,
-        //     'mode' => 'payment',
-        //     'success_url' => route('checkout.success'),
-        //     'cancel_url' => route('checkout.cancel'),
-        // ]);
+        $checkout_session = $stripe->checkout->sessions->create([
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success'),
+            'cancel_url' => route('checkout.cancel'),
+        ]);
 
         // $orders = new Order;
         // $orders->total_price = $totalPrice;
@@ -86,7 +85,7 @@ class StripePaymentController extends Controller
 
 
 
-        return redirect(route('checkout.success'));
+        return redirect($checkout_session->url);
     }
 
     public function success()
@@ -97,15 +96,12 @@ class StripePaymentController extends Controller
             'user_id' => auth()->user()->id,
             // 'mobile' => "3343324",
             // 'address' =>"Kathmandu",
-            'total_amount' => floatVal(Cart::total()),
-
+            'total_amount' => (float) (Cart::total()),
 
 
 
 
         ]);
-        // $orderId = $orders->id;
-
 
         foreach ($contents as $id => $item) {
             $orderProduct = OrderProduct::create([
@@ -124,12 +120,16 @@ class StripePaymentController extends Controller
 
 
         $this->sendEmail($myOrders);
+        $categories = Category::all();
+        $products = Product::latest()->paginate(12);
+
+        return redirect()->route('home', compact('categories', 'products'))->with('success', 'Payment done');
     }
 
     public function sendEmail($myOrders)
     {
-        echo "success";
         Mail::to(auth()->user()->email)->send(new OrderMail($myOrders));
+
 
     }
 

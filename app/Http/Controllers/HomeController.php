@@ -25,6 +25,26 @@ class HomeController extends Controller
         return view('home.store', compact('categories', 'products'));
     }
 
+    public function product_page(Product $product)
+    {
+
+        return view('home.product', compact('product'));
+    }
+
+
+    public function search(Request $request)
+    {
+
+        $categories = Category::all();
+
+
+
+        $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(1);
+        $products->appends(['search' => $request->search]);
+        return view('home.store', compact('products', 'categories'));
+    }
+
+
     public function price_filter(Request $request)
     {
         $min_price = $request->price_min;
@@ -59,11 +79,12 @@ class HomeController extends Controller
     {
         return view('cart');
     }
+
     public function order()
     {
 
         $user = Auth()->user();
-        // dd($user);
+
         return view('order', compact('user'));
 
     }

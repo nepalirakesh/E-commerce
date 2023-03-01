@@ -41,6 +41,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
 Route::get('/order', [HomeController::class, 'order'])->name('user.order');
 
+//Route for single page product
+Route::get('home/product/{product}', [HomeController::class, 'product_page'])->name('product.page');
+
+Route::get('home/store', [HomeController::class, 'search'])->name('search');
+
+
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
 

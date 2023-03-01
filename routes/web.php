@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\RegisterController;
 use GrahamCampbell\ResultType\Success;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,13 +38,14 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 // Route::get('/', [HomeController::class, 'carts'])->name('home');
+Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
+Route::get('/order', [HomeController::class, 'order'])->name('user.order');
 
 //Route for single page product
 Route::get('home/product/{product}', [HomeController::class, 'product_page'])->name('product.page');
 
 Route::get('home/store', [HomeController::class, 'search'])->name('search');
 
-Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
@@ -63,6 +65,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
             Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
             Route::get('users', [UserController::class, 'index']);
+
+            Route::get('orders', [OrderController::class, 'index']);
+            Route::get('order_detail/{id}', [OrderController::class, 'order_detail']);
+            Route::put('update-order/{id}', [OrderController::class, 'update_order']);
+
         }
     );
 });
@@ -78,6 +85,7 @@ Route::get('/show/{product}', [Productcontroller::class, 'show'])->name('product
 Route::get('/edit/{product}', [Productcontroller::class, 'edit'])->name('product.edit');
 Route::put('/update/{product}', [Productcontroller::class, 'update'])->name('product.update');
 Route::delete('/delete/{product}', [Productcontroller::class, 'destroy'])->name('product.delete');
+
 
 Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function () {
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');

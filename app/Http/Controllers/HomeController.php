@@ -48,13 +48,15 @@ class HomeController extends Controller
   {
     $min_price = $request->price_min;
     $max_price = $request->price_max;
-    $price_min = Product::min('price');
-    $price_max = Product::max('price');
+    $price_min = Product::min('unit_price');
+    $price_max = Product::max('unit_price');
 
+    $categories = Category::all();
     if ($min_price > 0 && $max_price > 0) {
-      $products = Product::select('id', 'name', 'image', 'price', 'description')->whereBetween('price', [$min_price, $max_price])->get();
+      $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(2);
+      $products->appends(['price_min' => $request->price_min, 'price_max' => $request->price_max]);
     }
-    return view('home.store', compact('products', 'price_min', 'price_max'));
+    return view('home.store', compact('products', 'categories', 'price_min', 'price_max'));
   }
 
 

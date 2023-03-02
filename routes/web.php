@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\RegisterController;
 use GrahamCampbell\ResultType\Success;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\WebcamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('home/product/{product}', [HomeController::class, 'product_page'])->name('product.page');
 
 Route::get('home/store', [HomeController::class, 'search'])->name('search');
+
+// -------------------------Route for price filter------------------------
+Route::get('home/price', [HomeController::class, 'price_filter'])->name('product.price');
 
 Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
 
@@ -90,8 +94,7 @@ Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function ()
 });
 
 
-// -------------------------Route for price filter------------------------
-Route::post('/product/price', [HomeController::class, 'price_filter'])->name('product.price');
+
 
 
 
@@ -106,3 +109,8 @@ Route::get('/cancel', [StripePaymentController::class, 'cancel'])->name('checkou
 //--------------Route for User Email Verification-------------------
 
 Route::get('email/verify/{token}', [VerificationController::class, 'verifyEmail'])->name('email.verify');
+
+
+// ------------------Route for Webcam--------------------------------
+Route::get('/webcam', [WebcamController::class, 'index']);
+Route::post('/webcam', [WebcamController::class, 'store'])->name('webcam.capture');

@@ -12,26 +12,28 @@
                 <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
                 {{-- <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li> --}}
                 @guest
-                <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                    <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                    <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
                 @else
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                        {{ Auth::user()->name }} <span class="caret"></span>
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
-                            {{ __('Logout') }}
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
+                        <a href="{{ url('order') }}">My Order</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('user.logout') }}"
+                                onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
 
-                        <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                    </div>
-                </li>
+                            <form id="logout-form" action="{{ route('user.logout') }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
                 @endguest
             </ul>
         </div>
@@ -58,10 +60,11 @@
                 <!-- SEARCH BAR -->
                 <div class="col-md-6">
                     <div class="header-search">
-                        <form action="{{route('search')}}" method="GET">
+                        <form action="{{ route('search') }}" method="GET">
 
                             @csrf
-                            <input class="input" type="text" placeholder="Search here" name="search" id="search">
+                            <input class="input" type="text" placeholder="Search here" name="search"
+                                id="search">
                             <button class="search-btn">Search</button>
                         </form>
                     </div>

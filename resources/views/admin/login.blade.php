@@ -1,4 +1,5 @@
 @extends('layouts.admin-app')
+@section('user_select', 'users')
 
 @section('content')
     <div class="container">

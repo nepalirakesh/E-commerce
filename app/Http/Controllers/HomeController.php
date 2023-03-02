@@ -6,12 +6,10 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\CartService;
 use App\Models\Category;
+use App\Models\Order;
 
 class HomeController extends Controller
 {
-
-
-
   /**
    * Show the application dashboard.
    *
@@ -35,9 +33,6 @@ class HomeController extends Controller
   {
 
     $categories = Category::all();
-
-
-
     $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(1);
     $products->appends(['search' => $request->search]);
     return view('home.store', compact('products', 'categories'));
@@ -71,14 +66,19 @@ class HomeController extends Controller
   {
     $categories = Category::all();
     $products = Product::latest()->paginate(12);
-
-
     return view('welcome', compact(['products', 'categories']));
   }
 
   public function cartComponent()
   {
     return view('cart');
+  }
+
+  public function order()
+  {
+
+    $user = Auth()->user();
+    return view('order', compact('user'));
   }
 
   /**
@@ -106,7 +106,6 @@ class HomeController extends Controller
       $products = $products->paginate(6);
       return view('home.store', compact('products', 'categories', 'selectedCategory'));
     }
-
     return redirect()->route('home')->with('notAvailable', 'No Products Available for ' . $selectedCategory->name . ' category');
   }
 }

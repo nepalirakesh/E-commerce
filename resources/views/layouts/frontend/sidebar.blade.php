@@ -34,7 +34,7 @@
                 <div class="aside">
                     <h3 class="aside-title">Price</h3>
 
-                    <form action="{{ route('product.price') }}" method="POST">
+                    <form action="{{ route('product.price') }}" method="GET">
                         @csrf
                         <div class="price-filter">
                             <div id="price-slider">

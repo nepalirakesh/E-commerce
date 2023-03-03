@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\OrderMail;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Session;
 use Stripe;
 use App\Models\Product;
@@ -14,9 +13,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Facades\Cart;
 use App\Models\Category;
+use App\Services\CartService;
+use Illuminate\Support\Facades\DB;
 
 class StripePaymentController extends Controller
 {
+    protected $cartService;
     public $userOrders;
     //API integration
     public function stripe()
@@ -26,8 +28,6 @@ class StripePaymentController extends Controller
 
     public function stripepost(Request $request)
     {
-
-
         Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         Stripe\Charge::create([
@@ -46,17 +46,10 @@ class StripePaymentController extends Controller
     public function checkout()
     {
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
-
         $contents = Cart::getContent();
-
-
-
         $lineItems = [];
         foreach ($contents as $item) {
-
-
             $lineItems[] = [
-
                 'price_data' => [
                     'currency' => 'npr',
                     'product_data' => [
@@ -65,8 +58,6 @@ class StripePaymentController extends Controller
                     'unit_amount' => $item->get('price') * 100,
                 ],
                 'quantity' => $item->get('quantity'),
-
-
             ];
         }
 
@@ -76,16 +67,12 @@ class StripePaymentController extends Controller
             'success_url' => route('checkout.success'),
             'cancel_url' => route('checkout.cancel'),
         ]);
-
-        // $orders = new Order;
-        // $orders->total_price = $totalPrice;
-        // $orders->status = 'unpaid';
-        // $orders->session_id = $checkout_session;
-        // $orders->save();
-
-
-
         return redirect($checkout_session->url);
+    }
+
+    public function __construct(CartService $cartService)
+    {
+        $this->cartService = $cartService;
     }
 
     public function success()
@@ -97,10 +84,6 @@ class StripePaymentController extends Controller
             // 'mobile' => "3343324",
             // 'address' =>"Kathmandu",
             'total_amount' => (float) (Cart::total()),
-
-
-
-
         ]);
 
         foreach ($contents as $id => $item) {
@@ -111,13 +94,26 @@ class StripePaymentController extends Controller
                 'quantity' => $item['quantity'],
             ]);
 
+            // getting quantity from products table
+            $product_quantity = DB::table('products')->where('id', $id)->value('quantity');
+
+            $cart_quantity = $item['quantity'];
+
+            // //subtracting products quantity from orders quantity table and updating products quantity table
+            $changed_quantity = $product_quantity - $cart_quantity;
+            Product::where('id', $id)->update(array('quantity' => $changed_quantity));
+
+            if ($changed_quantity == 0) {
+                Product::where('id', $id)->update(array('status' => '0'));
+            }
         }
+
+        $this->cartService->clear();
 
         // $user = auth()->user(); // get the authenticated user
         $myOrders = Order::where('id', $orders->id)
             ->orderBy('created_at')
             ->get();
-
 
         $this->sendEmail($myOrders);
         $categories = Category::all();
@@ -129,8 +125,6 @@ class StripePaymentController extends Controller
     public function sendEmail($myOrders)
     {
         Mail::to(auth()->user()->email)->send(new OrderMail($myOrders));
-
-
     }
 
     public function cancel()

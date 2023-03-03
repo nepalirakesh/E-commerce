@@ -44,7 +44,7 @@
                     <h3 class="product-name"><a href="#">{{ $item->get('name') }}</a>
                     </h3>
                     <h4 class="product-price"><span
-                            class="qty">{{ $item->get('quantity') }}x</span>${{ $item->get('price') }}
+                            class="qty">{{ $item->get('quantity') }}x</span>Rs.{{ $item->get('price') }}
                     </h4>
                     <button
                         class="text-sm p-2 border-2 rounded border-gray-200 hover:border-gray-300 bg-gray-200 hover:bg-gray-300"
@@ -52,6 +52,7 @@
                     <button
                         class="text-sm p-2 border-2 rounded border-gray-200 hover:border-gray-300 bg-gray-200 hover:bg-gray-300"
                         wire:click="updateCartItem({{ $id }}, 'plus')"> + </button>
+
                 </div>
                 <button class="delete" wire:click="removeFromCart({{ $id }})"><i
                         class="fa fa-close"></i></button>
@@ -61,7 +62,7 @@
             wire:click="clearCart">Clear Cart</button>
         <div class="cart-summary">
             <small>{{ $content->count() }} Item(s) selected</small>
-            <h5>TOTAL: ${{ $total }}</h5>
+            <h5>TOTAL: Rs.{{ $total }}</h5>
         </div>
         <div class="cart-btns">
             <a href="{{ route('cart') }}">View Cart</a>

@@ -11,16 +11,16 @@
                     <h3 class="aside-title">Categories</h3>
                     <div class="checkbox-filter">
                         @foreach ($categories as $category)
-                        <div class="input-checkbox">
-                            <input type="checkbox" id={{ 'category-' . $category->id }}
-                            value={{ $category->slug }} onchange="handleSelect(event)"
-                            {{ Request::is('home/categories/' . $category->slug) ? 'checked' : '' }}>
-                            <label for={{ 'category-' . $category->id }}>
-                                <span></span>
-                                {{ $category->slug }}
-                                <small>(120)</small>
-                            </label>
-                        </div>
+                            <div class="input-checkbox">
+                                <input type="checkbox" id={{ 'category-' . $category->id }} value={{ $category->slug }}
+                                    onchange="handleSelect(event)"
+                                    {{ Request::is('home/categories/' . $category->slug) ? 'checked' : '' }}>
+                                <label for={{ 'category-' . $category->id }}>
+                                    <span></span>
+                                    {{ $category->slug }}
+                                    <small>(120)</small>
+                                </label>
+                            </div>
                         @endforeach
 
                     </div>

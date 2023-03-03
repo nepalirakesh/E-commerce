@@ -76,13 +76,16 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 // --------------------------Route for product Crud
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::get('/create', [ProductController::class, 'create'])->name('product.create');
-Route::post('/store', [ProductController::class, 'store'])->name('product.store');
-Route::get('/show/{product}', [Productcontroller::class, 'show'])->name('product.show');
-Route::get('/edit/{product}', [Productcontroller::class, 'edit'])->name('product.edit');
-Route::put('/update/{product}', [Productcontroller::class, 'update'])->name('product.update');
-Route::delete('/delete/{product}', [Productcontroller::class, 'destroy'])->name('product.delete');
+Route::group(['middleware' => 'admin.auth'], function () {
+
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/create', [ProductController::class, 'create'])->name('product.create');
+    Route::post('/store', [ProductController::class, 'store'])->name('product.store');
+    Route::get('/show/{product}', [Productcontroller::class, 'show'])->name('product.show');
+    Route::get('/edit/{product}', [Productcontroller::class, 'edit'])->name('product.edit');
+    Route::put('/update/{product}', [Productcontroller::class, 'update'])->name('product.update');
+    Route::delete('/delete/{product}', [Productcontroller::class, 'destroy'])->name('product.delete');
+});
 
 
 Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function () {

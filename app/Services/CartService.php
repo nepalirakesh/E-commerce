@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Session\SessionManager;
 
@@ -56,17 +57,24 @@ class CartService
      */
     public function update(string $id, string $action): void
     {
+        $product = Product::find($id);
         $content = $this->getContent();
 
         if ($content->has($id)) {
             $cartItem = $content->get($id);
 
             switch ($action) {
+
                 case 'plus':
-                    $cartItem->put('quantity', $content->get($id)->get('quantity') + 1);
+                    if (($product->quantity) > $cartItem->get('quantity')) {
+                        $cartItem->put('quantity', $content->get($id)->get('quantity') + 1);
+                    }
                     break;
+
                 case 'minus':
+
                     $updatedQuantity = $content->get($id)->get('quantity') - 1;
+
 
                     if ($updatedQuantity < self::MINIMUM_QUANTITY) {
                         $updatedQuantity = self::MINIMUM_QUANTITY;

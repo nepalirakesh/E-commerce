@@ -28,12 +28,6 @@ use App\Http\Controllers\OrderController;
 |
 */
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-});
-
-
 Auth::routes();
 
 
@@ -72,7 +66,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('users', [UserController::class, 'index']);
 
             Route::get('orders', [OrderController::class, 'index']);
-            Route::get('order_detail/{id}', [OrderController::class, 'order_detail']);
+            Route::get('order_detail/{id}', [OrderController::class, 'order_detail'])->name('order.detail');
             Route::put('update-order/{id}', [OrderController::class, 'update_order']);
         }
     );

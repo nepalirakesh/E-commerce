@@ -79,6 +79,78 @@
                         @enderror
                     </span>
                 </div>
+                <!--Dynamic Field-->
+                <div class="field_wrapper">
+                    <label for="">Specification</label>
+                    @forelse(old('specifications',[]) as $key => $value)
+                        <div class="spec">
+                            <div class="row">
+                                <div class="form-group col-5">
+                                    <input type="text" class="form-control"
+                                        name="specifications[{{ $key }}][specification]"
+                                        placeholder="Enter specification" value="{{ $value['specification'] }}">
+
+                                </div>
+                                <div class="form-group col-6">
+                                    <input type="text" class="form-control"
+                                        name="specifications[{{ $key }}][value]" placeholder="Enter value"
+                                        value="{{ $value['value'] }}">
+                                </div>
+                                <div class="col-1">
+                                    <a class="btn btn-danger delete_button"><i class="fa fa-trash"
+                                            aria-hidden="true"></i></a>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <span style=" color:red">
+                                        @error("specifications.$key.specification")
+                                            {{ $message }}
+                                        @enderror
+                                    </span>
+                                </div>
+
+                                <div class="col-6">
+                                    <span class="col-6"style=" color:red">
+                                        @error("specifications.$key.value")
+                                            {{ $message }}
+                                        @enderror
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                    @empty
+                        @foreach ($product->specification as $spec)
+                            <div class="spec">
+                                <div class="row">
+                                    <div class="form-group col-sm-5">
+                                        <input type="text" class="form-control"
+                                            name="specifications[{{ $spec->id }}][specification]"
+                                            value="{{ $spec->specification }}">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <input type="text" class="form-control"
+                                            name="specifications[{{ $spec->id }}][value]"
+                                            value="{{ $spec->value }}">
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <a class="btn btn-danger delete_button"><i class="fa fa-trash"
+                                                aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endforelse
+                </div>
+                <!--/.Dynamic Field-->
+                
+                <div class="form-group">
+                    <a class="btn btn-primary btn-sm add_button">Add Specification</a>
+                </div>
+
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
@@ -86,4 +158,30 @@
         </div>
 
     </div>
+    <script>
+        var i = 0;
+        $(document).ready(function() {
+            $('.add_button').click(function() {
+                ++i;
+                var html = `<div class="spec">
+                             <div class="row">
+                            <div class="form-group col-5">
+                            <input type="text" class="form-control" name="specifications[${i}][specification] "placeholder="Enter specification">
+                            </div>
+                            <div class="form-group col-6">
+                                <input type="text" class="form-control" name="specifications[${i}][value]" placeholder="Enter value">
+                            </div>
+                            <div class="col-1">
+                             <a class="btn btn-danger delete_button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                             </div>
+                            </div>
+                            </div>`
+                $('.field_wrapper').append(html);
+            })
+
+            $('body').on('click', '.delete_button', function() {
+                $(this).parents('.spec').remove();
+            })
+        })
+    </script>
 @endsection

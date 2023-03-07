@@ -6,9 +6,7 @@ use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
-use App\Models\Inventory;
 use App\Models\Category;
-
 
 class ProductController extends Controller
 {
@@ -43,7 +41,6 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-
         $product = new Product();
         $product->name = $request->name;
         $product->unit_price = $request->price;
@@ -56,6 +53,17 @@ class ProductController extends Controller
             $product->image = $this->uploadImage($request->file('image'));
         }
         $product->save();
+
+        // Create product specification 
+        if ($request->specifications) {
+
+            foreach ($request->specifications as $key => $value) {
+                if ($value['specification']) {
+                    $product->specification()->create($value);
+                }
+            }
+        }
+
         return redirect('product')->with('success', 'Product Added Successfully');
     }
 
@@ -94,7 +102,6 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-
         $product->name = $request->name;
         $product->slug = Str::slug($request->name, '-');
         $product->description = $request->description;
@@ -102,13 +109,47 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
+
             $product->image = $this->uploadImage($request->file('image'));
         }
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
         $product->save();
+      
+        //Delete specification other than requested 
+        if (!$request->specifications) {
+            $different_spec = $product->specification()->pluck('specification')->toArray();
+        } else {
+            $specification = $product->specification()->pluck('specification')->toArray();
+            foreach ($request->specifications as $key => $value) {
+                $req_spec[] = $value['specification'];
+            }
+            $different_spec = array_diff($specification, $req_spec);
+        }
 
+        foreach ($different_spec as $diff) {
+            $spec = $product->specification()->where('specification', $diff)->first();
+            $spec->delete();
+        }
+
+        //Check specification table and create specification if not available in table else update specification table
+        if ($request->specifications) {
+            foreach ($request->specifications as $key => $value) {
+                if ($value['specification'] && $value['value']) {
+
+                    $spec = $product->specification()->where('specification', $value['specification'])->first();
+                    if (is_null($spec)) {
+                        $product->specification()->create($value);
+                    } else {
+                        $spec->update([
+                            'specification' => $value['specification'],
+                            'value' => $value['value'],
+                        ]);
+                    }
+                }
+            }
+        }
 
         return redirect('product')->with('update', 'Updated Successfully');
     }

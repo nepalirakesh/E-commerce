@@ -10,6 +10,7 @@ use App\Models\Order;
 
 class HomeController extends Controller
 {
+  protected $cat;
   /**
    * Show the application dashboard.
    *
@@ -33,9 +34,14 @@ class HomeController extends Controller
   {
 
     $categories = Category::all();
-    $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(1);
-    $products->appends(['search' => $request->search]);
-    return view('home.store', compact('products', 'categories'));
+    $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(12);
+    if ($products->total() != 0) {
+      $search = $request->search;
+      $request->session()->put('search', $search);
+      return view('home.store', compact('products', 'categories'))->with('search', $request->search);
+    } else {
+      return redirect()->route('home')->with('notAvailable', 'No Products Available for ');
+    }
   }
 
 
@@ -43,15 +49,52 @@ class HomeController extends Controller
   {
     $min_price = $request->price_min;
     $max_price = $request->price_max;
+
     $price_min = Product::min('unit_price');
     $price_max = Product::max('unit_price');
 
     $categories = Category::all();
-    if ($min_price > 0 && $max_price > 0) {
-      $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(2);
-      $products->appends(['price_min' => $request->price_min, 'price_max' => $request->price_max]);
+    if ($max_price > $min_price && $max_price != 0) {
+
+      // Price filtering with search
+      if ($request->session()->has('search')) {
+        $val = $request->session()->get('search');
+        $request->session()->forget('search');
+        $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+        return view('home.store', compact('products', 'categories', 'price_min', 'price_max'))->with('price_filter', $val);
+      }
+
+      // Price filtering with category
+      elseif (session()->has('category')) {
+        $val = $request->session()->get('category');
+        $request->session()->forget('category');
+        $selectedCategory = Category::where('slug', $val)->first();
+        $products = collect([]);
+
+        //Get all Descandants(child category) if category has a child and retrieve all products of descendants and self
+        if ($selectedCategory->children->isNotEmpty()) {
+          $descendants = $selectedCategory->getDescendants($selectedCategory);
+          foreach ($descendants as $descendant) {
+            $product = Product::where('category_id', $descendant)->paginate(12);
+            $products = $products->concat($product);
+          }
+        } else {
+          $products = $selectedCategory->products()->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+        }
+        if ($products->isNotEmpty()) {
+          $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+        }
+        return view('home.store', compact('products', 'categories', 'price_min', 'price_max'))->with('price_filter', $val);
+      }
+
+      // Price Filter
+      else {
+        $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
+        return view('home.store', compact('products', 'categories', 'price_min', 'price_max'));
+      }
+    } else {
+      return redirect()->route('home')->with('notAvailable', 'No Products Available for ');
     }
-    return view('home.store', compact('products', 'categories', 'price_min', 'price_max'));
   }
 
 
@@ -89,6 +132,11 @@ class HomeController extends Controller
   public function productByCategory($slug)
   {
     $categories = Category::all();
+    session()->put('category', $slug);
+
+
+
+
     $selectedCategory = Category::where('slug', $slug)->first();
     $products = collect([]);
 

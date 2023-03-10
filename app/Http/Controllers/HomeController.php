@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Services\CartService;
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\OrderProduct;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -21,7 +23,14 @@ class HomeController extends Controller
   {
     $products = Product::latest()->paginate(12);
     $rootCategories = Category::whereNull('parent_id')->get();
-    return view('home.store', compact('products', 'rootCategories'));
+    $top = OrderProduct::select('product_id', DB::raw('COUNT(product_id) as `count`'))->groupBy('product_id')->orderBy('count', 'desc')->get();
+    $topProd = collect([]);
+    
+    foreach ($top as $t) {
+      $prod = Product::all()->where('id', '=', $t->product_id);
+      $topProd = $topProd->concat($prod);
+    }
+    return view('home.store', compact('rootCategories', 'products', 'topProd'));
   }
 
   public function product_page(Product $product)

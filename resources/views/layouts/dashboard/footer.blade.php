@@ -59,3 +59,30 @@
 
     };  
 </script>
+<script>
+    var loadFile_front = function(event) {
+        var show = document.getElementById('front_show')
+        show.style.display ="block";
+        var preview = document.getElementById('front_preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+
+    };  
+</script>
+<script>
+    var loadFile_back = function(event) {
+        var show = document.getElementById('back_show')
+        show.style.display ="block";
+        var preview = document.getElementById('back_preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+
+    };  
+</script>
+<script>
+    var loadFile_side = function(event) {
+        var show = document.getElementById('side_show')
+        show.style.display ="block";
+        var preview = document.getElementById('side_preview');
+        preview.src = URL.createObjectURL(event.target.files[0]);
+
+    };  
+</script>

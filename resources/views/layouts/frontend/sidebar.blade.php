@@ -55,38 +55,22 @@
                 <!-- aside Widget -->
                 <div class="aside">
                     <h3 class="aside-title">Top selling</h3>
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="{{ asset('storage/images/product01.png') }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
+                    @foreach($topProd as $topProduct)
 
                     <div class="product-widget">
-                        <div class="product-img">
-                            <img src="{{ asset('storage/images/product01.png') }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
+                        <a href="{{route('product.page',$topProduct)}}">
+                            <div class="product-img">
+                                <img src="{{ asset("storage/images/$topProduct->image") }}" alt="">
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category">{{$topProduct->category->name}}</p>
+                                <h3 class="product-name"><a href="{{route('product.page',$topProduct)}}">{{$topProduct->name}}</a></h3>
+                                <h4 class="product-price">{{$topProduct->unit_price}}</h4>
+                            </div>
+                        </a>
                     </div>
 
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="{{ asset('storage/images/product01.png') }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
                 <!-- /aside Widget -->
             </div>

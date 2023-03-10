@@ -30,7 +30,7 @@
                                         <td>{{ $product->id }}</td>
                                         <td>{{ ucfirst($product->name) }}</td>
                                         <td>{{ Str::limit($product->description, 25) }}</td>
-                                        <td>{{ ucfirst($product->category_id) }}</td>
+                                        <td>{{ ucfirst($product->category->name) }}</td>
                                         <td>
                                             <img src=" {{ asset("storage/images/$product->image") }}" alt=""
                                                 width="50px" height="50px">

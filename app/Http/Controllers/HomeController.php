@@ -19,7 +19,8 @@ class HomeController extends Controller
   {
     $categories = Category::all();
     $products = Product::latest()->paginate(12);
-    return view('home.store', compact('categories', 'products'));
+    $rootCategories = Category::whereNull('parent_id')->get();
+    return view('home.store', compact('categories', 'products', 'rootCategories'));
   }
 
   public function product_page(Product $product)
@@ -34,8 +35,10 @@ class HomeController extends Controller
 
     $categories = Category::all();
     $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(1);
+    $search = $request->search;
+    $rootCategories=Category::whereNull('parent_id')->get();
     $products->appends(['search' => $request->search]);
-    return view('home.store', compact('products', 'categories'));
+    return view('home.store', compact('products', 'categories','rootCategories','search'));
   }
 
 
@@ -91,7 +94,7 @@ class HomeController extends Controller
     $categories = Category::all();
     $selectedCategory = Category::where('slug', $slug)->first();
     $products = collect([]);
-
+    $rootCategories = Category::whereNull('parent_id')->get();
     //Get all Descandants(child category) if category has a child and retrieve all products of descendants and self
     if ($selectedCategory->children->isNotEmpty()) {
       $descendants = $selectedCategory->getDescendants($selectedCategory);
@@ -104,8 +107,8 @@ class HomeController extends Controller
     }
     if ($products->isNotEmpty()) {
       $products = $products->paginate(6);
-      return view('home.store', compact('products', 'categories', 'selectedCategory'));
+      return view('home.store', compact('products', 'categories', 'selectedCategory', 'rootCategories'));
     }
-    return redirect()->route('home')->with('notAvailable', 'No Products Available for ' . $selectedCategory->name . ' category');
+    return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category', 'rootCategories');
   }
 }

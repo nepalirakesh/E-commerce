@@ -16,12 +16,12 @@ class HomeController extends Controller
    *
    * @return \Illuminate\Contracts\Support\Renderable
    */
+
   public function index()
   {
-    $categories = Category::all();
     $products = Product::latest()->paginate(12);
     $rootCategories = Category::whereNull('parent_id')->get();
-    return view('home.store', compact('categories', 'products', 'rootCategories'));
+    return view('home.store', compact('products', 'rootCategories'));
   }
 
   public function product_page(Product $product)
@@ -37,11 +37,11 @@ class HomeController extends Controller
     if ($products->total() != 0) {
       $search = $request->search;
       $request->session()->put('search', $search);
-      $rootCategories=Category::whereNull('parent_id')->get();
+      $rootCategories = Category::whereNull('parent_id')->get();
 
-      return view('home.store', compact('products', 'categories','rootCategories'))->with('search', $request->search);
+      return view('home.store', compact('products', 'rootCategories'))->with('search', $request->search);
     } else {
-      return redirect()->route('home')->with('notAvailable', 'No Products Available for ');
+      return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $request->search . '"');
     }
   }
 
@@ -51,10 +51,9 @@ class HomeController extends Controller
     $min_price = $request->price_min;
     $max_price = $request->price_max;
 
-    $price_min = Product::min('unit_price');
-    $price_max = Product::max('unit_price');
+    $rootCategories = Category::whereNull('parent_id')->get();
 
-    $categories = Category::all();
+
     if ($max_price > $min_price && $max_price != 0) {
 
       // Price filtering with search
@@ -62,7 +61,12 @@ class HomeController extends Controller
         $val = $request->session()->get('search');
         $request->session()->forget('search');
         $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
-        return view('home.store', compact('products', 'categories', 'price_min', 'price_max'))->with('price_filter', $val);
+        if ($products->isNotEmpty()) {
+
+          return view('home.store', compact('products', 'rootCategories', 'min_price', 'max_price'))->with('price_filter', $val);
+        } else {
+          return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
+        }
       }
 
       // Price filtering with category
@@ -84,33 +88,24 @@ class HomeController extends Controller
         }
         if ($products->isNotEmpty()) {
           $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+          return view('home.store', compact('products', 'rootCategories', 'min_price', 'max_price'))->with('price_filter', $val);
+        } else {
+          return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
         }
-        return view('home.store', compact('products', 'categories', 'price_min', 'price_max'))->with('price_filter', $val);
       }
 
       // Price Filter
       else {
         $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
-        return view('home.store', compact('products', 'categories', 'price_min', 'price_max'));
+        if ($products->isNotEmpty()) {
+
+          return view('home.store', compact('products', 'rootCategories', 'min_price', 'max_price'));
+        } else {
+
+          return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
+        }
       }
-    } else {
-      return redirect()->route('home')->with('notAvailable', 'No Products Available for ');
     }
-  }
-
-
-
-
-  /**
-   * Show the application dashboard.
-   *
-   * @return \Illuminate\Contracts\Support\Renderable
-   */
-  public function welcome()
-  {
-    $categories = Category::all();
-    $products = Product::latest()->paginate(12);
-    return view('welcome', compact(['products', 'categories']));
   }
 
   public function cartComponent()
@@ -132,12 +127,7 @@ class HomeController extends Controller
    */
   public function productByCategory($slug)
   {
-    $categories = Category::all();
     session()->put('category', $slug);
-
-
-
-
     $selectedCategory = Category::where('slug', $slug)->first();
     $products = collect([]);
     $rootCategories = Category::whereNull('parent_id')->get();
@@ -153,9 +143,8 @@ class HomeController extends Controller
     }
     if ($products->isNotEmpty()) {
       $products = $products->paginate(6);
-      return view('home.store', compact('products', 'categories', 'selectedCategory', 'rootCategories'));
+      return view('home.store', compact('products', 'selectedCategory', 'rootCategories'));
     }
     return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category', 'rootCategories');
   }
 }
-  

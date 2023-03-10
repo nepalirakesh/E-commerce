@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\OrderProduct;
 
 class OrderController extends Controller
 {
@@ -18,8 +19,6 @@ class OrderController extends Controller
         $orders = Order::orderBy('created_at')->paginate(12);
 
         return view('admin.order.order', compact('orders'));
-
-
     }
 
     /**
@@ -35,7 +34,6 @@ class OrderController extends Controller
         // dd($orders);
 
         return view('admin.order.order-detail', compact('orders'));
-
     }
 
     /**
@@ -85,7 +83,6 @@ class OrderController extends Controller
         // dd($orders->status);
         $orders->update();
         return redirect('admin/orders')->with('success', 'Order status successfully updated.');
-
     }
 
     /**

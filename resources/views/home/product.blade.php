@@ -10,19 +10,23 @@
 			<div class="col-md-5 col-md-push-2">
 				<div id="product-main-img">
 					<div class="product-preview">
-						<img src="{{asset('./img/product01.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->image) }}
+						alt="">
 					</div>
 
 					<div class="product-preview">
-						<img src="{{asset('./img/product03.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->photo->front_image) }}
+						alt="">
 					</div>
 
 					<div class="product-preview">
-						<img src="{{asset('./img/product06.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->photo->side_image) }}
+						alt="">
 					</div>
 
 					<div class="product-preview">
-						<img src="{{asset('./img/product08.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->photo->back_image) }}
+						alt="">
 					</div>
 				</div>
 			</div>
@@ -32,19 +36,23 @@
 			<div class="col-md-2  col-md-pull-5">
 				<div id="product-imgs">
 					<div class="product-preview">
-						<img src="{{asset('./img/product01.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->image) }}
+						alt="">
 					</div>
 
 					<div class="product-preview">
-						<img src="{{asset('./img/product03.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->photo->front_image) }}
+						alt="">
 					</div>
 
 					<div class="product-preview">
-						<img src="{{asset('./img/product06.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->photo->side_image) }}
+						alt="">
 					</div>
 
 					<div class="product-preview">
-						<img src="{{asset('./img/product08.png')}}" alt="">
+						<img src={{ asset("storage/images/".$product->photo->back_image) }}
+						alt="">
 					</div>
 				</div>
 			</div>
@@ -91,36 +99,15 @@
 						<div id="tab2" class="tab-pane fade in">
 							<div class="row">
 								<div class="col-md-12">
-									<table>
-										<tbody>
-											<tr>
-												<th>Size</th>
-												<td>9*12</td>
-											</tr>
-											<tr>
-												<th>Ram</th>
-												<td>6 GB</td>
-											</tr>
-											<tr>
-												<th>Battery</th>
-												<td>6000 mah</td>
-											</tr>
-											<tr>
-												<th>Processor</th>
-												<td>6 GB</td>
-											</tr>
-											<tr>
-												<th>Ram</th>
-												<td>6 GB</td>
-											</tr>
-											<tr>
-												<th>Ram</th>
-												<td>6 GB</td>
-											</tr>
-
-
-										</tbody>
-									</table>
+									@if(count($product->specification)>0)
+									@foreach ($product->specification as $spec)
+									<p><b>{{ $spec->specification }} : </b>{{ $spec->value }}</p>
+									@endforeach
+									@else
+									<center>
+										<h4>No Specification Available</h4>
+									</center>
+									@endif
 								</div>
 							</div>
 						</div>

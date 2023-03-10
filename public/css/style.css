@@ -900,6 +900,7 @@ textarea.input {
 
 .product .product-img {
     position: relative;
+    
 }
 
 .product .product-img>img {
@@ -1469,6 +1470,8 @@ textarea.input {
 #product-imgs .product-preview {
     margin: 0px 5px;
     border: 1px solid #E4E7ED;
+    height: 153px;
+    width: 153px;
 }
 
 #product-imgs .product-preview.slick-current {
@@ -1501,6 +1504,8 @@ textarea.input {
 
 .product-preview img {
     width: 100%;
+    
+   
 }
 
 /*----------------------------*\
@@ -1654,6 +1659,7 @@ textarea.input {
 
 #product-tab {
     margin-top: 60px;
+    overflow-y: scroll;
 }
 
 #product-tab .tab-nav {

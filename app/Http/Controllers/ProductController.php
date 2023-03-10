@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Traits\ImageUpload;
 use App\Models\Category;
 
+
 class ProductController extends Controller
 {
     use ImageUpload;
@@ -51,8 +52,16 @@ class ProductController extends Controller
         $product->status = 1;
         if ($request->file('image')) {
             $product->image = $this->uploadImage($request->file('image'));
+            $front_image = $this->uploadImage($request->file('front_image'));
+            $side_image = $this->uploadImage($request->file('side_image'));
+            $back_image = $this->uploadImage($request->file('back_image'));
         }
         $product->save();
+        $product->photo()->create([
+            'front_image' => $front_image,
+            'side_image' => $side_image,
+            'back_image' => $back_image,
+        ]);
 
         // Create product specification 
         if ($request->specifications) {
@@ -109,14 +118,26 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
+            $this->deleteImage($product->photo->front_image);
+            $this->deleteImage($product->photo->side_image);
+            $this->deleteImage($product->photo->back_image);
 
             $product->image = $this->uploadImage($request->file('image'));
+            $front_image = $this->uploadImage($request->file('front_image'));
+            $side_image = $this->uploadImage($request->file('side_image'));
+            $back_image = $this->uploadImage($request->file('back_image'));
         }
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
         $product->save();
-      
+        $product->photo()->update([
+            'front_image' => $front_image,
+            'side_image' => $side_image,
+            'back_image' => $back_image,
+        ]);
+
+
         //Delete specification other than requested 
         if (!$request->specifications) {
             $different_spec = $product->specification()->pluck('specification')->toArray();

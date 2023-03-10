@@ -24,49 +24,36 @@
                             <span style="font-weight:500">{{ $selectedCategory->name }}</span>
                         @endif
                     @elseif(isset($price_filter))
-                    {{dd($min_price)}}
-                    <span style="font-weight:500">{{ $price_filter}}</span>   
+                        {{ dd($min_price) }}
+                        <span style="font-weight:500">{{ $price_filter }}</span>
                     @else
                         <span style="font-weight:500">All Products</span>
                     @endif
                     <div>
                         <span class="store-qty">Showing
-                            {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{$products->total()}} available</span>
+                            {{ $products->firstItem() }}-{{ $products->lastItem() }} of {{ $products->total() }}
+                            available products</span>
                     </div>
 
+                </div>
 
+                @foreach ($products as $product)
+                    <livewire:product-component :product='$product' />
+                @endforeach
 
-        {{-- @endif --}}
-        {{-- <h1 class="text-center">
-                            @if (isset($selectedCategory))
-                            {{$selectedCategory->name}}
-                            @elseif(isset($search))
-                            {{$search}}
-                            @elseif(isset($price_filter))
-                            {{$price_filter}}
-                            @else
-                            {{'All Products'}}
-                            @endif
-                        </h1> --}}
-    </div>
+                <!-- /product -->
+            </div>
+            <!-- /store products -->
 
-    @foreach ($products as $product)
-        <livewire:product-component :product='$product' />
-    @endforeach
+            <!-- store bottom filter -->
+            <div class="store-filter clearfix">
 
-    <!-- /product -->
-    </div>
-    <!-- /store products -->
-
-    <!-- store bottom filter -->
-    <div class="store-filter clearfix">
-
-        <ul class="pagination justify-content-center">
-            {!! $products->withQueryString()->links('pagination::bootstrap-4') !!}
-        </ul>
-    </div>
-    <!-- /store bottom filter -->
-    @endif
+                <ul class="pagination justify-content-center">
+                    {!! $products->withQueryString()->links('pagination::bootstrap-4') !!}
+                </ul>
+            </div>
+            <!-- /store bottom filter -->
+        @endif
     </div>
     <!-- /STORE -->
 

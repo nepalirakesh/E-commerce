@@ -19,10 +19,10 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
-                    <a href="{{ url('order') }}">My Order</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a href="{{ url('order') }}" style="padding:10px">My Order</a>
+                    <div class="dropdown-menu" style="min-width:65px"aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();">
+                                                 document.getElementById('logout-form').submit();" style="color:black;">
                             {{ __('Logout') }}
                         </a>
 
@@ -46,7 +46,7 @@
                 <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
-                        <a href="#" class="logo">
+                        <a href="{{route('home')}}" class="logo">
                             <img src="{{ asset('/img/eco-logo.png') }}" alt=""
                                 style="height:150px; width:150px; color: #333;">
                         </a>

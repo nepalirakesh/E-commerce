@@ -30,7 +30,18 @@
                         <div>
                             <span class="store-qty">Showing {{ $products->count() }}-{{ $products->total() }}products</span>
                         </div>
-                        @endif
+                        @endif  <h1 class="text-center">
+                            {{-- {{ isset($selectedCategory) ? $selectedCategory->name : 'All Products' }} --}}
+                            @if(isset($selectedCategory))
+                            {{$selectedCategory->name}}
+                            @elseif(isset($search))
+                            {{$search}}
+                            @elseif(isset($price_filter))
+                            {{$price_filter}}
+                            @else
+                            {{'All Products'}}
+                            @endif
+                        </h1>
                 </div>
 
                 @foreach ($products as $product)

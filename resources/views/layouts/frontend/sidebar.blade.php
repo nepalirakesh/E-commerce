@@ -35,14 +35,13 @@
 
                             </div>
                             <div class="input-number">
-                                <input id="price-min" name="price_min" type="number" value="{{ old('price-min') }}">
-
+                                <input id="price-min" name="price_min" type="number" required>
                                 <span class="qty-up">+</span>
                                 <span class="qty-down">-</span>
                             </div>
                             <span>-</span>
                             <div class="input-number">
-                                <input id="price-max" name="price_max" type="number">
+                                <input id="price-max" name="price_max" type="number" required>
                                 <span class="qty-up">+</span>
                                 <span class="qty-down">-</span>
                             </div>

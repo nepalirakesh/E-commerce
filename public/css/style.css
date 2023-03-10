@@ -903,6 +903,7 @@ textarea.input {
 }
 
 .product .product-img>img {
+    height:262.5px;
     width: 100%;
 }
 

@@ -108,13 +108,4 @@
 <script src="{{ asset('js/main.js') }}"></script>
 <script src="https://use.fontawesome.com/ea9cd286ec.js"></script>
 
-<script>
-    function handleSelect(event) {
-        var slug = event.target.value;
-        var base_url = window.location.origin;
-        window.location = `${base_url}/home/categories/${slug}`;
-
-    }
-</script>
-
 @livewireScripts

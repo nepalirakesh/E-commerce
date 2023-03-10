@@ -17,6 +17,7 @@
 
 <!-- nouislider -->
 <link type="text/css" rel="stylesheet" href="{{ asset('css/nouislider.min.css') }}" />
+<link type="text/css" rel="stylesheet" href="{{asset('css/sidemenu.css')}}"/>
 
 {{--
 <!-- Font Awesome Icon -->

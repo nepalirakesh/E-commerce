@@ -1,9 +1,5 @@
-{{-- extends  layouts from dashboard --}}
 @extends('layouts.dashboard.master')
 @section('title', 'View Users')
-
-
-
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -20,25 +16,16 @@
                             <div class="alert alert-success">{{ session('status') }}</div>
                         @endif
 
-                        <table class="table table-bordered" id="myDataTable">
+                        <table class="table table-bordered" id="datatable">
                             <thead>
                                 <tr>
-                                    <th>S.N</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-
-
+                                    <th>ID</th>
+                                    <th data-sortable="true">Name</th>
+                                    <th data-sortable="true">Email</th>
+                                    <th data-sortable="true">Created At</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-
-                                    </tr>
-                                @endforeach
 
                             </tbody>
 
@@ -51,9 +38,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
-
     </div>
     <!-- /.content-wrapper -->
-
 @endsection

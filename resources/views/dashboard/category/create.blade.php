@@ -9,7 +9,6 @@
                         <h3 class="text-center">Create Category</h3>
                     </div>
                     <div class="card-body">
-
                         <form action="{{ route('category.store') }}" method="POST">
                             @csrf
                             <div class="form-group">

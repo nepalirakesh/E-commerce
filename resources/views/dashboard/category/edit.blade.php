@@ -1,17 +1,15 @@
 @extends('layouts.dashboard.master')
 @section('title', 'Edit' . ' ' . $category->name)
 @section('content')
-    <div class="content-wrapper">
-        <div class="content-header">
-            <div class="container-fluid px-4  w-75 mt-5">
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Edit Category</h3>
-                    </div>
-                    <div class="card-body ">
-
-                        <form action="{{ route('category.update', $category) }}" method="POST">
+    <div class="content">
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid px-4  w-75 mt-5">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center">Edit Category</h3>
+                        </div>
+                        <form class="card-body" action="{{ route('category.update', $category) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
@@ -60,8 +58,8 @@
                             </div>
                         </form>
                     </div>
+                    <div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-@endsection
+        @endsection

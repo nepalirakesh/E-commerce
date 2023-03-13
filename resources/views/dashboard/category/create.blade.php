@@ -3,14 +3,13 @@
 @section('content')
     <div class="content-wrapper">
         <div class="content-header">
-            <div class="container-fluid px-4">
+            <div class="container-fluid px-4  w-75 mt-5">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="text-center">Create Category</h3>
                     </div>
                     <div class="card-body">
-
-                        <form class="p-3 border border-dark" action="{{ route('category.store') }}" method="POST">
+                        <form action="{{ route('category.store') }}" method="POST">
                             @csrf
                             <div class="form-group">
                                 <label for="parent">Main Category</label>
@@ -57,7 +56,7 @@
                         </form>
                     </div>
                 </div>
+                <div>
+                </div>
             </div>
-        </div>
-    </div>
-@endsection
+        @endsection

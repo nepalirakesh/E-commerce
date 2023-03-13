@@ -2,22 +2,18 @@
 @section('title', 'Index Product')
 @section('content')
 
-    <div class="content-wrapper">
-        <div class="content-header">
-
-            @include('layouts.dashboard.crudmessage')
-            <div class="container-fluid px-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Products</h3>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
+    <div class="content">
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid px-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="text-center">Products</h3>
+                        </div>
+                        <div class="card-body">
+                            @include('layouts.dashboard.crudmessage')
                             <div class="card-body">
-                                <table class="table table-bordered display " id="products-table">
-                                    {{-- <table class="table container table-bordered w-75 text-center" style="table-layout: fixed">
-                            --}}
+                                <table class="table table-bordered">
                                     <thead class="">
                                         <tr>
                                             <th scope="col">SN</th>
@@ -33,7 +29,7 @@
                                     <tbody>
                                         @foreach ($products as $product)
                                             <tr>
-                                                <td>{{ $product->id }}</td>
+                                                <td>{{ $products->firstItem() + $loop->index }}</td>
                                                 <td>{{ ucfirst($product->name) }}</td>
                                                 <td>{{ Str::limit($product->description, 25) }}</td>
                                                 <td>{{ ucfirst($product->category->name) }}</td>
@@ -60,12 +56,11 @@
                                     </tbody>
                                 </table>
                                 {{ $products->links() }}
-
                             </div>
                         </div>
-
                     </div>
                 </div>
-
             </div>
-        @endsection
+        </div>
+    </div>
+@endsection

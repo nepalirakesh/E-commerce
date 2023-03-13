@@ -6,15 +6,21 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-                <div class="col-md-3 col-xs-6">
+                <div class="col-md-12">
                     <div class="footer">
                         <h3 class="footer-title">About Us</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut.</p>
+                        <p>Welcome to our electronic store website, where we offer the latest technology and gadgets to
+                            meet all your electronic needs. Our platform provides a seamless shopping experience with a
+                            wide selection of products, from smartphones and laptops to home entertainment systems and
+                            gaming consoles.At our electronic store, we are committed to offering the highest quality
+                            products at competitive prices. Our knowledgeable staff is always available to provide
+                            expert advice and support, ensuring that you make informed decisions when purchasing
+                            electronics.Thank you for choosing our electronic store as your go-to destination for all
+                            your technology needs. We look forward to serving you.</p>
                         <ul class="footer-links">
-                            <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-                            <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-                            <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+                            <li><a href="#"><i class="fa fa-map-marker"></i>Balaju kathmandu</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i>9849738496</a></li>
+                            <li><a href="#"><i class="fa fa-envelope-o"></i>rakesh.manandhar@tai.com.np</a></li>
                         </ul>
                     </div>
                 </div>
@@ -38,9 +44,8 @@
                         Copyright &copy;
                         <script>
                             document.write(new Date().getFullYear());
-                        </script> All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </script> All rights reserved | E-commerce
+
                     </span>
                 </div>
             </div>

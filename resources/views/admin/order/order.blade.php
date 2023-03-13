@@ -1,8 +1,6 @@
 @extends('layouts.dashboard.master')
 @section('title', 'Orders')
 
-
-
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -22,7 +20,6 @@
                                 <tr>
                                     <th>S.N</th>
                                     <th>Total</th>
-
                                     <th>Customer Details</th>
                                     <th>Order Status</th>
                                     <th>Payment Status</th>
@@ -69,7 +66,6 @@
                                 @endforeach
 
                             </tbody>
-
                         </table>
                         {{ $orders->links() }}
 
@@ -79,8 +75,6 @@
             </div><!-- /.container-fluid -->
         </div>
         <!-- /.content-header -->
-
-
     </div>
     <!-- /.content-wrapper -->
 

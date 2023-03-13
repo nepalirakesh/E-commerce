@@ -1,24 +1,22 @@
 @extends('layouts.dashboard.master')
 @section('title', 'Show Product')
 @section('content')
-    <div class="container-fluid">
-        <div class="row" style="margin-left:10%">
-            <div class="content-wrapper">
-                <div class="col-12">
+    <div class="content-wrapper">
+        <div class="content-header">
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h5> {{ ucfirst($product->name) }}</h5>
-                        </div>
-                        <div class="card-body text-center">
-                            <img src="{{ asset("storage/images/$product->image") }}" alt="" width="500px"
-                                height="300px">
-                            <p class="card-text">{{ ucfirst($product->description) }}</p>
-                            <hr>
-                            <p><b>Price(In Rs):</b>{!! ucfirst($product->price) !!}</p>
-                            <p><b>Quantity:</b>{!! ucfirst($product->quantity) !!}</p>
-                        </div>
+            <div class="container-fluid px-4  w-75 mt-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h5> {{ ucfirst($product->name) }}</h5>
                     </div>
+                    <div class="card-body text-center">
+                        <img src="{{ asset("storage/images/$product->image") }}" alt="" width="500px" height="300px">
+                        <p class="card-text">{{ ucfirst($product->description) }}</p>
+                        <hr>
+                        <p><b>Price(In Rs):</b>{!! ucfirst($product->unit_price) !!}</p>
+                        <p><b>Quantity:</b>{!! ucfirst($product->quantity) !!}</p>
+                    </div>
+
                     <div class="card-footer text-center">
                         <form action="{{ route('product.delete', $product) }}" method="POST">
                             @csrf
@@ -31,9 +29,9 @@
                     </div>
                 </div>
 
+
             </div>
-        </div>
+            <div>
+            </div>
 
-    </div>
-
-@endsection
+        @endsection

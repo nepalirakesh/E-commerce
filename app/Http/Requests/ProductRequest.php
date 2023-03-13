@@ -30,7 +30,7 @@ class ProductRequest extends FormRequest
             'description' => 'required | min:30 | max:1200',
             'category_id' => 'required',
             'quantity' => 'required | integer',
-            'price' => 'required | integer',
+            'price' => ['required', 'numeric', 'min:0']
         ];
     }
 }

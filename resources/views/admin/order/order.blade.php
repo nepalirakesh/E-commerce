@@ -20,24 +20,20 @@
                         <table class="table table-bordered" id="myDataTable">
                             <thead>
                                 <tr>
-                                    <th>OrderId</th>
-                                    {{-- <th>Subtotal</th> --}}
+                                    <th>S.N</th>
                                     <th>Total</th>
-                                    {{-- <th>First Name</th> --}}
-                                    {{-- <th>Last Name</th> --}}
-                                    {{-- <th>Mobile</th> --}}
+
                                     <th>Customer Details</th>
                                     <th>Order Status</th>
                                     <th>Payment Status</th>
                                     <th>Order Date</th>
-                                    {{-- <th colspan=\"2\" class=\"text-center\">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($orders as $list)
                                     <tr>
                                         <td><a
-                                                href="{{ url('admin/order_detail') }}/{{ $list->id }}">{{ $list->id }}</a>
+                                                href="{{ url('admin/order_detail') }}/{{ $list->id }}">{{ $orders->firstItem() + $loop->index }}</a>
                                         </td>
                                         <td>{{ $list->total_amount }}</td>
                                         <td>
@@ -69,17 +65,14 @@
                                         </td>
                                         <td> {{ $list->payment_status }}</td>
                                         <td>{{ $list->created_at }}</td>
-                                        {{-- <td><a href="">Details</a></td> --}}
-
-                                        {{-- <td>{{ $list->name }}</td> --}}
-                                        {{-- <td>{{ $list->email }}</td> --}}
-
                                     </tr>
                                 @endforeach
 
                             </tbody>
 
                         </table>
+                        {{ $orders->links() }}
+
                     </div>
                 </div>
 

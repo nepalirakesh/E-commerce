@@ -78,12 +78,13 @@ class StripePaymentController extends Controller
     public function success()
     {
         $contents = Cart::getContent();
+        $total = Cart::total();
 
         $orders = Order::create([
             'user_id' => auth()->user()->id,
             // 'mobile' => "3343324",
             // 'address' =>"Kathmandu",
-            'total_amount' => (float) (Cart::total()),
+            'total_amount' => (int) str_replace(",", "", $total),
         ]);
 
         foreach ($contents as $id => $item) {

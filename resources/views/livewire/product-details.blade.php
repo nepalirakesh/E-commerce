@@ -17,7 +17,7 @@
         <div class="product-details">
             <h2 class="product-name">{{ $product->name }}</h2>
             <div>
-                <h3 class="product-price">Rs{{ $product->unit_price }}
+                <h3 class="product-price">Rs {{ number_format($product->unit_price) }}
                 </h3>
                 @if ($product->status !== 0)
                     <span class="badge" style="background-color:green;">In Stock</span>

@@ -64,18 +64,19 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
             Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
             Route::get('users', [UserController::class, 'index']);
+            Route::get('users-data', [UserController::class, 'getData'])->name('users.data');
 
-            Route::get('orders', [OrderController::class, 'index']);
+            Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+            Route::get('orders-data', [OrderController::class, 'getData'])->name('orders.data');
             Route::get('order_detail/{id}', [OrderController::class, 'order_detail'])->name('order.detail');
             Route::put('update-order/{id}', [OrderController::class, 'update_order']);
         }
     );
 });
 
-// ----------------------------routes for Category------------------------------
 
+// --------------------------Route for product Crud-----------------------------
 
-// --------------------------Route for product Crud
 Route::group(['middleware' => 'admin.auth'], function () {
 
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
@@ -87,6 +88,7 @@ Route::group(['middleware' => 'admin.auth'], function () {
     Route::delete('/delete/{product}', [Productcontroller::class, 'destroy'])->name('product.delete');
 });
 
+// ----------------------------routes for Category------------------------------
 
 Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function () {
     Route::get('/', [CategoryController::class, 'index'])->name('category.index');
@@ -98,10 +100,7 @@ Route::group(['prefix' => 'category', 'middleware' => 'admin.auth'], function ()
     Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('category.delete');
 });
 
-
-
-
-
+// ----------------------------routes for stripe------------------------------
 
 Route::get('stripe', [StripePaymentController::class, 'stripe']);
 Route::post('stripe', [StripePaymentController::class, 'stripePost'])->name('stripe.post');

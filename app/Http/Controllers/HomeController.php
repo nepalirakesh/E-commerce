@@ -23,9 +23,9 @@ class HomeController extends Controller
   {
     $products = Product::latest()->paginate(12);
     $rootCategories = Category::whereNull('parent_id')->get();
-    $top = OrderProduct::select('product_id', DB::raw('COUNT(product_id) as `count`'))->groupBy('product_id')->orderBy('count', 'desc')->get();
+    $top = OrderProduct::select('product_id', DB::raw('COUNT(product_id) as `count`'))->groupBy('product_id')->orderBy('count', 'desc')->limit(3)->get();
     $topProd = collect([]);
-    
+
     foreach ($top as $t) {
       $prod = Product::all()->where('id', '=', $t->product_id);
       $topProd = $topProd->concat($prod);

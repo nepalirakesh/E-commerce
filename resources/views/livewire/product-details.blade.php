@@ -1,17 +1,17 @@
 <div>
     <div class="col-md-5">
         @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-block">
-                <button type="button" class="close" data-dismiss="alert"></button>
-                <strong>{{ $message }}</strong>
-            </div>
+        <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert"></button>
+            <strong>{{ $message }}</strong>
+        </div>
         @endif
 
         @if ($message = Session::get('fail'))
-            <div class="alert alert-danger alert-block">
-                <button type="button" class="close" data-dismiss="alert"></button>
-                <strong>{{ $message }}</strong>
-            </div>
+        <div class="alert alert-danger alert-block">
+            <button type="button" class="close" data-dismiss="alert"></button>
+            <strong>{{ $message }}</strong>
+        </div>
         @endif
 
         <div class="product-details">
@@ -20,17 +20,17 @@
                 <h3 class="product-price">Rs {{ number_format($product->unit_price) }}
                 </h3>
                 @if ($product->status !== 0)
-                    <span class="badge" style="background-color:green;">In Stock</span>
+                <span class="badge" style="background-color:green;">In Stock</span>
                 @endif
             </div>
             <p>{{ $product->description }}</p><br>
             <div class="add-to-cart">
                 @if ($product->status == 0)
-                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
-                        Out of Stock</button>
+                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
+                    Out of Stock</button>
                 @else
-                    <button wire:click="addToCartinsingle" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
-                        add to cart</button>
+                <button wire:click="addToCartinsingle" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>
+                    add to cart</button>
                 @endif
             </div>
             <ul class="product-links">

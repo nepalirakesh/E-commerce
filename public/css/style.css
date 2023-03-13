@@ -900,9 +900,11 @@ textarea.input {
 
 .product .product-img {
     position: relative;
+    
 }
 
 .product .product-img>img {
+    height:262.5px;
     width: 100%;
 }
 
@@ -931,7 +933,6 @@ textarea.input {
 }
 
 .product .product-body {
-    position: relative;
     padding: 15px;
     background-color: #FFF;
     text-align: center;
@@ -1468,6 +1469,8 @@ textarea.input {
 #product-imgs .product-preview {
     margin: 0px 5px;
     border: 1px solid #E4E7ED;
+    height: 153px;
+    width: 153px;
 }
 
 #product-imgs .product-preview.slick-current {
@@ -1500,6 +1503,8 @@ textarea.input {
 
 .product-preview img {
     width: 100%;
+    
+   
 }
 
 /*----------------------------*\
@@ -1653,6 +1658,7 @@ textarea.input {
 
 #product-tab {
     margin-top: 60px;
+    overflow-y: scroll;
 }
 
 #product-tab .tab-nav {

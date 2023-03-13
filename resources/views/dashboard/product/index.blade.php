@@ -33,17 +33,16 @@
                                     <tbody>
                                         @foreach ($products as $product)
                                             <tr>
-                                                <td>{{ $products->firstItem() + $loop->index }} </td>
+                                                <td>{{ $product->id }}</td>
                                                 <td>{{ ucfirst($product->name) }}</td>
                                                 <td>{{ Str::limit($product->description, 25) }}</td>
-                                                <td>{{ ucfirst($product->category_id) }}</td>
+                                                <td>{{ ucfirst($product->category->name) }}</td>
                                                 <td>
                                                     <img src=" {{ asset("storage/images/$product->image") }}" alt=""
                                                         width="50px" height="50px">
                                                 </td>
                                                 <td>{{ $product->quantity }}</td>
                                                 <td>{{ $product->unit_price }}</td>
-
                                                 <td>
                                                     <form action="{{ route('product.delete', $product) }}" method="POST">
                                                         <a href="{{ route('product.show', $product) }}"
@@ -61,6 +60,7 @@
                                     </tbody>
                                 </table>
                                 {{ $products->links() }}
+
                             </div>
                         </div>
 
@@ -68,7 +68,4 @@
                 </div>
 
             </div>
-        </div>
-
-    </div>
-@endsection
+        @endsection

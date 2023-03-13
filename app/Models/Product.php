@@ -26,4 +26,14 @@ class Product extends Model
     {
         return 'slug';
     }
+
+    public function specification()
+    {
+        return $this->hasMany(Specification::class);
+    }
+
+    public function photo()
+    {
+        return $this->hasOne(Photo::class);
+    }
 }

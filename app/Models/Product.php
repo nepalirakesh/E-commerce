@@ -12,10 +12,6 @@ class Product extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function getUnitPriceAttribute($value)
-    {
-        return number_format($value, 2);
-    }
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_products')->withPivot('price', 'quantity');

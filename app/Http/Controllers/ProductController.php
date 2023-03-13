@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         return view('dashboard.product.index', compact('products'));
     }
 
@@ -63,7 +63,7 @@ class ProductController extends Controller
             'back_image' => $back_image,
         ]);
 
-        // Create product specification 
+        // Create product specification
         if ($request->specifications) {
 
             foreach ($request->specifications as $key => $value) {
@@ -138,7 +138,7 @@ class ProductController extends Controller
         ]);
 
 
-        //Delete specification other than requested 
+        //Delete specification other than requested
         if (!$request->specifications) {
             $different_spec = $product->specification()->pluck('specification')->toArray();
         } else {

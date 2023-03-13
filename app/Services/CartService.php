@@ -138,7 +138,7 @@ class CartService
             return $total += $item->get('price') * $item->get('quantity');
         });
 
-        return number_format($total, 2);
+        return floatVal($total);
     }
 
     /**

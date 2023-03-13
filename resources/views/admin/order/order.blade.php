@@ -20,7 +20,7 @@
                         <table class="table table-bordered" id="myDataTable">
                             <thead>
                                 <tr>
-                                    <th>OrderId</th>
+                                    <th>S.N</th>
                                     {{-- <th>Subtotal</th> --}}
                                     <th>Total</th>
                                     {{-- <th>First Name</th> --}}
@@ -37,7 +37,7 @@
                                 @foreach ($orders as $list)
                                     <tr>
                                         <td><a
-                                                href="{{ url('admin/order_detail') }}/{{ $list->id }}">{{ $list->id }}</a>
+                                                href="{{ url('admin/order_detail') }}/{{ $list->id }}">{{ $orders->firstItem() + $loop->index }}</a>
                                         </td>
                                         <td>{{ $list->total_amount }}</td>
                                         <td>
@@ -78,8 +78,9 @@
                                 @endforeach
 
                             </tbody>
-
                         </table>
+                        {{ $orders->links() }}
+
                     </div>
                 </div>
 

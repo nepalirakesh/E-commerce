@@ -31,7 +31,6 @@ class OrderController extends Controller
         $orders = Order::where('id', $id)
             ->orderBy('created_at')
             ->get();
-        // dd($orders);
 
         return view('admin.order.order-detail', compact('orders'));
     }

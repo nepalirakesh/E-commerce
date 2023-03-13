@@ -25,12 +25,12 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ($this->method() === 'PUT') ? 'required |string | min:5 | max:40|unique:products,name,'.$this->product->id : 'required| string | min:5 | max:40 | unique:products,name',
+            'name' => ($this->method() === 'PUT') ? 'required |string | min:5 | max:40|unique:products,name,' . $this->product->id : 'required| string | min:5 | max:40 | unique:products,name',
             'image' => ($this->method() === 'PUT') ? 'mimes:jpeg,jpg,png' : 'required | mimes:jpeg,jpg,png',
             'description' => 'required | min:30 | max:1200',
             'category_id' => 'required',
             'quantity' => 'required | integer',
-            'price' => 'required | integer',
+
             'specifications.*.specification' => 'distinct',
         ];
     }
@@ -43,7 +43,7 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'specifications.*.specification.distinct'=>'Specification name has a duplicate value',
+            'specifications.*.specification.distinct' => 'Specification name has a duplicate value',
         ];
     }
 }

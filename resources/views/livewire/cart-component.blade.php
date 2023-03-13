@@ -3,12 +3,12 @@
         @foreach ($content as $id => $item)
             <div class="product-widget">
                 <div class="product-img">
-                    <img src="/img/product02.png" alt="">
+                    <img src="{{ asset('storage/images/' . App\Models\Product::find($id)->image) }}" alt="">
                 </div>
                 <div class="product-body">
                     <h3 class="product-name"><a href="#">{{ $item->get('name') }}</a>
                     </h3>
-                    <h4 class="product-price"><span class="qty">{{ $item->get('quantity') }}x</span>$
+                    <h4 class="product-price"><span class="qty">{{ $item->get('quantity') }}x</span>Rs
                         {{ number_format($item->get('price'), 2) }}
                     </h4>
                     <button
@@ -26,7 +26,7 @@
             wire:click="clearCart">Clear Cart</button>
         <div class="cart-summary">
             <small>{{ $content->count() }} Item(s) selected</small>
-            <h5>TOTAL: $ {{ number_format($total) }}</h5>
+            <h5>TOTAL: Rs {{ number_format($total) }}</h5>
         </div>
         <div class="cart-btns">
             <a href="{{ route('cart') }}">View Cart</a>

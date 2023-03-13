@@ -7,11 +7,11 @@
         <div class="product">
 
             <div class="product-img">
-                <img src="{{ asset('./img/product01.png') }}" alt="">
+                <img src="{{ asset("storage/images/$product->image") }}" alt="">
                 @if ($product->status == 0)
-                    <div class="product-label">
-                        <span class="badge badge-pill badge-danger" style="background-color: red">Out Of Stock</span>
-                    </div>
+                <div class="product-label">
+                    <span class="badge badge-pill badge-danger" style="background-color: red">Out Of Stock</span>
+                </div>
                 @endif
             </div>
             <div class="product-body">{{ $product->category->name }}</p>

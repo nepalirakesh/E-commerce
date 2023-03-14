@@ -23,7 +23,7 @@
                     <span class="badge" style="background-color:green;">In Stock</span>
                 @endif
             </div>
-            <p>{{ $product->description }}</p><br>
+            <p>{{ Str::limit($product->description,40) }}</p><br>
             <div class="add-to-cart">
                 @if ($product->status == 0)
                     <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i>

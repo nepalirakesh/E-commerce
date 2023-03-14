@@ -93,7 +93,7 @@
 
                                 {{-- Back_images --}}
                                 <div class="form-group">
-                                    <label for="back_image">Image</label>
+                                    <label for="back_image">Back Image</label>
                                     <br>
                                     <img src={{ asset('storage/images/' . $product->photo->back_image) }} width="100px"
                                         height="100px" alt="">

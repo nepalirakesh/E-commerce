@@ -16,23 +16,31 @@
                             <div class="alert alert-success">{{ session('status') }}</div>
                         @endif
 
-                        <table class="table table-bordered" id="datatable">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>SN</th>
                                     <th data-sortable="true">Name</th>
                                     <th data-sortable="true">Email</th>
                                     <th data-sortable="true">Created At</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($users as $user)
+                                    <tr>
+                                        <td>{{ $users->firstItem() + $loop->index }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->created_at }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
 
                         </table>
-                        {{ $users->links() }}
-
                     </div>
+                    <ul class="pagination justify-content-center">
+                        {!! $users->links('pagination::bootstrap-4') !!}
+                    </ul>
                 </div>
 
             </div><!-- /.container-fluid -->

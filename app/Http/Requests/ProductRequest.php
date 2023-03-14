@@ -27,6 +27,9 @@ class ProductRequest extends FormRequest
         return [
             'name' => ($this->method() === 'PUT') ? 'required |string | min:5 | max:40|unique:products,name,' . $this->product->id : 'required| string | min:5 | max:40 | unique:products,name',
             'image' => ($this->method() === 'PUT') ? 'mimes:jpeg,jpg,png' : 'required | mimes:jpeg,jpg,png',
+            'front_image' => ($this->method() === 'PUT') ? 'mimes:jpeg,jpg,png' : 'required | mimes:jpeg,jpg,png',
+            'back_image' => ($this->method() === 'PUT') ? 'mimes:jpeg,jpg,png' : 'required | mimes:jpeg,jpg,png',
+            'side_image' => ($this->method() === 'PUT') ? 'mimes:jpeg,jpg,png' : 'required | mimes:jpeg,jpg,png',
             'description' => 'required | min:30 | max:1200',
             'category_id' => 'required',
             'quantity' => 'required | integer',

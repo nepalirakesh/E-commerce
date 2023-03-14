@@ -78,4 +78,8 @@ class Category extends Model
         $this->findDescendants($category);
         return $this->descandants;
     }
+
+    public static function getRootCategories(){
+        return Category::whereNull('parent_id')->get();
+    }
 }

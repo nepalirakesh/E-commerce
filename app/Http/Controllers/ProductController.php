@@ -19,7 +19,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::all()->paginate(10);
         return view('dashboard.product.index', compact('products'));
     }
 
@@ -63,7 +63,7 @@ class ProductController extends Controller
             'back_image' => $back_image,
         ]);
 
-        // Create product specification
+        // Create product specification 
         if ($request->specifications) {
 
             foreach ($request->specifications as $key => $value) {
@@ -118,27 +118,36 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
-            $this->deleteImage($product->photo->front_image);
-            $this->deleteImage($product->photo->side_image);
-            $this->deleteImage($product->photo->back_image);
-
             $product->image = $this->uploadImage($request->file('image'));
+        }
+
+        if ($request->hasFile('front_image')) {
+            $this->deleteImage($product->photo->front_image);
             $front_image = $this->uploadImage($request->file('front_image'));
+            $product->photo()->update([
+                'front_image'=>$front_image,
+            ]);
+        }  
+        if ($request->hasFile('side_image')) {
+            $this->deleteImage($product->photo->side_image);
             $side_image = $this->uploadImage($request->file('side_image'));
+            $product->photo()->update([
+                'side_image'=>$side_image,
+            ]);
+        } 
+        if ($request->hasFile('back_image')) {
+            $this->deleteImage($product->photo->back_image);
             $back_image = $this->uploadImage($request->file('back_image'));
+            $product->photo()->update([
+                'back_image'=>$back_image,
+            ]);
         }
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
         $product->save();
-        $product->photo()->update([
-            'front_image' => $front_image,
-            'side_image' => $side_image,
-            'back_image' => $back_image,
-        ]);
 
-
-        //Delete specification other than requested
+        //Delete specification other than requested 
         if (!$request->specifications) {
             $different_spec = $product->specification()->pluck('specification')->toArray();
         } else {

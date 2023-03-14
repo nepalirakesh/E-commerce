@@ -2,6 +2,7 @@
 @section('title', 'Index Product')
 @section('content')
 
+@include('layouts.dashboard.crudmessage')
     <div class="content">
         <div class="content-wrapper">
             <div class="content-header">
@@ -11,7 +12,6 @@
                             <h3 class="text-center">Products</h3>
                         </div>
                         <div class="card-body">
-                            @include('layouts.dashboard.crudmessage')
                             <div class="card-body">
                                 <table class="table table-bordered">
                                     <thead class="">

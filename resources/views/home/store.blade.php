@@ -24,7 +24,6 @@
                             <span style="font-weight:500">{{ $selectedCategory->name }}</span>
                         @endif
                     @elseif(isset($price_filter))
-                        {{ dd($min_price) }}
                         <span style="font-weight:500">{{ $price_filter }}</span>
                     @else
                         <span style="font-weight:500">All Products</span>

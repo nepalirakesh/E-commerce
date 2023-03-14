@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Mail\OrderMail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Stripe;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderProduct;
-use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Facades\Cart;
 use App\Models\Category;
@@ -120,7 +118,7 @@ class StripePaymentController extends Controller
         $categories = Category::all();
         $products = Product::latest()->paginate(12);
 
-        return redirect()->route('home', compact('categories', 'products'))->with('success', 'Payment done');
+        return redirect()->route('home', compact('categories', 'products'))->with('payment_success', 'Payment done');
     }
 
     public function sendEmail($myOrders)

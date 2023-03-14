@@ -70,10 +70,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        $allCategories = Category::all();
-        $rootCategories = Category::whereNull('parent_id')->get();
-
-        return view('dashboard.category.edit', compact('category', 'rootCategories', 'allCategories'));
+        return view('dashboard.category.edit', compact('category'));
     }
 
     /**

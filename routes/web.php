@@ -32,8 +32,6 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('/', [HomeController::class, 'carts'])->name('home');
-Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
 Route::get('/order', [HomeController::class, 'order'])->name('user.order');
 
 //Route for single page product
@@ -43,8 +41,6 @@ Route::get('home/search', [HomeController::class, 'search'])->name('search');
 
 // -------------------------Route for price filter------------------------
 Route::get('home/price', [HomeController::class, 'price_filter'])->name('product.price');
-
-Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');

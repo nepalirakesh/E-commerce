@@ -4,7 +4,7 @@
     <div class="content">
         <div class="content-wrapper">
             <div class="content-header">
-                <div class="container-fluid px-4 w-75 mt-5">
+                <div class="container-fluid px-4 w-75 mt-5" style="10000px">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="text-center">Category</h3>

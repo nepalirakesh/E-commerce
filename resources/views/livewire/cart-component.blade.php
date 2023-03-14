@@ -29,7 +29,6 @@
             <h5>TOTAL: Rs {{ number_format($total) }}</h5>
         </div>
         <div class="cart-btns">
-            <a href="{{ route('cart') }}">View Cart</a>
             <a href="{{ route('checkout') }}">Checkout <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     @else

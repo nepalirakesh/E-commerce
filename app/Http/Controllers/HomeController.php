@@ -25,7 +25,6 @@ class HomeController extends Controller
 
   public function product_page(Product $product)
   {
-
     return view('home.product', compact('product'));
   }
 
@@ -68,19 +67,9 @@ class HomeController extends Controller
       elseif (session()->has('category')) {
         $val = $request->session()->get('category');
         $request->session()->forget('category');
-        $selectedCategory = Category::where('slug', $val)->first();
-        $products = collect([]);
-
-        //Get all Descandants(child category) if category has a child and retrieve all products of descendants and self
-        if ($selectedCategory->children->isNotEmpty()) {
-          $descendants = $selectedCategory->getDescendants($selectedCategory);
-          foreach ($descendants as $descendant) {
-            $product = Product::where('category_id', $descendant)->paginate(12);
-            $products = $products->concat($product);
-          }
-        } else {
-          $products = $selectedCategory->products()->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
-        }
+       
+        list($products,$selectedCategory)=$this->getProductByCategory($val);
+       
         if ($products->isNotEmpty()) {
           $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
           return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
@@ -123,10 +112,25 @@ class HomeController extends Controller
   public function productByCategory($slug)
   {
     session()->put('category', $slug);
+    list($products, $selectedCategory) = $this->getProductByCategory($slug);
+
+    if ($products->isNotEmpty()) {
+      $products = $products->paginate(6);
+      return view('home.store', compact('products', 'selectedCategory'));
+    }
+    return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category');
+  }
+
+  /**
+   * Get Products by Category name
+   * 
+   * @param string $slug
+   */
+  function getProductByCategory($slug)
+  {
     $selectedCategory = Category::where('slug', $slug)->first();
     $products = collect([]);
-    
-    //Get all Descandants(child category) if category has a child and retrieve all products of descendants and self
+
     if ($selectedCategory->children->isNotEmpty()) {
       $descendants = $selectedCategory->getDescendants($selectedCategory);
       foreach ($descendants as $descendant) {
@@ -136,10 +140,6 @@ class HomeController extends Controller
     } else {
       $products = $selectedCategory->products()->get();
     }
-    if ($products->isNotEmpty()) {
-      $products = $products->paginate(6);
-      return view('home.store', compact('products', 'selectedCategory'));
-    }
-    return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category');
+    return [$products, $selectedCategory];
   }
 }

@@ -30,8 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $rootCategories = Category::whereNull('parent_id')->get();
-        return view('dashboard.product.create', compact('rootCategories'));
+        return view('dashboard.product.create');
     }
 
     /**
@@ -50,12 +49,14 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->description = $request->description;
         $product->status = 1;
+       
         if ($request->file('image')) {
             $product->image = $this->uploadImage($request->file('image'));
             $front_image = $this->uploadImage($request->file('front_image'));
             $side_image = $this->uploadImage($request->file('side_image'));
             $back_image = $this->uploadImage($request->file('back_image'));
         }
+       
         $product->save();
         $product->photo()->create([
             'front_image' => $front_image,
@@ -95,11 +96,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-
-        $products = Product::all();
-
-        $rootCategories = Category::whereNull('parent_id')->get();
-        return view('dashboard.product.edit', compact('products', 'rootCategories', 'product'));
+        return view('dashboard.product.edit', compact('product'));
     }
 
     /**

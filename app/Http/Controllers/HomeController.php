@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Services\CartService;
 use App\Models\Category;
-use App\Models\Order;
-use App\Models\OrderProduct;
-use Illuminate\Support\Facades\DB;
+
 
 class HomeController extends Controller
 {
@@ -22,15 +19,8 @@ class HomeController extends Controller
   public function index()
   {
     $products = Product::latest()->paginate(12);
-    $rootCategories = Category::whereNull('parent_id')->get();
-    $top = OrderProduct::select('product_id', DB::raw('COUNT(product_id) as `count`'))->groupBy('product_id')->orderBy('count', 'desc')->limit(3)->get();
-    $topProd = collect([]);
 
-    foreach ($top as $t) {
-      $prod = Product::all()->where('id', '=', $t->product_id);
-      $topProd = $topProd->concat($prod);
-    }
-    return view('home.store', compact('rootCategories', 'products', 'topProd'));
+    return view('home.store', compact('products'));
   }
 
   public function product_page(Product $product)
@@ -46,9 +36,8 @@ class HomeController extends Controller
     if ($products->total() != 0) {
       $search = $request->search;
       $request->session()->put('search', $search);
-      $rootCategories = Category::whereNull('parent_id')->get();
 
-      return view('home.store', compact('products', 'rootCategories'))->with('search', $request->search);
+      return view('home.store', compact('products'))->with('search', $request->search);
     } else {
       return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $request->search . '"');
     }
@@ -60,9 +49,6 @@ class HomeController extends Controller
     $min_price = $request->price_min;
     $max_price = $request->price_max;
 
-    $rootCategories = Category::whereNull('parent_id')->get();
-
-
     if ($max_price > $min_price && $max_price != 0) {
 
       // Price filtering with search
@@ -72,7 +58,7 @@ class HomeController extends Controller
         $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
         if ($products->isNotEmpty()) {
 
-          return view('home.store', compact('products', 'rootCategories', 'min_price', 'max_price'))->with('price_filter', $val);
+          return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
         } else {
           return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
         }
@@ -97,7 +83,7 @@ class HomeController extends Controller
         }
         if ($products->isNotEmpty()) {
           $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
-          return view('home.store', compact('products', 'rootCategories', 'min_price', 'max_price'))->with('price_filter', $val);
+          return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
         } else {
           return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
         }
@@ -108,7 +94,7 @@ class HomeController extends Controller
         $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
         if ($products->isNotEmpty()) {
 
-          return view('home.store', compact('products', 'rootCategories', 'min_price', 'max_price'));
+          return view('home.store', compact('products', 'min_price', 'max_price'));
         } else {
 
           return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
@@ -139,7 +125,7 @@ class HomeController extends Controller
     session()->put('category', $slug);
     $selectedCategory = Category::where('slug', $slug)->first();
     $products = collect([]);
-    $rootCategories = Category::whereNull('parent_id')->get();
+    
     //Get all Descandants(child category) if category has a child and retrieve all products of descendants and self
     if ($selectedCategory->children->isNotEmpty()) {
       $descendants = $selectedCategory->getDescendants($selectedCategory);
@@ -152,8 +138,8 @@ class HomeController extends Controller
     }
     if ($products->isNotEmpty()) {
       $products = $products->paginate(6);
-      return view('home.store', compact('products', 'selectedCategory', 'rootCategories'));
+      return view('home.store', compact('products', 'selectedCategory'));
     }
-    return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category', 'rootCategories');
+    return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category');
   }
 }

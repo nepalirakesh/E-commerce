@@ -1,6 +1,7 @@
 @extends('layouts.dashboard.master')
 @section('title', 'All Categories')
 @section('content')
+@include('layouts.dashboard.crudmessage')
 
     <div class="content-content">
         <div class="content-wrapper">
@@ -11,7 +12,6 @@
                             <h3>Categories</h3>
                         </div>
 
-                        @include('layouts.dashboard.crudmessage')
                         <div class="card-body">
                             <table class="table table-bordered" id="myDataTable">
                                 <thead class="">

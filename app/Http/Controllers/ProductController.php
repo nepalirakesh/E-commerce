@@ -147,12 +147,7 @@ class ProductController extends Controller
         $product->quantity = $request->quantity;
 
         $product->save();
-
-        $product->photo()->update([
-            'front_image' => $front_image,
-            'side_image' => $side_image,
-            'back_image' => $back_image,
-        ]);
+        
         //Delete specification other than requested
         if (!$request->specifications) {
             $different_spec = $product->specification()->pluck('specification')->toArray();

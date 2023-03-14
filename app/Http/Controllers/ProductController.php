@@ -130,7 +130,12 @@ class ProductController extends Controller
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
+
         $product->save();
+        if ($product->quantity > 0) {
+            $product->status = 1;
+        }
+
         $product->photo()->update([
             'front_image' => $front_image,
             'side_image' => $side_image,

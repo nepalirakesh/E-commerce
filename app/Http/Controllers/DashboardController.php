@@ -19,7 +19,16 @@ class DashboardController extends Controller
         $totalRevenue = Order::where('status', 'delivered')->sum('total_amount');
         $totalProducts = Product::all()->count();
         $totalCategories = Category::all()->count();
-        return view('dashboard.dashboard', compact(['orders', 'totalSales', 'totalRevenue', 'totalnewOrders', 'totalRegisteredUsers', 'totalProducts', 'totalCategories']));
+        $totalSalesPerDay = Order::where('status', 'delivered')
+            ->selectRaw('DATE(created_at) as delivery_date, SUM(total_amount) as total_sales')
+            ->groupBy('delivery_date')
+            ->get();
+        $totalSalesPerMonth = Order::where('status', 'delivered')
+            ->selectRaw('MONTH(created_at) as delivery_month, SUM(total_amount) as total_sales')
+            ->groupBy('delivery_month')
+            ->get();
+        // dd($totalSalesPerMonth);
+        return view('dashboard.dashboard', compact(['orders', 'totalSales', 'totalRevenue', 'totalnewOrders', 'totalRegisteredUsers', 'totalProducts', 'totalCategories', 'totalSalesPerDay', 'totalSalesPerMonth']));
     }
 
 }

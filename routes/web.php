@@ -63,7 +63,7 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
             Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-            Route::get('users', [UserController::class, 'index']);
+            Route::get('users', [UserController::class, 'index'])->name('users.index');
             Route::get('users-data', [UserController::class, 'getData'])->name('users.data');
 
             Route::get('orders', [OrderController::class, 'index'])->name('orders.index');

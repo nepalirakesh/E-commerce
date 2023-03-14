@@ -1,14 +1,14 @@
 @extends('layouts.dashboard.master')
 @section('title', 'All Categories')
 @section('content')
-@include('layouts.dashboard.crudmessage')
 
-    <div class="content-content">
-        <div class="content-wrapper">
-            <div class="content-header">
-                <div class="container-fluid px-4">
+<div class="content-content">
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid px-4">
+                    @include('layouts.dashboard.crudmessage')
                     <div class="card">
-                        <div class="card-header">
+                        <div class="text-center card-header">
                             <h3>Categories</h3>
                         </div>
 

@@ -15,27 +15,31 @@
                         @if (session('status'))
                             <div class="alert alert-success">{{ session('status') }}</div>
                         @endif
-
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Created At</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($users as $user)
+                        @if (count($users) > 0)
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>{{ $users->firstItem() + $loop->index }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->created_at }}</td>
+                                        <th>SN</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Created At</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-
+                                </thead>
+                                <tbody>
+                                    @foreach ($users as $user)
+                                        <tr>
+                                            <td>{{ $users->firstItem() + $loop->index }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->created_at }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <div class="container text-center">
+                                        <p>Currently there are no users.</p>
+                                    </div>
+                        @endif
+                        </tbody>
                         </table>
                     </div>
                     <ul class="pagination justify-content-center">

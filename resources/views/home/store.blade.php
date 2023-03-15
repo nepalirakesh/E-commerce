@@ -17,7 +17,7 @@
                     @elseif(isset($selectedCategory))
                         @if (count($selectedCategory->parents))
                             @foreach ($selectedCategory->parents as $parent)
-                                <span>{{ $parent->name }} &#9002</span>
+                                <a href="{{route('productByCategory',$parent->slug)}}"></a><span>{{ $parent->name }} </span><span>&#9002</span>
                             @endforeach
                             <span style="font-weight:500">{{ $selectedCategory->name }}</span>
                         @else

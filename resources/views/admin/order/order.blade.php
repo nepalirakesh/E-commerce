@@ -12,7 +12,7 @@
                         <h4>View Orders
                         </h4>
                     </div>
-
+                    @if(count($orders)>0)
                     <div class="card-body">
                         @include('layouts.dashboard.crudmessage')
                         <table class="table table-bordered" id="myDataTable">
@@ -64,7 +64,11 @@
                                         <td>{{ $list->created_at }}</td>
                                     </tr>
                                 @endforeach
-
+                                @else
+                                <div class="container text-center">
+                                    <p>Currently there are no orders.</p>
+                                </div>
+                                @endif
                             </tbody>
                         </table>
                         {{ $orders->links() }}

@@ -13,9 +13,13 @@
                         <div class="mn-sidebar">
                             <div class="mn-navblock">
                                 <ul class="mn-vnavigation">
-                                    @foreach ($rootCategories as $root)
-                                        @include('home.categories', ['category' => $root])
-                                    @endforeach
+                                    @if (count($rootCategories) > 0)
+                                        @foreach ($rootCategories as $root)
+                                            @include('home.categories', ['category' => $root])
+                                        @endforeach
+                                    @else
+                                        <p>No categories available</p>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -54,22 +58,27 @@
                 <!-- aside Widget -->
                 <div class="aside">
                     <h3 class="aside-title">Top selling</h3>
-                    @foreach ($topProd as $topProduct)
-                        <div class="product-widget">
-                            <a href="{{ route('product.page', $topProduct) }}">
-                                <div class="product-img">
-                                    <img src="{{ asset("storage/images/$topProduct->image") }}" alt="">
-                                </div>
-                                <div class="product-body">
-                                    <p class="product-category">{{ $topProduct->category->name }}</p>
-                                    <h3 class="product-name"><a
-                                            href="{{ route('product.page', $topProduct) }}">{{ $topProduct->name }}</a>
-                                    </h3>
-                                    <h4 class="product-price">Rs {{ number_format($topProduct->unit_price, 2) }}</h4>
-                                </div>
-                            </a>
-                        </div>
-                    @endforeach
+                    @if (count($topProd) > 0)
+                        @foreach ($topProd as $topProduct)
+                            <div class="product-widget">
+                                <a href="{{ route('product.page', $topProduct) }}">
+                                    <div class="product-img">
+                                        <img src="{{ asset("storage/images/$topProduct->image") }}" alt="">
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">{{ $topProduct->category->name }}</p>
+                                        <h3 class="product-name"><a
+                                                href="{{ route('product.page', $topProduct) }}">{{ $topProduct->name }}</a>
+                                        </h3>
+                                        <h4 class="product-price">Rs {{ number_format($topProduct->unit_price, 2) }}
+                                        </h4>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
+                    @else
+                        <p>No products available</p>
+                    @endif
                 </div>
                 <!-- /aside Widget -->
             </div>

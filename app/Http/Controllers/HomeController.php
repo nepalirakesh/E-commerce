@@ -44,6 +44,9 @@ class HomeController extends Controller
   {
     $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(12);
     $search = $request->search;
+    if(session()->has('category')){
+      session()->forget('category');
+    }
     $request->session()->put('search', $search);
     if ($products->total() != 0) {
 
@@ -68,9 +71,11 @@ class HomeController extends Controller
 
       // Price filtering with search
       if ($request->session()->has('search')) {
+        
         $val = $request->session()->get('search');
         $request->session()->forget('search');
         $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+
         if ($products->isNotEmpty()) {
 
           return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
@@ -80,14 +85,15 @@ class HomeController extends Controller
       }
 
       // Price filtering with category
-      elseif (session()->has('category')) {
+      elseif ($request->session()->has('category')) {
+       
         $val = $request->session()->get('category');
         $request->session()->forget('category');
 
         list($products, $selectedCategory) = $this->getProductByCategory($val);
 
+        $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
         if ($products->isNotEmpty()) {
-          $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
           return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
         } else {
           return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
@@ -128,6 +134,12 @@ class HomeController extends Controller
   public function productByCategory($slug)
   {
     session()->put('category', $slug);
+
+    if (session()->has('search')) {
+      session()->forget('search');
+    }
+  
+
     list($products, $selectedCategory) = $this->getProductByCategory($slug);
 
     if ($products->isNotEmpty()) {

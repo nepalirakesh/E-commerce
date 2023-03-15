@@ -11,6 +11,7 @@
                         <div class="card-header">
                             <h3 class="text-center">Products</h3>
                         </div>
+                     @if(count($products)>0)
                         <div class="card-body">
                             <div class="card-body">
                                 <table class="table table-bordered">
@@ -53,6 +54,11 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        @else
+                                        <div class="container text-center">
+                                            <p>No products available</p>
+                                        </div>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

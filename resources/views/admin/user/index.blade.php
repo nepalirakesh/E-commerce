@@ -8,7 +8,7 @@
             <div class="container-fluid px-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4>View Users
+                        <h4 class="text-center">View Users
                         </h4>
                     </div>
                     <div class="card-body">
@@ -20,9 +20,9 @@
                             <thead>
                                 <tr>
                                     <th>SN</th>
-                                    <th data-sortable="true">Name</th>
-                                    <th data-sortable="true">Email</th>
-                                    <th data-sortable="true">Created At</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Created At</th>
                                 </tr>
                             </thead>
                             <tbody>

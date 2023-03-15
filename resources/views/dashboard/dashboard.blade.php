@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+
 @endsection
 
 
@@ -107,16 +109,6 @@
                             <a href="{{ route('category.index') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3> Rs {{ $totalRevenue }}</h3>
-
-                                <p>Total Earning</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                        </div>
                     </div>
                     <!-- ./col -->
                 </div>
@@ -125,43 +117,86 @@
                 <div class="row">
                     <!-- Left col -->
                     <section class="col-lg-7 connectedSortable">
-                        <!-- Custom tabs (Charts with tabs)-->
-                        <!-- solid sales graph -->
-                        <h1>Sales Details</h1>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Total Sales</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($totalSalesPerMonth as $sale)
-                                    <tr>
-                                        <td>{{ date('F', mktime(0, 0, 0, $sale->delivery_month, 1)) }}</td>
-                                        <td>Rs {{ number_format($sale->total_sales, 2) }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <!-- /.card -->
+                        <!-- Bar chart -->
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-chart-bar"></i>
+                                    Bar Chart
+                                </h3>
 
-
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart" style="width: 79%; height: 500px;"></div>
+                            </div>
+                            <!-- /.card-body-->
+                        </div>
                         <!-- /.card -->
                     </section>
                     <!-- right col -->
-                </div>
-                <!-- /.row (main row) -->
-            </div><!-- /.container-fluid -->
+                    <section class="col-lg-5 connectedSortable">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3>Sales Details</h3>
+                            </div>
+                            <table class="table border">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Total Sales</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($totalSalesPerMonth as $sale)
+                                        <tr>
+                                            <td>{{ date('F', mktime(0, 0, 0, $sale->delivery_month, 1)) }}</td>
+                                            <td>Rs {{ number_format($sale->total_sales, 2) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <!-- /.row (main row) -->
+                </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
     </div>
 @endsection
-
-
-
-
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+
+    <script type="text/javascript">
+        // Initialize ECharts instance
+        var chart = echarts.init(document.getElementById('chart'));
+        // Specify chart configuration and data
+        var option = {
+            title: {
+                text: 'Total Sales per Month in Rs'
+            },
+            tooltip: {},
+            xAxis: {
+                data: {!! json_encode($months) !!}
+            },
+            yAxis: {},
+            series: [{
+                name: 'Sales',
+                type: 'bar',
+                data: {!! json_encode($sales) !!}
+            }]
+        };
+
+        // Use configuration item and data specified to show chart
+        chart.setOption(option);
+    </script>
     <!-- jQuery -->
     <script src="plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->

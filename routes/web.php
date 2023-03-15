@@ -44,7 +44,7 @@ Route::get('home/search', [HomeController::class, 'search'])->name('search');
 // -------------------------Route for price filter------------------------
 Route::get('home/price', [HomeController::class, 'price_filter'])->name('product.price');
 
-Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
+// Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
@@ -70,6 +70,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('orders-data', [OrderController::class, 'getData'])->name('orders.data');
             Route::get('order_detail/{id}', [OrderController::class, 'order_detail'])->name('order.detail');
             Route::put('update-order/{id}', [OrderController::class, 'update_order']);
+            Route::get('sales-details', [DashboardController::class, 'salesDetails']);
         }
     );
 });

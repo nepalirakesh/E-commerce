@@ -9,6 +9,7 @@
     @include('layouts.frontend.navbar ')
     @yield('content')
     @include('layouts.frontend.footer')
+    @yield('script')
 </body>
 
 </html>

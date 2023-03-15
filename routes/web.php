@@ -66,6 +66,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('orders-data', [OrderController::class, 'getData'])->name('orders.data');
             Route::get('order_detail/{id}', [OrderController::class, 'order_detail'])->name('order.detail');
             Route::put('update-order/{id}', [OrderController::class, 'update_order']);
+            Route::get('sales-details', [DashboardController::class, 'salesDetails']);
         }
     );
 });

@@ -16,6 +16,7 @@
         @yield('content')
         <!-- ./wrapper -->
     </div>
+    @yield('script')
     @include('layouts.dashboard.footer')
 </body>
 

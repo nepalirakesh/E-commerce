@@ -32,8 +32,6 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-// Route::get('/', [HomeController::class, 'carts'])->name('home');
-Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart');
 Route::get('/order', [HomeController::class, 'order'])->name('user.order');
 
 //Route for single page product
@@ -44,8 +42,6 @@ Route::get('home/search', [HomeController::class, 'search'])->name('search');
 // -------------------------Route for price filter------------------------
 Route::get('home/price', [HomeController::class, 'price_filter'])->name('product.price');
 
-// Route::get('/cart', [HomeController::class, 'cartComponent'])->name('cart')->middleware('verifyemail');
-
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
 
@@ -54,7 +50,7 @@ Route::group(['prefix' => 'admin'], function () {
         ['middleware' => 'admin.guest'],
         function () {
             Route::view('/login', 'admin.login')->name('admin.login');
-            Route::post('login', [AdminController::class, 'authenticate'])->name('admin.auth');
+            Route::post('/login', [AdminController::class, 'authenticate'])->name('admin.auth');
         }
     );
 
@@ -63,7 +59,7 @@ Route::group(['prefix' => 'admin'], function () {
         function () {
             Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
             Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-            Route::get('users', [UserController::class, 'index']);
+            Route::get('users', [UserController::class, 'index'])->name('users.index');
             Route::get('users-data', [UserController::class, 'getData'])->name('users.data');
 
             Route::get('orders', [OrderController::class, 'index'])->name('orders.index');

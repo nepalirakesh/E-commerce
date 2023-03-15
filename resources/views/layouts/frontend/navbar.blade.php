@@ -20,9 +20,10 @@
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
                     <a href="{{ url('order') }}" style="padding:10px">My Order</a>
-                    <div class="dropdown-menu" style="min-width:65px"aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" style="min-width:65px" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();" style="color:black;">
+                                                 document.getElementById('logout-form').submit();"
+                            style="color:black;">
                             {{ __('Logout') }}
                         </a>
 
@@ -47,8 +48,7 @@
                 <div class="col-md-3">
                     <div class="header-logo">
                         <a href="{{route('home')}}" class="logo">
-                            <img src="{{ asset('/img/eco-logo.png') }}" alt=""
-                                style="height:150px; width:150px; color: #333;">
+                            <img src="{{ asset('/img/eco-logo.png') }}" alt="">
                         </a>
                     </div>
                 </div>

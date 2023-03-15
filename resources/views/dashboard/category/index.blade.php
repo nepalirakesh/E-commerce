@@ -1,12 +1,11 @@
 @extends('layouts.dashboard.master')
 @section('title', 'All Categories')
 @section('content')
-@include('layouts.dashboard.crudmessage')
 
-    <div class="content-content">
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid px-4">
+                    @include('layouts.dashboard.crudmessage')
                     <div class="card">
                         <div class="card-header">
                             <h3>Categories</h3>
@@ -30,10 +29,7 @@
                                             <td>{{ $categories->firstItem() + $loop->index }}</td>
                                             <td>{{ ucfirst($category->name) }}</td>
                                             <td>{!! ucfirst(Str::limit($category->description, 15)) !!}</td>
-                                            <td>{{ count($category->parents)
-                                                ? $category->parents->implode('name', '/')
-                                                : 'No
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Parent' }}
+                                            <td>{{ count($category->parents) ? $category->parents->implode('name', '/') : 'No Parent' }}
                                             </td>
                                             <td>{{ $category->status ? 'In Stock' : 'Out Of Stock' }}</td>
                                             <td>
@@ -45,15 +41,17 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-xs"
-                                                        onclick="return confirm('Are you sure?')">Delete</button>
+                                                        onclick="return confirm('Are you sure if you want to delete this category?')">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $categories->links() }}
                         </div>
+                        <ul class="pagination justify-content-center">
+                            {!! $categories->links('pagination::bootstrap-4') !!}
+                        </ul>
                     </div>
                 </div>
             </div>

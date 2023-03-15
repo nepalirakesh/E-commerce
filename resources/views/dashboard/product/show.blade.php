@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.master')
-@section('title', 'Show Product')
+@section('title', $product->name)
 @section('content')
     <div class="content-wrapper">
         <div class="content-header">
@@ -31,7 +31,7 @@
                         <a href="{{ route('product.index') }}" class="btn btn-primary btn-sm">Index</a>
                         <a href="{{ route('product.edit', $product) }}" class="btn btn-secondary btn-sm">Edit</a>
                         <button class="btn btn-danger btn-sm" type="submit"
-                            onclick="return confirm('Are you sure?')">Delete</button>
+                            onclick="return confirm('Are you sure if you want to delete this product?')">Delete</button>
                     </form>
                 </div>
             </div>
@@ -39,6 +39,6 @@
 
         </div>
         <div>
-        </div>
+    </div>
 
     @endsection

@@ -13,7 +13,7 @@
                         <div class="mn-sidebar">
                             <div class="mn-navblock">
                                 <ul class="mn-vnavigation">
-                                    @foreach (App\Models\Category::getRootCategories() as $root)
+                                    @foreach ($rootCategories as $root)
                                         @include('home.categories', ['category' => $root])
                                     @endforeach
                                 </ul>
@@ -54,7 +54,7 @@
                 <!-- aside Widget -->
                 <div class="aside">
                     <h3 class="aside-title">Top selling</h3>
-                    @foreach (App\Models\Product::getTopProducts() as $topProduct)
+                    @foreach ($topProd as $topProduct)
                         <div class="product-widget">
                             <a href="{{ route('product.page', $topProduct) }}">
                                 <div class="product-img">

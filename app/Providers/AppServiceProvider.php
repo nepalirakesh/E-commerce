@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Collection;
@@ -47,5 +49,15 @@ class AppServiceProvider extends ServiceProvider
             );
         });
         Paginator::useBootstrap();
+
+        //pass top product to store view
+        view()->composer(['home.store'], function ($view) {
+            $view->with('topProd',Product::getTopProducts());
+        });
+
+         //pass root category  to multiple view
+        view()->composer(['home.store','dashboard.category.create','dashboard.category.edit','dashboard.product.create','dashboard.product.edit'],function($view){
+            $view->with('rootCategories',Category::getRootCategories());
+        });
     }
 }

@@ -30,8 +30,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $rootCategories = Category::whereNull('parent_id')->get();
-        return view('dashboard.product.create', compact('rootCategories'));
+        return view('dashboard.product.create');
     }
 
     /**
@@ -50,12 +49,14 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->description = $request->description;
         $product->status = 1;
+       
         if ($request->file('image')) {
             $product->image = $this->uploadImage($request->file('image'));
             $front_image = $this->uploadImage($request->file('front_image'));
             $side_image = $this->uploadImage($request->file('side_image'));
             $back_image = $this->uploadImage($request->file('back_image'));
         }
+       
         $product->save();
         $product->photo()->create([
             'front_image' => $front_image,
@@ -95,11 +96,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-
-        $products = Product::all();
-
-        $rootCategories = Category::whereNull('parent_id')->get();
-        return view('dashboard.product.edit', compact('products', 'rootCategories', 'product'));
+        return view('dashboard.product.edit', compact('product'));
     }
 
     /**
@@ -115,7 +112,8 @@ class ProductController extends Controller
         $product->slug = Str::slug($request->name, '-');
         $product->description = $request->description;
         $product->category_id = $request->category_id;
-
+        
+        //check for image files in request 
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
             $product->image = $this->uploadImage($request->file('image'));
@@ -123,36 +121,21 @@ class ProductController extends Controller
 
         if ($request->hasFile('front_image')) {
             $this->deleteImage($product->photo->front_image);
-            $front_image = $this->uploadImage($request->file('front_image'));
-            $product->photo()->update([
-                'front_image' => $front_image,
-            ]);
+            $product->photo->front_image = $this->uploadImage($request->file('front_image'));
         }
         if ($request->hasFile('side_image')) {
             $this->deleteImage($product->photo->side_image);
-            $side_image = $this->uploadImage($request->file('side_image'));
-            $product->photo()->update([
-                'side_image' => $side_image,
-            ]);
+            $product->photo->side_image = $this->uploadImage($request->file('side_image'));
         }
         if ($request->hasFile('back_image')) {
             $this->deleteImage($product->photo->back_image);
-            $back_image = $this->uploadImage($request->file('back_image'));
-            $product->photo()->update([
-                'back_image' => $back_image,
-            ]);
+            $product->photo->back_image = $this->uploadImage($request->file('back_image'));
         }
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
+        $product->push();
 
-        $product->save();
-
-        $product->photo()->update([
-            'front_image' => $front_image,
-            'side_image' => $side_image,
-            'back_image' => $back_image,
-        ]);
         //Delete specification other than requested
         if (!$request->specifications) {
             $different_spec = $product->specification()->pluck('specification')->toArray();

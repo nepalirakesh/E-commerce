@@ -44,32 +44,3 @@
 {{ asset('dist/js/adminlte.js') }}"></script>
 {{-- Data Table --}}
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            order: [
-                [0, "desc"]
-            ],
-            ajax: {
-                url: "{{ route('users.data') }}",
-            },
-            columns: [{
-                    data: 'id'
-                },
-                {
-                    data: 'name'
-                },
-                {
-                    data: 'email'
-                },
-                {
-                    data: 'created_at'
-                }
-            ]
-        });
-    });
-</script>
-<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>

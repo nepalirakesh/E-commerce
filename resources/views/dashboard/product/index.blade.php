@@ -2,16 +2,15 @@
 @section('title', 'Index Product')
 @section('content')
 
-{{-- <div class="content"> --}}
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="height:auto;">
         <div class="content-header">
             <div class="container-fluid px-4">
-                    @include('layouts.dashboard.crudmessage')
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="text-center">Products</h3>
-                        </div>
-                     @if(count($products)>0)
+                @include('layouts.dashboard.crudmessage')
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Products</h3>
+                    </div>
+                    @if (count($products) > 0)
                         <div class="card-body">
                             <div class="card-body">
                                 <table class="table table-bordered">
@@ -31,7 +30,7 @@
                                         @foreach ($products as $product)
                                             <tr>
                                                 <td>{{ $products->firstItem() + $loop->index }}</td>
-                                                <td>{{ ucfirst(Str::limit($product->name,15)) }}</td>
+                                                <td>{{ ucfirst(Str::limit($product->name, 15)) }}</td>
                                                 <td>{{ Str::limit($product->description, 25) }}</td>
                                                 <td>{{ ucfirst($product->category->name) }}</td>
                                                 <td>
@@ -54,21 +53,20 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                        @else
-                                        <div class="container text-center">
-                                            <p>No products available</p>
-                                        </div>
-                                        @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                            <ul class="pagination justify-content-center">
-                                {!! $products->links('pagination::bootstrap-4') !!}
-                            </ul>
-                        </div>
-                    </div>
+                                    @else
+                                        <p>No products available</p>
+                    @endif
+                    </tbody>
+                    </table>
                 </div>
+                <ul class="pagination justify-content-center">
+                    {!! $products->links('pagination::bootstrap-4') !!}
+                </ul>
             </div>
         </div>
     </div>
+    </div>
+    </div>
+    </div>
+
 @endsection

@@ -11,21 +11,22 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{asset('dist/img/person.png')}}" class="img-circle elevation-2" alt="User Image">
+                <img src="{{ asset('dist/img/person.png') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <p class="d-block" style="color:#c2c7d0">{{Auth::user()->name}}</p>
+                <p class="d-block" style="color:#c2c7d0">{{ Auth::user()->name }}</p>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
            with font-awesome or any other icon font library -->
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard') }}"
-                        class="nav-link {{Request::routeIs('admin.dashboard')?'active':''}}">
+                        class="nav-link {{ Request::routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -35,8 +36,8 @@
                 </li>
 
 
-                <li class="nav-item @yield('user_select') {{Request::routeIs('users*')?'menu-open':''}}">
-                    <a href="#" class="nav-link {{Request::routeIs('users*')?'active':''}}">
+                <li class="nav-item @yield('user_select') {{ Request::routeIs('users*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::routeIs('users*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
 
                         <p>
@@ -48,7 +49,7 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item @yield('user_select')  ">
-                            <a href="/admin/users" class="nav-link {{Request::routeIs('users*')?'active':''}}">
+                            <a href="/admin/users" class="nav-link {{ Request::routeIs('users*') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>View Users</p>
                             </a>
@@ -60,8 +61,8 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item {{Request::routeIs('product.index')||Request::routeIs('product.create')?'menu-open':''}}">
-                    <a href="#" class="nav-link {{Request::routeIs('product.*')?'active':''}}">
+                    class="nav-item {{ Request::routeIs('product.index') || Request::routeIs('product.create') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::routeIs('product.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Manage Products
@@ -71,14 +72,14 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('product.index') }}"
-                                class="nav-link {{Request::routeIs('product.index')?'active':''}}">
+                                class="nav-link {{ Request::routeIs('product.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Products</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('product.create') }}"
-                                class="nav-link {{Request::routeIs('product.create')?'active':''}} ">
+                                class="nav-link {{ Request::routeIs('product.create') ? 'active' : '' }} ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Products</p>
                             </a>
@@ -86,8 +87,8 @@
                     </ul>
                 </li>
                 <li
-                    class="nav-item {{Request::routeIs('category.index')||Request::routeIs('category.create')?'menu-open':''}}">
-                    <a href="#" class="nav-link {{Request::routeIs('category.*')?'active':''}}">
+                    class="nav-item {{ Request::routeIs('category.index') || Request::routeIs('category.create') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ Request::routeIs('category.*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Manage Category
@@ -97,22 +98,22 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('category.index') }}"
-                                class="nav-link {{Request::routeIs('category.index')?'active':''}}">
+                                class="nav-link {{ Request::routeIs('category.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Categories</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('category.create') }}"
-                                class="nav-link {{Request::routeIs('category.create')?'active':''}}">
+                                class="nav-link {{ Request::routeIs('category.create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Create Category</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{Request::routeIs('orders*')?'menu-open':''}}">
-                    <a href="#" class="nav-link  {{Request::routeIs('orders*')?'active':''}}">
+                <li class="nav-item {{ Request::routeIs('orders*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link  {{ Request::routeIs('orders*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Orders
@@ -123,15 +124,32 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="/admin/orders" class="nav-link  {{Request::routeIs('orders.index')?'active':''}}">
+                            <a href="/admin/orders"
+                                class="nav-link  {{ Request::routeIs('orders.index') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Order Details</p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ Request::routeIs('sales*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link  {{ Request::routeIs('sales*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Sales
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right"></span>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
 
-
-
-
+                        <li class="nav-item">
+                            <a href="/admin/sales-details"
+                                class="nav-link  {{ Request::routeIs('sales') ? 'active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sales Details</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>

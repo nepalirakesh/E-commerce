@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.master')
 @section('title', $product->name)
 @section('content')
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="height:auto;">
         <div class="content-header">
             <div class="container-fluid px-4  w-75 mt-5">
 
@@ -39,6 +39,6 @@
 
         </div>
         <div>
-    </div>
+        </div>
 
     @endsection

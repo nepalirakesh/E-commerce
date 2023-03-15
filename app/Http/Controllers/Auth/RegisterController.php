@@ -84,31 +84,5 @@ class RegisterController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function register(Request $request)
-    {
-        $this->validator($request->all())->validate();
-
-        $user = $this->create($request->all());
-        $token = Str::random(64);
-
-        UserVerify::create([
-            'user_id' => $user->id,
-            'token' => $token
-        ]);
-
-        auth()->login($user);
-           
-        try{
-
-            Mail::send('verify_email', ['token' => $token], function ($message) use ($request) {
-                $message->to($request->email);
-                $message->subject('Email Verification Mail');
-    
-             });
-             return redirect()->route('home')->with('success', 'Your account has been created successfully. Please check your email to verify your email address');
-        }catch(Exception $e){
-            return redirect()->route('home')->with('success','Oopps! Failed to send email verification link. Please try to register with valid email address');
-        }
-
-    }
+  
 }

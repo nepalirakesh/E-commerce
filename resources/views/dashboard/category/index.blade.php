@@ -11,6 +11,7 @@
                             <h3>Categories</h3>
                         </div>
 
+                        @if(count($categories)>0)
                         <div class="card-body">
                             <table class="table table-bordered" id="myDataTable">
                                 <thead class="">
@@ -24,6 +25,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                   
                                     @foreach ($categories as $category)
                                         <tr>
                                             <td>{{ $categories->firstItem() + $loop->index }}</td>
@@ -46,6 +48,12 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @else
+                                    <div class="container text-center">
+                                    <p>    No Categories Available</p>
+                                    </div>
+                                    
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

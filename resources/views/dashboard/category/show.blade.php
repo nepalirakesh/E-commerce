@@ -13,7 +13,6 @@
                             <h5> {{ $category->name }}</h5>
                             <hr>
                             <p>{{ $category->description }}</p>
-
                             <hr>
                             <div>
                                 <span>Parent Category :</span>
@@ -45,7 +44,7 @@
                                 <a href="{{ route('category.index') }}" class="btn btn-primary btn-sm">Index</a>
                                 <a href="{{ route('category.edit', $category) }}" class="btn btn-secondary btn-sm">Edit</a>
                                 <button class="btn btn-danger btn-sm" type="submit"
-                                    onclick="return confirm('Are you sure?')">Delete</button>
+                                    onclick="return confirm('Are you sure if you want to delete this category?')">Delete</button>
                             </form>
                         </div>
 

@@ -2,7 +2,7 @@
 @section('title', 'Index Product')
 @section('content')
 
-<div class="content">
+{{-- <div class="content"> --}}
     <div class="content-wrapper">
         <div class="content-header">
             <div class="container-fluid px-4">
@@ -48,7 +48,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-xs"
-                                                            onclick="return confirm('Are you sure?')">Delete</button>
+                                                            onclick="return confirm('Are you sure if you want to delete this product?')">Delete</button>
                                                     </form>
                                                 </td>
                                             </tr>

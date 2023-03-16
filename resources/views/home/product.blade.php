@@ -11,22 +11,22 @@
 				<div id="product-main-img">
 					<div class="product-preview">
 						<img src={{ asset("storage/images/".$product->image) }}
-						alt="">
+						style="height:500px" alt="">
 					</div>
 
 					<div class="product-preview">
 						<img src={{ asset("storage/images/".$product->photo->front_image) }}
-						alt="">
+						style="height:500px" alt="">
 					</div>
 
 					<div class="product-preview">
 						<img src={{ asset("storage/images/".$product->photo->side_image) }}
-						alt="">
+						style="height:500px" alt="">
 					</div>
 
 					<div class="product-preview">
 						<img src={{ asset("storage/images/".$product->photo->back_image) }}
-						alt="">
+						style="height:500px" alt="">
 					</div>
 				</div>
 			</div>

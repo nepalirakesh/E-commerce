@@ -31,8 +31,8 @@
                                             <tr>
                                                 <td>{{ $products->firstItem() + $loop->index }}</td>
                                                 <td>{{ ucfirst(Str::limit($product->name, 15)) }}</td>
-                                                <td>{{ Str::limit($product->description, 25) }}</td>
-                                                <td>{{ ucfirst($product->category->name) }}</td>
+                                                <td>{{ Str::limit($product->description, 20) }}</td>
+                                                <td>{{ ucfirst(Str::limit($product->category->name,10)) }}</td>
                                                 <td>
                                                     <img src=" {{ asset("storage/images/$product->image") }}" alt=""
                                                         width="50px" height="50px">

@@ -44,7 +44,7 @@ class HomeController extends Controller
   {
     $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(12);
     $search = $request->search;
-    if(session()->has('category')){
+    if (session()->has('category')) {
       session()->forget('category');
     }
     $request->session()->put('search', $search);
@@ -64,52 +64,52 @@ class HomeController extends Controller
    */
   public function price_filter(Request $request)
   {
+
     $min_price = $request->price_min;
     $max_price = $request->price_max;
 
-    if ($max_price > $min_price && $max_price != 0) {
 
-      // Price filtering with search
-      if ($request->session()->has('search')) {
-        
-        $val = $request->session()->get('search');
-        $request->session()->forget('search');
-        $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
 
-        if ($products->isNotEmpty()) {
+    // Price filtering with search
+    if ($request->session()->has('search')) {
 
-          return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
-        } else {
-          return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
-        }
+      $val = $request->session()->get('search');
+      $request->session()->forget('search');
+      $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+
+      if ($products->isNotEmpty()) {
+
+        return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
+      } else {
+        return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
       }
+    }
 
-      // Price filtering with category
-      elseif ($request->session()->has('category')) {
-       
-        $val = $request->session()->get('category');
-        $request->session()->forget('category');
+    // Price filtering with category
+    elseif ($request->session()->has('category')) {
 
-        list($products, $selectedCategory) = $this->getProductByCategory($val);
+      $val = $request->session()->get('category');
+      $request->session()->forget('category');
 
-        $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
-        if ($products->isNotEmpty()) {
-          return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
-        } else {
-          return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
-        }
+      list($products, $selectedCategory) = $this->getProductByCategory($val);
+
+      $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+      if ($products->isNotEmpty()) {
+        return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
+      } else {
+        return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
       }
+    }
 
-      // Price Filter
-      else {
-        $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
-        if ($products->isNotEmpty()) {
+    // Price Filter
+    else {
+      $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
+      if ($products->isNotEmpty()) {
 
-          return view('home.store', compact('products', 'min_price', 'max_price'));
-        } else {
+        return view('home.store', compact('products', 'min_price', 'max_price'));
+      } else {
 
-          return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
-        }
+        return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
       }
     }
   }
@@ -138,7 +138,7 @@ class HomeController extends Controller
     if (session()->has('search')) {
       session()->forget('search');
     }
-  
+
 
     list($products, $selectedCategory) = $this->getProductByCategory($slug);
 

@@ -49,14 +49,14 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->description = $request->description;
         $product->status = 1;
-       
+
         if ($request->file('image')) {
             $product->image = $this->uploadImage($request->file('image'));
             $front_image = $this->uploadImage($request->file('front_image'));
             $side_image = $this->uploadImage($request->file('side_image'));
             $back_image = $this->uploadImage($request->file('back_image'));
         }
-       
+
         $product->save();
         $product->photo()->create([
             'front_image' => $front_image,
@@ -112,7 +112,7 @@ class ProductController extends Controller
         $product->slug = Str::slug($request->name, '-');
         $product->description = $request->description;
         $product->category_id = $request->category_id;
-        
+
         //check for image files in request 
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
@@ -134,6 +134,9 @@ class ProductController extends Controller
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
+        if ($product->quantity > 0) {
+            $product->status = '1';
+        }
         $product->push();
 
         //Delete specification other than requested

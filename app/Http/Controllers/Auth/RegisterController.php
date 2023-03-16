@@ -60,6 +60,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'mobile_number' => ['required', 'string', 'regex:/^([0-9\s\-\+\(\)]*)$/', 'min:10'],
+            'address' => ['required', 'string', 'max:255'],
         ]);
     }
 
@@ -75,12 +77,15 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'mobile_number' => $data['mobile_number'],
+            'address' => $data['address'],
+
         ]);
     }
 
     /**
      * Register new user.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -97,17 +102,17 @@ class RegisterController extends Controller
         ]);
 
         auth()->login($user);
-           
-        try{
+
+        try {
 
             Mail::send('verify_email', ['token' => $token], function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('Email Verification Mail');
-    
-             });
-             return redirect()->route('home')->with('success', 'Your account has been created successfully. Please check your email to verify your email address');
-        }catch(Exception $e){
-            return redirect()->route('home')->with('success','Oopps! Failed to send email verification link. Please try to register with valid email address');
+
+            });
+            return redirect()->route('home')->with('success', 'Your account has been created successfully. Please check your email to verify your email address');
+        } catch (Exception $e) {
+            return redirect()->route('home')->with('success', 'Oopps! Failed to send email verification link. Please try to register with valid email address');
         }
 
     }

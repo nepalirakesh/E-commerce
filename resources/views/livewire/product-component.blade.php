@@ -14,8 +14,8 @@
                 </div>
                 @endif
             </div>
-            <div class="product-body">{{ $product->category->name }}</p>
-                <h3 class="product-name"><a href="#">{{ $product->name }}</a></h3>
+            <div class="product-body">{{$product->category->name }}</p>
+                <h3 class="product-name"><a href="#">{{Str::limit($product->name,20)   }}</a></h3>
                 <h4 class="product-price">Rs {{ number_format($product->unit_price, 2) }} </h4>
             </div>
         </div>

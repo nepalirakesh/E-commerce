@@ -82,4 +82,27 @@ class Category extends Model
     public static function getRootCategories(){
         return Category::whereNull('parent_id')->get();
     }
+
+    function setCategoryStatus($id)
+    {
+        $selectedCategory = Category::find($id);
+        $products = collect([]);
+
+        if ($selectedCategory->children->isNotEmpty()) {
+            $descendants = $selectedCategory->getDescendants($selectedCategory);
+            foreach ($descendants as $descendant) {
+                $product = Product::where('category_id', $descendant)->get();
+                $products = $products->concat($product);
+            }
+        } else {
+            $products = $selectedCategory->products()->get();
+        }
+
+        if (count($products)>0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
 }

@@ -37,27 +37,9 @@ class HomeController extends Controller
         return view('home.product', compact('product'));
     }
 
-    /**
-     * Search products based on keyword
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function search(Request $request)
-    {
-        $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(12);
-        $search = $request->search;
-        if (session()->has('category')) {
-            session()->forget('category');
-        }
-        $request->session()->put('search', $search);
-        if ($products->total() != 0) {
 
-            return view('home.store', compact('products'))->with('search', $request->search);
-        } else {
-            return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $request->search . '"');
-        }
-    }
+
+
 
     /**
      * Search product based on price range
@@ -67,52 +49,50 @@ class HomeController extends Controller
      */
     public function price_filter(Request $request)
     {
+
         $min_price = $request->price_min;
         $max_price = $request->price_max;
 
-        if ($max_price > $min_price && $max_price != 0) {
+        // Price filtering with search
+        if ($request->session()->has('search')) {
 
-            // Price filtering with search
-            if ($request->session()->has('search')) {
+            $val = $request->session()->get('search');
+            $request->session()->forget('search');
+            $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
 
-                $val = $request->session()->get('search');
-                $request->session()->forget('search');
-                $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+            if ($products->isNotEmpty()) {
 
-                if ($products->isNotEmpty()) {
-
-                    return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
-                } else {
-                    return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
-                }
+                return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
+            } else {
+                return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
             }
+        }
 
-            // Price filtering with category
-            elseif ($request->session()->has('category')) {
+        // Price filtering with category
+        elseif ($request->session()->has('category')) {
 
-                $val = $request->session()->get('category');
-                $request->session()->forget('category');
+            $val = $request->session()->get('category');
+            $request->session()->forget('category');
 
-                list($products, $selectedCategory) = $this->getProductByCategory($val);
+            list($products, $selectedCategory) = $this->getProductByCategory($val);
 
-                $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
-                if ($products->isNotEmpty()) {
-                    return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
-                } else {
-                    return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
-                }
+            $products = $products->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+            if ($products->isNotEmpty()) {
+                return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
+            } else {
+                return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
             }
+        }
 
-            // Price Filter
-            else {
-                $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
-                if ($products->isNotEmpty()) {
+        // Price Filter
+        else {
+            $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+            if ($products->isNotEmpty()) {
 
-                    return view('home.store', compact('products', 'min_price', 'max_price'));
-                } else {
+                return view('home.store', compact('products', 'min_price', 'max_price'));
+            } else {
 
-                    return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
-                }
+                return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
             }
         }
     }
@@ -126,6 +106,7 @@ class HomeController extends Controller
         $user = Auth()->user();
         return view('order', compact('user'));
     }
+
     public function user_order_detail($id)
     {
         $user = Auth::user();

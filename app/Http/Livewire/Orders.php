@@ -11,7 +11,6 @@ class Orders extends Component
 
     public function render()
     {
-
         $orders = Order::where('user_id', $this->userId)->get();
         // dd($orders);
         return view('livewire.orders', ['orders' => $orders]);

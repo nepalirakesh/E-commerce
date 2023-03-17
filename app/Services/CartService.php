@@ -113,6 +113,8 @@ class CartService
     public function clear(): void
     {
         $this->session->forget(self::DEFAULT_INSTANCE);
+        event('cartCleared');
+
     }
 
     /**
@@ -178,7 +180,13 @@ class CartService
     }
     public function count()
     {
+        $content = $this->getContent();
 
-        return count($this->getContent());
+        if ($content->isEmpty()) {
+            return 0;
+        }
+
+        return $content->count();
     }
+
 }

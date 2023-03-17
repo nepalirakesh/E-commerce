@@ -33,6 +33,7 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/order', [HomeController::class, 'order'])->name('user.order');
+Route::get('/user-order-detail/{id}', [HomeController::class, 'user_order_detail']);
 
 //Route for single page product
 Route::get('home/product/{product}', [HomeController::class, 'product_page'])->name('product.page');

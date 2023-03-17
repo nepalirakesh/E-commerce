@@ -21,12 +21,13 @@ class CartCount extends Component
 
     protected $listeners = [
         'productAddedToCart' => 'updateCount',
+        'cartCleared' => 'clearCount',
+
     ];
 
     public function updateCount(CartService $cartService)
     {
         $this->count = $cartService->count();
-        $this->emit('productAddedToCart');
 
     }
 }

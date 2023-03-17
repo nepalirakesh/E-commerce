@@ -84,5 +84,7 @@ class CartComponent extends Component
     {
         $this->total = Cart::total();
         $this->content = Cart::content();
+        $this->emit('productAddedToCart');
+
     }
 }

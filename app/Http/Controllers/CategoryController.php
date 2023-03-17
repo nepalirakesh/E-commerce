@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -15,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::latest()->paginate(10);
+    
         return view('dashboard.category.index', compact('categories'));
     }
 
@@ -44,7 +46,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'parent_id' => $request->parent_id == 'null' ? 'null' : $request->parent_id,
-            'status' => 1,
+            'status' => 0,
             'slug' => Str::slug($request->name, '-'),
         ]);
 
@@ -100,4 +102,5 @@ class CategoryController extends Controller
 
         return redirect()->route('category.index')->with('delete', 'Category deleted successfully.');
     }
+
 }

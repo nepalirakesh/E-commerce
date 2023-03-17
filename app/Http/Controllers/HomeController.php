@@ -103,7 +103,7 @@ class HomeController extends Controller
 
     // Price Filter
     else {
-      $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(9);
+      $products = Product::whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
       if ($products->isNotEmpty()) {
 
         return view('home.store', compact('products', 'min_price', 'max_price'));

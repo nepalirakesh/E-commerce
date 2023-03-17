@@ -20,6 +20,7 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">Parent</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -32,6 +33,7 @@
                                             <td>{!! ucfirst(Str::limit($category->description, 15)) !!}</td>
                                             <td>{{ count($category->parents) ? $category->parents->implode('name', '/') : 'No Parent' }}
                                             </td>
+                                            <td>{{ $category->status ? 'In Stock' : 'Out Of Stock' }}</td>
                                             <td>
                                                 <form action="{{ route('category.delete', $category) }}" method="POST">
                                                     <a href="{{ route('category.show', $category) }}"

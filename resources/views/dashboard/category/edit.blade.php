@@ -24,9 +24,9 @@
                         <div class="form-group">
                             <label for="parent">Main Category</label>
                             <select class="form-control" name="parent_id" id="parent">
+                                <option value="">None</option>
                                 @foreach ($rootCategories as $root)
                                     @if ($root->id == $category->id)
-                                        <option value=""selected>None</option>
                                         @continue
                                     @endif
                                     @include('dashboard.category.editsubcategories', [

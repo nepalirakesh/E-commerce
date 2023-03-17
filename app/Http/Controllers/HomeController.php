@@ -9,7 +9,6 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 
 
-
 class HomeController extends Controller
 {
     protected $cat;
@@ -36,14 +35,26 @@ class HomeController extends Controller
     {
         return view('home.product', compact('product'));
     }
+    /**
+     * Search products based on keyword
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function search(Request $request)
+    {
+        $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(12);
+        $search = $request->search;
+        if (session()->has('category')) {
+            session()->forget('category');
+        }
+        $request->session()->put('search', $search);
+        if ($products->total() != 0) {
 
-
-
-    if ($min_price > $max_price) {
-      $min_price = $request->price_max;
-      $max_price = $request->price_min;
+            return view('home.store', compact('products'))->with('search', $request->search);
+        } else {
+            return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $request->search . '"');
+        }
     }
-
 
 
     /**
@@ -57,6 +68,10 @@ class HomeController extends Controller
 
         $min_price = $request->price_min;
         $max_price = $request->price_max;
+        if ($min_price > $max_price) {
+            $min_price = $request->price_max;
+            $max_price = $request->price_min;
+        }
 
         // Price filtering with search
         if ($request->session()->has('search')) {

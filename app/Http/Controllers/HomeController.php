@@ -68,6 +68,11 @@ class HomeController extends Controller
     $min_price = $request->price_min;
     $max_price = $request->price_max;
 
+    if ($min_price > $max_price) {
+      $min_price = $request->price_max;
+      $max_price = $request->price_min;
+    }
+
 
 
     // Price filtering with search

@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
 
 class LoginController extends Controller
 {
     protected $cartService;
-    
+
     /*
     |--------------------------------------------------------------------------
     | Login Controller
@@ -40,14 +41,32 @@ class LoginController extends Controller
      */
     public function __construct(CartService $cartService)
     {
-                $this->cartService = $cartService;
+        $this->cartService = $cartService;
 
         // $this->middleware('guest')->except('logout');
         $this->Middleware('guest', ['except' => ['logout', 'userLogout']]);
     }
+
+    public function authenticate(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+
+            return redirect()->route('home');
+
+        } else {
+            session()->flash('error', 'Either Email/Password is incorrect');
+            return back()->withInput($request->only('email'));
+        }
+
+    }
     public function userLogout()
     {
-     $this->cartService->clear();
+        $this->cartService->clear();
         Auth::guard('web')->logout();
         return redirect()->route('home');
     }

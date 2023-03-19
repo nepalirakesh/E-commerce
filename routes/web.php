@@ -43,6 +43,8 @@ Route::get('home/search', [HomeController::class, 'search'])->name('search');
 // -------------------------Route for price filter------------------------
 Route::get('home/price', [HomeController::class, 'price_filter'])->name('product.price');
 
+Route::post('/login', [LoginController::class, 'authenticate'])->name('user.auth');
+
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');
 

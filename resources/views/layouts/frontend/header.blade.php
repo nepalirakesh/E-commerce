@@ -18,6 +18,7 @@
 <!-- nouislider -->
 <link type="text/css" rel="stylesheet" href="{{ asset('css/nouislider.min.css') }}" />
 <link type="text/css" rel="stylesheet" href="{{asset('css/sidemenu.css')}}"/>
+<link type="text/css" rel="stylesheet" href="{{asset('css/stickynav.css')}}"/>
 
 {{--
 <!-- Font Awesome Icon -->

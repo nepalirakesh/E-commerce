@@ -66,4 +66,7 @@
 <script src="{{ asset('js/main.js') }}"></script>
 <script src="https://use.fontawesome.com/ea9cd286ec.js"></script>
 
+<script src="{{ asset('js/stickynav.js') }}"></script>
+
+
 @livewireScripts

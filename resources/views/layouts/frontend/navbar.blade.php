@@ -1,5 +1,5 @@
 <!-- HEADER -->
-<header>
+<header id="sticky_header">
     <!-- TOP HEADER -->
     <div id="top-header">
         <div class="container">
@@ -23,7 +23,7 @@
                     <div class="dropdown-menu" style="min-width:65px" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();"
-                            style="color:black;">
+                            style="color:black;padding:10px;">
                             {{ __('Logout') }}
                         </a>
 
@@ -93,6 +93,7 @@
                             </div>
                         </div>
                         <!-- /Cart -->
+
                 </div>
                 <!-- /ACCOUNT -->
             </div>

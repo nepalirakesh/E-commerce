@@ -5,7 +5,7 @@
         <!-- row -->
         <div class="row">
             <!-- ASIDE -->
-            <div id="aside" class="col-md-3">
+            <div id="aside" class="col-md-3 position-fixed" >
                 <!-- aside Widget -->
                 <div class="aside">
                     <h3 class="aside-title">Categories</h3>

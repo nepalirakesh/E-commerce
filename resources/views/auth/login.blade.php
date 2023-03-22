@@ -58,6 +58,13 @@
                                     @endif
                                 </div>
                             </div>
+                            <div class="row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <span class="text-center">Or </span> <br>
+                                    <a href="{{ url('/webcam') }}" class="text-center"> Login with
+                                        faceId</a>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

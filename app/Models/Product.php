@@ -41,7 +41,7 @@ class Product extends Model
      // return products with hightest sales
      public static function getTopProducts()
      {
-         $top = OrderProduct::select('product_id', DB::raw('COUNT(product_id) as `count`'))->groupBy('product_id')->orderBy('count', 'desc')->limit(1)->get();
+         $top = OrderProduct::select('product_id', DB::raw('COUNT(product_id) as `count`'))->groupBy('product_id')->orderBy('count', 'desc')->get();
          $topProd = collect([]);
  
          foreach ($top as $t) {

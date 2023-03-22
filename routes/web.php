@@ -32,6 +32,7 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/store',[HomeController::class,'store'])->name('store');
 Route::get('/order', [HomeController::class, 'order'])->name('user.order');
 Route::get('/user-order-detail/{id}', [HomeController::class, 'user_order_detail']);
 

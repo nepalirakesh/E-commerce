@@ -49,19 +49,20 @@ class ProductController extends Controller
         $product->category_id = $request->category_id;
         $product->description = $request->description;
         $product->status = 1;
-       
+
         if ($request->file('image')) {
             $product->image = $this->uploadImage($request->file('image'));
         }
         if ($request->file('front_image')) {
             $front_image = $this->uploadImage($request->file('front_image'));
-        } 
+        }
         if ($request->file('side_image')) {
             $side_image = $this->uploadImage($request->file('side_image'));
-        }  if ($request->file('front_image')) {
+        }
+        if ($request->file('front_image')) {
             $back_image = $this->uploadImage($request->file('front_image'));
-        } 
-         
+        }
+
         $product->save();
         $product->photo()->create([
             'front_image' => $front_image,
@@ -69,8 +70,8 @@ class ProductController extends Controller
             'back_image' => $back_image,
         ]);
 
-        if(!$product->category->status){
-            $product->category->status=1;
+        if (!$product->category->status) {
+            $product->category->status = 1;
             $product->push();
         }
 
@@ -121,10 +122,10 @@ class ProductController extends Controller
         $product->name = $request->name;
         $product->slug = Str::slug($request->name, '-');
         $product->description = $request->description;
-        $old_category=Category::find($product->category->id);
-        $new_category=Category::find($request->category_id);
+        $old_category = Category::find($product->category->id);
+        $new_category = Category::find($request->category_id);
         $product->category_id = $request->category_id;
-        
+
         //check for image files in request 
         if ($request->hasFile('image')) {
             $this->deleteImage($product->image);
@@ -146,15 +147,21 @@ class ProductController extends Controller
 
         $product->unit_price = $request->price;
         $product->quantity = $request->quantity;
+        if ($product->quantity) {
+            $product->status = 1;
+        } else {
+            $product->status = 0;
+        }
         $product->push();
 
+
         //update old  category's status
-            $old_category->status=$old_category->setCategoryStatus($old_category->id);
-            $old_category->save();
+        $old_category->status = $old_category->setCategoryStatus($old_category->id);
+        $old_category->save();
 
         //update new category's status    
-            $new_category->status=$new_category->setCategoryStatus($new_category->id);
-            $new_category->save();
+        $new_category->status = $new_category->setCategoryStatus($new_category->id);
+        $new_category->save();
 
 
         //Delete specification other than requested
@@ -203,9 +210,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $this->deleteImage($product->image);
-        $category=Category::find($product->category->id);
+        $category = Category::find($product->category->id);
         $product->delete();
-        $category->status=$category->setCategoryStatus($category->id);
+        $category->status = $category->setCategoryStatus($category->id);
         $category->save();
 
         return redirect('product')->with('delete', 'Deleted Successfully');

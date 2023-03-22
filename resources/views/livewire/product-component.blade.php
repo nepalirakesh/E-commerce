@@ -10,7 +10,7 @@
                 <img src="{{ asset("storage/images/$product->image") }}" alt="">
                 @if ($product->status == 0)
                 <div class="product-label">
-                    <span class="badge badge-pill badge-danger" style="background-color: red">Out Of Stock</span>
+                    <span class="new">Out Of Stock</span>
                 </div>
                 @endif
             </div>

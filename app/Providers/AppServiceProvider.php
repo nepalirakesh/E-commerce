@@ -55,12 +55,12 @@ class AppServiceProvider extends ServiceProvider
         date_default_timezone_set('Asia/Kathmandu');
 
         //pass top product to store view
-        view()->composer(['home.store'], function ($view) {
-            $view->with('topProd', Product::getTopProducts());
+        view()->composer(['home.store','home.index'], function ($view) {
+            $view->with('topProd', Product::getTopProducts()->take(5));
         });
 
         //pass root category  to multiple view
-        view()->composer(['home.store', 'dashboard.category.create', 'dashboard.category.edit', 'dashboard.product.create', 'dashboard.product.edit'], function ($view) {
+        view()->composer(['home.store','home.index' ,'dashboard.category.create', 'dashboard.category.edit', 'dashboard.product.create', 'dashboard.product.edit'], function ($view) {
             $view->with('rootCategories', Category::getRootCategories());
         });
     }

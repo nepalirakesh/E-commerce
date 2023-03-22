@@ -61,7 +61,7 @@
 
                             @csrf
                             <input class="input" type="text" placeholder="Search here" name="search" id="search"
-                                required>
+                               value="{{old('search')}}" required>
                             <button class="search-btn">Search</button>
                         </form>
                     </div>

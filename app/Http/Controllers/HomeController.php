@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Order;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -19,10 +20,24 @@ class HomeController extends Controller
      */
 
     public function index()
-    {
-        $products = Product::latest()->paginate(12);
+    {   
+        $date=Carbon::now()->subDays(4); 
+        $newProducts = Product::where('created_at','>=',$date)->get();
+        $categoryWithImage=[];
+        $active_product=Product::where('status','!=','0')->get();
+        $unique_product=$active_product->unique(['category_id']);
+        $root_image=[];
+        $root=Category::getRootCategories();
+        foreach($root as $category){
+            $root_image[$category->name]=Category::getCategoryImage($category->id);
+        }
+        
+        return view('home.index', compact('newProducts','unique_product','root_image'));
+    }
 
-        return view('home.store', compact('products'));
+    public function store(){
+        $products=Product::latest()->paginate(12);
+        return view('home.store',compact('products'));
     }
 
     /**
@@ -52,7 +67,7 @@ class HomeController extends Controller
 
             return view('home.store', compact('products'))->with('search', $request->search);
         } else {
-            return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $request->search . '"');
+            return redirect()->route('store')->with('notAvailable', 'No Products Available for "' . $request->search . '"');
         }
     }
 
@@ -84,7 +99,7 @@ class HomeController extends Controller
 
                 return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
             } else {
-                return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
+                return redirect()->route('store')->with('notAvailable', 'No product Available for "' . $val . '"between price Rs ' . $min_price . '-' . $max_price);
             }
         }
 
@@ -100,7 +115,7 @@ class HomeController extends Controller
             if ($products->isNotEmpty()) {
                 return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);
             } else {
-                return redirect()->route('home')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
+                return redirect()->route('store')->with('notAvailable', 'No product Available for "' . $selectedCategory->name . '" category between price Rs ' . $min_price . '-' . $max_price);
             }
         }
 
@@ -112,7 +127,7 @@ class HomeController extends Controller
                 return view('home.store', compact('products', 'min_price', 'max_price'));
             } else {
 
-                return redirect()->route('home')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
+                return redirect()->route('store')->with('notAvailable', 'No Products Available between price Rs ' . $min_price . '-' . $max_price);
             }
         }
     }
@@ -158,7 +173,7 @@ class HomeController extends Controller
             $products = $products->paginate(6);
             return view('home.store', compact('products', 'selectedCategory'));
         }
-        return redirect()->route('home')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category');
+        return redirect()->route('store')->with('notAvailable', 'No Products Available for "' . $selectedCategory->name . '" category');
     }
 
     /**

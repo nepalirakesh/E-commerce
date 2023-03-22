@@ -20,16 +20,18 @@
                         {{ Auth::user()->name }} <span class="caret"></span>
                     </a>
                     <a href="{{ url('order') }}" style="padding:10px">My Order</a>
-                    <div class="dropdown-menu" style="min-width:65px" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" id="home-dropdown"  aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{url('/webcam')}}">Face Authentication</a>
                         <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
-                                                 document.getElementById('logout-form').submit();"
-                            style="color:black;padding:10px;">
+                                                 document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}
                         </a>
-
+                        
                         <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
+                        
+                    
                     </div>
                 </li>
                 @endguest

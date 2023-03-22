@@ -21,13 +21,20 @@ class HomeController extends Controller
 
     public function index()
     {   
+        //Get Products that are 4 days old
         $date=Carbon::now()->subDays(4); 
         $newProducts = Product::where('created_at','>=',$date)->get();
+        
+        //Get product with status 1 and with distinct category
+       
         $categoryWithImage=[];
         $active_product=Product::where('status','!=','0')->get();
         $unique_product=$active_product->unique(['category_id']);
+       
+        //Create associative array with key as root category name and value as random image form its descandants or itself
         $root_image=[];
         $root=Category::getRootCategories();
+       
         foreach($root as $category){
             $root_image[$category->name]=Category::getCategoryImage($category->id);
         }
@@ -147,7 +154,7 @@ class HomeController extends Controller
         $user = Auth::user();
         $orders = Order::where('id', $id)
             ->where('user_id', $user->id)
-            ->get();
+            ->latest()->get();
         return view('home.user-order-detail', compact('orders'));
     }
 

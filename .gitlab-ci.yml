@@ -10,7 +10,7 @@ variables:
   AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
-  DOCKER_REGISTRY: 599108698428.dkr.ecr.ap-south-1.amazonaws.com
+  #  DOCKER_REGISTRY: 599108698428.dkr.ecr.ap-south-1.amazonaws.com
   REPOSITORY_NAME: internship-ecommerce
   APP_VERSION: $CI_PIPELINE_IID
 
@@ -21,10 +21,14 @@ build image:
   services:
     - name: docker:dind
   before_script:
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    #    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
   script:
-    - docker build -t $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION .
-    - docker push $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+    #    - docker build -t $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION .
+    - docker build -t $REPOSITORY_NAME:$APP_VERSION .
+    #    - docker push $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+    - docker push $REPOSITORY_NAME:$APP_VERSION
+
 
 deploy container:
   stage: deploy
@@ -40,12 +44,19 @@ deploy container:
     - mkdir ~/.ssh
     - chmod 700 ~/.ssh
   script:
+    #    - |
+    #      ssh -o StrictHostKeyChecking=no ubuntu@$EC2_INSTANCE_URL "
+    #        aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    #        docker pull $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+    #        docker container rm -f app
+    #        docker run --name app --network internship -d -p 80:80 $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+    #      "
     - |
       ssh -o StrictHostKeyChecking=no ubuntu@$EC2_INSTANCE_URL "
-        aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-        docker pull $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+        echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
+        docker pull $REPOSITORY_NAME:$APP_VERSION
         docker container rm -f app
-        docker run --name app --network internship -d -p 80:80 $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+        docker run --name app --network internship -d -p 80:80 $REPOSITORY_NAME:$APP_VERSION
       "
 
 #  docker cp /home/ubuntu/.env app:/var/www/html/

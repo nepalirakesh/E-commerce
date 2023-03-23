@@ -54,9 +54,9 @@ deploy container:
     - |
       ssh -o StrictHostKeyChecking=no ubuntu@$EC2_INSTANCE_URL "
         echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
-        docker pull $REPOSITORY_NAME:$APP_VERSION
+        docker pull sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
         docker container rm -f app
-        docker run --name app --network internship -d -p 80:80 $REPOSITORY_NAME:$APP_VERSION
+        docker run --name app --network internship -d -p 80:80 sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
       "
 
 #  docker cp /home/ubuntu/.env app:/var/www/html/

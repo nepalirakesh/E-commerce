@@ -1,6 +1,9 @@
 FROM php:8.1-apache
 
-WORKDIR /var/www/html
+# Copy virtual host into container
+COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
+WORKDIR /var/www/app
 
 # Install necessary packages
 RUN apt-get update && \
@@ -9,7 +12,6 @@ RUN apt-get update && \
     git \
     unzip \
     -y --no-install-recommends
-
 
 # install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
@@ -25,6 +27,9 @@ COPY . .
 
 # install project dependencies
 RUN composer install
+
+# Change permissions to apache
+RUN chown -R www-data:www-data /var/www/app
 
 EXPOSE 8000
 

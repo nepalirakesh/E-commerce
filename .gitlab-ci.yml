@@ -56,12 +56,12 @@ deploy container:
         echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
         docker pull sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
         docker container rm -f app
-        docker run --name app --network internship -d -p 80:80 sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
+        docker run --name app --network internship -d -p 80:80 -v /home/ubuntu/projectfiles:/var/www/app sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
+        docker exec app php artisan storage:link
       "
 
-#  docker cp /home/ubuntu/.env app:/var/www/html/
-#  docker exec app chown www-data:www-data -R /var/www/html
-#  docker exec app php artisan key:generate
-#  docker exec app php artisan migrate
-#  docker exec app php artisan storage:link
+# docker run --name db --network internship -v db:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root -d mysql
+# docker container exec -it db mysql -uroot -p
+# CREATE DATABASE ecommerce;
+# docker run --name app --network internship -v /home/ubuntu/projectfiles/.env:/var/www/app/.env -p 80:80 -d sanjeevbhusal/internship-ecommerce:5
 

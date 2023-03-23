@@ -27,7 +27,7 @@ build image:
     #    - docker build -t $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION .
     - docker build -t $REPOSITORY_NAME:$APP_VERSION .
     #    - docker push $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
-    - docker push $REPOSITORY_NAME:$APP_VERSION
+    - docker push sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
 
 
 deploy container:

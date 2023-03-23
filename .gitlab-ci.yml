@@ -46,12 +46,11 @@ deploy container:
         docker pull $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
         docker container rm -f app
         docker run --name app --network internship -d -p 80:80 $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
-        docker cp /home/ubuntu/.env app:/var/www/html/
-        docker exec app chown www-data:www-data -R /var/www/html
-        docker exec app php artisan key:generate
-        docker exec app php artisan migrate
-        docker exec app php artisan storage:link
       "
 
-
+#  docker cp /home/ubuntu/.env app:/var/www/html/
+#  docker exec app chown www-data:www-data -R /var/www/html
+#  docker exec app php artisan key:generate
+#  docker exec app php artisan migrate
+#  docker exec app php artisan storage:link
 

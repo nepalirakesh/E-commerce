@@ -25,7 +25,7 @@ build image:
     - echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
   script:
     #    - docker build -t $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION .
-    - docker build -t $REPOSITORY_NAME:$APP_VERSION .
+    - docker build -t sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION .
     #    - docker push $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
     - docker push sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
 

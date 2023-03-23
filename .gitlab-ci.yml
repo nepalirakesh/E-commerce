@@ -56,7 +56,7 @@ deploy container:
         echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
         docker pull sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
         docker container rm -f app
-        docker run --name app --network internship -d -p 80:80 sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
+        docker run --name app --network internship -d -p 80:8000 sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
         docker cp /home/ubuntu/projectfiles/.env app:/var/www/app/.env
         docker exec app php artisan storage:link
       "

@@ -1,0 +1,56 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  CI: "false"
+  AWS_REGION: $AWS_DEFAULT_REGION
+  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
+  #  DOCKER_REGISTRY: 599108698428.dkr.ecr.ap-south-1.amazonaws.com
+  REPOSITORY_NAME: internship-ecommerce
+  APP_VERSION: $CI_PIPELINE_IID
+
+
+build image:
+  stage: build
+  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest
+  services:
+    - name: docker:dind
+  before_script:
+    #    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
+  script:
+    #    - docker build -t $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION .
+    - docker build -t sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION .
+    #    - docker push $DOCKER_REGISTRY/$REPOSITORY_NAME:$APP_VERSION
+    - docker push sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
+
+
+deploy container:
+  stage: deploy
+  image: alpine
+  variables:
+    SSH_PRIVATE_KEY: $EC2_MACHINE_SSH_KEY
+    EC2_INSTANCE_URL: $EC2_INSTANCE_URL
+  before_script:
+    - apk update
+    - apk add openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -
+    - mkdir ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - |
+      ssh -o StrictHostKeyChecking=no ubuntu@$EC2_INSTANCE_URL "
+        echo "$DOCKERHUB_PASSWORD" | docker login --username sanjeevbhusal --password-stdin
+        docker pull sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
+        docker container rm -f app
+        docker run --name app --network internship -d -p 80:80 sanjeevbhusal/$REPOSITORY_NAME:$APP_VERSION
+        docker cp /home/ubuntu/projectfiles/.env app:/var/www/app/.env
+        docker exec app php artisan storage:link
+        docker cp images app:/var/www/app/public/storage/images
+      "

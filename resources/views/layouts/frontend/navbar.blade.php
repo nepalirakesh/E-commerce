@@ -21,7 +21,6 @@
                     </a>
                     <a href="{{ url('order') }}" style="padding:10px">My Order</a>
                     <div class="dropdown-menu" id="home-dropdown"  aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{url('/webcam')}}">Face Authentication</a>
                         <a class="dropdown-item" href="{{ route('user.logout') }}" onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                             {{ __('Logout') }}

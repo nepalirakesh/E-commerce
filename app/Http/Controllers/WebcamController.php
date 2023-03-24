@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class WebcamController extends Controller
@@ -24,26 +26,9 @@ class WebcamController extends Controller
      */
     public function store(Request $request)
     {
-        // $img = $request->image;
-        // $folderPath = "uploads/";
-        // dd($img);
 
-        // $image_parts = explode(";base64,", $img);
-        // $image_type_aux = explode("image/", $image_parts[0]);
-        // $image_type = $image_type_aux[1];
-
-        // $image_base64 = base64_decode($image_parts[1]);
-        // $fileName = uniqid() . '.png';
-
-        // $file = $folderPath . $fileName;
-        // Storage::put($file, $image_base64);
-
-        // ('Image uploaded successfully: ' . $fileName);
-
-        $images = array();
-        for ($i = 1; $i <= 5; $i++) {
-            if ($request->has('image' . $i)) {
-                $img = $request->input('image' . $i);
+            if ($request->has('image')) {
+                $img = $request->input('image');
                 $folderPath = "uploads/";
                 $image_parts = explode(";base64,", $img);
                 $image_type_aux = explode("image/", $image_parts[0]);
@@ -52,10 +37,21 @@ class WebcamController extends Controller
                 $fileName = uniqid() . '.png';
                 $file = $folderPath . $fileName;
                 Storage::put($file, $image_base64);
-                array_push($images, $fileName);
             }
+            $user=User::where('email',$request->email)->first();
+            if(!is_null($user)){
+
+                Auth::guard('web')->login($user);
+                return redirect()->route('home');
+            }else {
+                session()->flash('error', 'Enter Valid Email');
+                return back()->withInput($request->only('email'));
+            }
+        
         }
-        // Save the image file names to the database or do other processing
-        dd($images);
     }
-}
+     
+           
+            
+    
+            

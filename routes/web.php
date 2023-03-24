@@ -117,5 +117,5 @@ Route::get('email/verify/{token}', [VerificationController::class, 'verifyEmail'
 
 
 // ------------------Route for Webcam--------------------------------
-Route::get('/webcam', [WebcamController::class, 'index'])->middleware('auth');
+Route::get('/webcam', [WebcamController::class, 'index'])->name('webcam');
 Route::post('/webcam', [WebcamController::class, 'store'])->name('webcam.capture');

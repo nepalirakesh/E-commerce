@@ -17,11 +17,10 @@ class AdminController extends Controller
         ]);
 
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
-            return redirect()->route('admin.dashboard');
+            return redirect()->intended(route('admin.dashboard'));
 
         } else {
-            session()->flash('error', 'Either Email/Password is incorrect');
+            session()->flash('error', 'Either Email/Password is incorrect');        
             return back()->withInput($request->only('email'));
         }
 

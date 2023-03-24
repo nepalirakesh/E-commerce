@@ -20,31 +20,32 @@ class HomeController extends Controller
      */
 
     public function index()
-    {   
+    {
         //Get Products that are 4 days old
-        $date=Carbon::now()->subDays(4); 
-        $newProducts = Product::where('created_at','>=',$date)->get();
-        
+        $date = Carbon::now()->subDays(4);
+        $newProducts = Product::where('created_at', '>=', $date)->get();
+
         //Get product with status 1 and with distinct category
-       
-        $categoryWithImage=[];
-        $active_product=Product::where('status','!=','0')->get();
-        $unique_product=$active_product->unique(['category_id']);
-       
+
+        $categoryWithImage = [];
+        $active_product = Product::where('status', '!=', '0')->get();
+        $unique_product = $active_product->unique(['category_id']);
+
         //Create associative array with key as root category name and value as random image form its descandants or itself
-        $root_image=[];
-        $root=Category::getRootCategories();
-       
-        foreach($root as $category){
-            $root_image[$category->name]=Category::getCategoryImage($category->id);
+        $root_image = [];
+        $root = Category::getRootCategories();
+
+        foreach ($root as $category) {
+            $root_image[$category->name] = Category::getCategoryImage($category->id);
         }
-        
-        return view('home.index', compact('newProducts','unique_product','root_image'));
+
+        return view('home.index', compact('newProducts', 'unique_product', 'root_image'));
     }
 
-    public function store(){
-        $products=Product::latest()->paginate(12);
-        return view('home.store',compact('products'));
+    public function store()
+    {
+        $products = Product::latest()->paginate(12);
+        return view('home.store', compact('products'));
     }
 
     /**
@@ -65,11 +66,22 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $products = Product::where('name', 'LIKE', '%' . $request->search . "%")->paginate(12);
+       
+        // if ($products->isEmpty()) {
+        //     $category = Category::where('name', 'LIKE', '%' . $request->search . '%')->first();
+
+        //     if (!is_null($category)) {
+        //         list($productCat, $selectedCategory) = $this->getProductByCategory($category->slug);
+        //         $products = $products->concat($productCat)->paginate(12);
+        //     }
+        // }
         $search = $request->search;
+        
         if (session()->has('category')) {
             session()->forget('category');
         }
         $request->session()->put('search', $search);
+        
         if ($products->total() != 0) {
 
             return view('home.store', compact('products'))->with('search', $request->search);
@@ -101,7 +113,16 @@ class HomeController extends Controller
             $val = $request->session()->get('search');
             $request->session()->forget('search');
             $products = Product::where('name', 'LIKE', '%' . $val . "%")->whereBetween('unit_price', [$min_price, $max_price])->paginate(12);
+            // if ($products->isEmpty()) {
+            //     $category = Category::where('name', 'LIKE', '%' . $request->search . '%')->first();
+        
+            //     if (!is_null($category)) {
+            //         list($productCat, $selectedCategory) = $this->getProductByCategory($category->slug);
+            //         $products = $products->concat($productCat);
+            //         $products = $products->where('unit_price','<',$max_price)->paginate(12);
 
+            //     }
+            // }
             if ($products->isNotEmpty()) {
 
                 return view('home.store', compact('products', 'min_price', 'max_price'))->with('price_filter', $val);

@@ -66,7 +66,7 @@
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <span class="text-center">Or </span> <br>
-                                    <a href="{{ url('/webcam') }}" class="text-center"> Login with
+                                    <a href="{{ url('/webcam') }}" class="text-center btn btn-primary"> Login with
                                         faceId</a>
                                 </div>
                             </div>

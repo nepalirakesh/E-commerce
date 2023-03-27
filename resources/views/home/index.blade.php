@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <!-- /section title -->
-
+                @if(count($newProducts)>0)
                 <!-- Products tab & slick -->
                 <div class="col-md-12">
                     <div class="row">
@@ -100,6 +100,12 @@
                     </div>
                 </div>
                 <!-- Products tab & slick -->
+                @else
+                <div class="container">
+
+                    <p>No new Products Available</p>
+                </div>
+                @endif
             </div>
             <!-- /row -->
         </div>

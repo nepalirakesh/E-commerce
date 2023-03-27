@@ -9,10 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserController;
-use App\Http\Livewire\CartComponent;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Auth\RegisterController;
-use GrahamCampbell\ResultType\Success;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\WebcamController;
 use App\Http\Controllers\OrderController;
@@ -33,8 +30,8 @@ Auth::routes();
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/store',[HomeController::class,'store'])->name('store');
-Route::get('/order', [HomeController::class, 'order'])->name('user.order');
-Route::get('/user-order-detail/{id}', [HomeController::class, 'user_order_detail']);
+Route::get('/order', [HomeController::class, 'order'])->name('user.order')->middleware('auth');
+Route::get('/user-order-detail/{id}', [HomeController::class, 'user_order_detail'])->middleware('auth');
 
 //Route for single page product
 Route::get('home/product/{product}', [HomeController::class, 'product_page'])->name('product.page');
@@ -44,7 +41,7 @@ Route::get('home/search', [HomeController::class, 'search'])->name('search');
 // -------------------------Route for price filter------------------------
 Route::get('home/price', [HomeController::class, 'price_filter'])->name('product.price');
 
-Route::post('/login', [LoginController::class, 'authenticate'])->name('user.auth');
+// Route::post('/login', [LoginController::class, 'authenticate'])->name('user.auth');
 
 Route::post('/user/logout', [LoginController::class, 'userLogout'])->name('user.logout');
 Route::get('/home/categories/{category}', [HomeController::class, 'productByCategory'])->name('productByCategory');

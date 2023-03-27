@@ -35,7 +35,7 @@
             </div>
             <ul class="product-links">
                 <li>Category:</li>
-                <li><a href="#">{{ $product->category->name }}</a></li>
+                <li><a href="{{route('productByCategory',$product->category)}}">{{ $product->category->name }}</a></li>
 
             </ul>
         </div>

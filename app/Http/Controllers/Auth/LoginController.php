@@ -47,7 +47,7 @@ class LoginController extends Controller
         $this->Middleware('guest', ['except' => ['logout', 'userLogout']]);
     }
 
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
         $this->validate($request, [
             'email' => 'required|email',
@@ -55,8 +55,8 @@ class LoginController extends Controller
         ]);
 
         if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+            return redirect()->intended(route('home'));
 
-            return redirect()->route('home');
 
         } else {
             session()->flash('error', 'Either Email/Password is incorrect');

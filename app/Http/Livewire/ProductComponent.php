@@ -27,20 +27,20 @@ class ProductComponent extends Component
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function render(): View
-    {
-        return view('livewire.product-component');
-    }
+    // public function render(): View
+    // {
+    //     return view('livewire.product-component');
+    // }
 
-    public function addToCart()
-    {
+    // public function addToCart()
+    // {
 
-        if (auth()->check()) {
-            Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('unit_price'), $this->quantity);
-            session()->flash('success', 'Product added to cart.');
-            $this->emit('productAddedToCart');
-        } else {
-            return redirect()->route('login');
-        }
-    }
+    //     if (auth()->check()) {
+    //         Cart::add($this->product->id, $this->product->name, $this->product->getRawOriginal('unit_price'), $this->quantity);
+    //         session()->flash('success', 'Product added to cart.');
+    //         $this->emit('productAddedToCart');
+    //     } else {
+    //         return redirect()->route('login');
+    //     }
+    // }
 }

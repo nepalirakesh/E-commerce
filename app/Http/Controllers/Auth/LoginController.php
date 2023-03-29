@@ -54,7 +54,7 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             return redirect()->intended(route('home'));
 
 
